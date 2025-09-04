@@ -174,7 +174,7 @@ class GoogleSheetsService {
 
   private async fetchFromApi<T>(type: string): Promise<T[]> {
     try {
-      const res = await fetch(`/api/sheets?type=${type}`);
+      const res = await fetch(`/api/sheet?type=${type}`);
       if (!res.ok) {
         this.error(`Failed to fetch ${type} from API`, await res.text());
         return [];
@@ -591,3 +591,11 @@ class GoogleSheetsService {
 }
 
 export const googleSheetsService = GoogleSheetsService.getInstance();
+
+// Re-export types for convenience
+export type {
+  FinanceSummary,
+  PaginatedFinanceData,
+  FinanceFilter,
+  FinanceData,
+} from "@/app/api/sheet/type";
