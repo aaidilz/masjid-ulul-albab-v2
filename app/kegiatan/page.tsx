@@ -12,10 +12,10 @@ import type { ActivityData } from "@/app/api/sheet/type";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Kegiatan | Masjid Ulul Albab",
-  description: "Informasi kegiatan dan acara di Masjid Ulul Albab",
-};
+// export const metadata = {
+//   title: "Kegiatan | Masjid Ulul Albab",
+//   description: "Informasi kegiatan dan acara di Masjid Ulul Albab",
+// };
 
 export default function KegiatanPage() {
   const [activities, setActivities] = useState<ActivityData[]>([]);

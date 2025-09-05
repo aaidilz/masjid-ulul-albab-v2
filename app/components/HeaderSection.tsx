@@ -86,9 +86,7 @@ export default function HeaderSection() {
   <nav>
     <NavigationMenu>
       <NavigationMenuList className="flex gap-x-6">
-        <NavigationMenuItem>
-          <Link href="/" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Home</Link>
-        </NavigationMenuItem>
+        
         <NavigationMenuItem>
           <Link href="/#about" className="text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
         </NavigationMenuItem>
@@ -182,9 +180,7 @@ export default function HeaderSection() {
                 <div className="flex flex-col items-center space-y-4">
                     <NavigationMenu orientation="vertical">
                         <NavigationMenuList className="flex flex-col space-y-3 text-center">
-                            <NavigationMenuItem>                            
-                                <Link href="/" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Home</Link>
-                            </NavigationMenuItem>
+                            
                             <NavigationMenuItem>
                                 <Link href="#about" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
                             </NavigationMenuItem>

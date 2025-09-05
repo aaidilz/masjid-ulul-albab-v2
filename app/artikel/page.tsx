@@ -12,10 +12,10 @@ import type { ArticleData } from "@/app/api/sheet/type";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Artikel | Masjid Ulul Albab",
-  description: "Artikel dan tulisan tentang Islam, kehidupan, dan kegiatan masjid",
-};
+// export const metadata = {
+//   title: "Artikel | Masjid Ulul Albab",
+//   description: "Artikel dan tulisan tentang Islam, kehidupan, dan kegiatan masjid",
+// };
 
 export default function ArtikelPage() {
   const [articles, setArticles] = useState<ArticleData[]>([]);

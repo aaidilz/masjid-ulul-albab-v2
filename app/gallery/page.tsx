@@ -11,10 +11,10 @@ import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { GalleryData } from "@/app/api/sheet/type";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Gallery | Masjid Ulul Albab",
-  description: "Galeri foto kegiatan dan momen bersejarah di Masjid Ulul Albab",
-};
+// export const metadata = {
+//   title: "Gallery | Masjid Ulul Albab",
+//   description: "Galeri foto kegiatan dan momen bersejarah di Masjid Ulul Albab",
+// };
 
 export default function GalleryPage() {
   const [galleryItems, setGalleryItems] = useState<GalleryData[]>([]);
