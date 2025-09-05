@@ -25,32 +25,32 @@ export default function FooterSection({
     };
 
     return (
-        <footer className="bg-gray-800 text-white py-8 md:py-12">
+        <footer className="bg-gray-800 dark:bg-gray-950 text-white py-8 md:py-12 transition-colors">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     <div className="md:col-span-1">
                         <div className="flex items-center mb-4">
                             <MosqueIcon className="text-green-500 mr-2" />
-                            <h3 className="text-lg md:text-xl font-bold">
+                            <h3 className="text-lg md:text-xl font-bold font-poppins">
                                 Masjid <span className="text-green-500">Ulul Albaab</span>
                             </h3>
                         </div>
-                        <p className="text-gray-400 mb-4 text-sm md:text-base">
+                        <p className="text-gray-400 mb-4 text-sm md:text-base font-inter">
                             Pusat kegiatan keislaman yang membina umat menuju masyarakat yang
                             berakhlak mulia dan berilmu.
                         </p>
-                        <p className="text-gray-400 text-sm md:text-base">
+                        <p className="text-gray-400 text-sm md:text-base font-inter">
                             © 2025 Masjid Ulul Albaab. All rights reserved.
                         </p>
                     </div>
 
                     <div className="md:col-span-1">
-                        <h4 className="text-lg font-bold mb-4">Tautan Cepat</h4>
+                        <h4 className="text-lg font-bold mb-4 font-poppins">Tautan Cepat</h4>
                         <ul className="space-y-2">
                             <li>
                                 <a
                                     href="#home"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Home
                                 </a>
@@ -58,7 +58,7 @@ export default function FooterSection({
                             <li>
                                 <a
                                     href="#about"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Tentang Kami
                                 </a>
@@ -66,7 +66,7 @@ export default function FooterSection({
                             <li>
                                 <a
                                     href="#organization"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Struktur Organisasi
                                 </a>
@@ -74,7 +74,7 @@ export default function FooterSection({
                             <li>
                                 <a
                                     href="#finance"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Laporan Keuangan
                                 </a>
@@ -82,7 +82,7 @@ export default function FooterSection({
                             <li>
                                 <a
                                     href="#activities"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Kegiatan
                                 </a>
@@ -90,7 +90,7 @@ export default function FooterSection({
                             <li>
                                 <a
                                     href="#articles"
-                                    className="text-gray-400 hover:text-white transition text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
                                 >
                                     Artikel
                                 </a>
@@ -99,12 +99,12 @@ export default function FooterSection({
                     </div>
 
                     <div className="md:col-span-1">
-                        <h4 className="text-lg font-bold mb-4">Kegiatan</h4>
+                        <h4 className="text-lg font-bold mb-4 font-poppins">Kegiatan</h4>
                         <ul className="space-y-2">
                             <li>
                                 <button
                                     onClick={() => handleActivityLink("rutin")}
-                                    className="text-gray-400 hover:text-white transition text-left text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-left text-sm md:text-base font-inter"
                                 >
                                     Rutin
                                 </button>
@@ -112,7 +112,7 @@ export default function FooterSection({
                             <li>
                                 <button
                                     onClick={() => handleActivityLink("khusus")}
-                                    className="text-gray-400 hover:text-white transition text-left text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-left text-sm md:text-base font-inter"
                                 >
                                     Khusus
                                 </button>
@@ -120,7 +120,7 @@ export default function FooterSection({
                             <li>
                                 <button
                                     onClick={() => handleActivityLink("jadwal")}
-                                    className="text-gray-400 hover:text-white transition text-left text-sm md:text-base"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-left text-sm md:text-base font-inter"
                                 >
                                     Jadwal
                                 </button>
@@ -129,8 +129,8 @@ export default function FooterSection({
                     </div>
 
                     <div className="md:col-span-1">
-                        <h4 className="text-lg font-bold mb-4">Berlangganan</h4>
-                        <p className="text-gray-400 mb-4 text-sm md:text-base">
+                        <h4 className="text-lg font-bold mb-4 font-poppins">Berlangganan</h4>
+                        <p className="text-gray-400 mb-4 text-sm md:text-base font-inter">
                             Dapatkan update kegiatan terbaru melalui email Anda.
                         </p>
                         <div className="flex">
@@ -150,9 +150,9 @@ export default function FooterSection({
                         </div>
 
                         <div className="mt-6">
-                            <h5 className="font-bold mb-2 text-sm md:text-base">Donasi</h5>
-                            <p className="text-gray-400 mb-2 text-sm md:text-base">SeaBank</p>
-                            <p className="font-mono bg-gray-700 p-2 rounded-lg text-xs md:text-sm">
+                            <h5 className="font-bold mb-2 text-sm md:text-base font-poppins">Donasi</h5>
+                            <p className="text-gray-400 mb-2 text-sm md:text-base font-inter">SeaBank</p>
+                            <p className="font-mono bg-gray-700 dark:bg-gray-800 p-2 rounded-lg text-xs md:text-sm transition-colors">
                                 9013 7458 0025 (a.n. Azhar Muttaqien (Bendahara Periode
                                 2025/2026))
                             </p>
@@ -160,8 +160,8 @@ export default function FooterSection({
                     </div>
                 </div>
 
-                <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                    <p className="text-sm md:text-base">Dibangun dengan ❤ oleh Tim IT Masjid Ulul Albaab</p>
+                <div className="border-t border-gray-700 dark:border-gray-600 mt-8 pt-8 text-center text-gray-400 transition-colors">
+                    <p className="text-sm md:text-base font-inter">Dibangun dengan ❤ oleh Tim IT Masjid Ulul Albaab</p>
                 </div>
             </div>
         </footer>
