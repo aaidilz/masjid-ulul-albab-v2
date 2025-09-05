@@ -12,7 +12,7 @@ export default function HeroSection() {
     {
       title: "Masjid Ulul Albaab",
       subtitle: "Pusat Ibadah dan Dakwah di Kampus UNPAS",
-      description: "Rumah spiritual yang hangat untuk seluruh keluarga besar Universitas Pasundan",
+      // description: "Masjid yang hangat untuk seluruh keluarga besar Universitas Pasundan",
       image: "/img/hero.jpg"
     }
   ];
@@ -52,7 +52,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className={`relative z-10 text-center text-white px-4 max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className={`relative z-10 text-center text-white px-8 max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         {/* Welcome badge */}
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6 animate-bounce">
           <Heart className="h-4 w-4 text-red-400" />
@@ -67,9 +67,9 @@ export default function HeroSection() {
           {slides[currentSlide].subtitle}
         </h2>
         
-        <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90 font-inter">
+        {/* <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90 font-inter">
           {slides[currentSlide].description}
-        </p>
+        </p> */}
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-2xl mx-auto">
@@ -118,9 +118,9 @@ export default function HeroSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronDown className="h-8 w-8 text-white/70" />
-        </div>
+        </div> */}
       </div>
 
       {/* Floating elements */}

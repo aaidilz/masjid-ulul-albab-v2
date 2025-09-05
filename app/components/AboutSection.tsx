@@ -82,7 +82,7 @@ export default function AboutSection() {
           {/* Text Content */}
           <div className="order-2 lg:order-1">
             <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-700 dark:text-green-400 font-poppins">
-              Rumah Spiritual di Kampus UNPAS
+              Masjid di Kampus UNPAS
             </h3>
 
             {/* Desktop Content */}

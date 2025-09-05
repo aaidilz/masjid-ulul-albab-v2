@@ -49,7 +49,8 @@ export default function HeaderSection() {
     };
 
     return (
-        <header className="fixed w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md z-50 transition-colors">
+       <header className="sticky top-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md z-50 transition-colors">
+
             <div className="container mx-auto px-4 py-3 flex justify-between items-center">
                 <div className="flex items-center">
                     <Image
