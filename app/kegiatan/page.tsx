@@ -1,6 +1,16 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Construction, Calendar, Users, MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Users, MapPin, Search, Filter, ArrowRight, Clock } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { googleSheetsService } from "@/app/services/GoogleSheetsService";
+import type { ActivityData } from "@/app/api/sheet/type";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Kegiatan | Masjid Ulul Albab",
@@ -8,6 +18,96 @@ export const metadata = {
 };
 
 export default function KegiatanPage() {
+  const [activities, setActivities] = useState<ActivityData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [filteredActivities, setFilteredActivities] = useState<ActivityData[]>([]);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoading(true);
+        const data = await googleSheetsService.getActivities();
+        setActivities(data);
+        setFilteredActivities(data);
+      } catch (error) {
+        console.error("Error fetching activities:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
+  useEffect(() => {
+    let filtered = activities;
+
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(
+        (activity) =>
+          activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          activity.location.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by category
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(
+        (activity) => activity.category.toLowerCase() === selectedCategory.toLowerCase()
+      );
+    }
+
+    setFilteredActivities(filtered);
+  }, [activities, searchTerm, selectedCategory]);
+
+  const getCategoryColor = (category: string) => {
+    switch (category.toLowerCase()) {
+      case "rutin":
+        return "bg-green-100 text-green-800";
+      case "khusus":
+        return "bg-blue-100 text-blue-800";
+      case "jadwal":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category.toLowerCase()) {
+      case "rutin":
+        return <Calendar className="h-4 w-4" />;
+      case "khusus":
+        return <Users className="h-4 w-4" />;
+      case "jadwal":
+        return <Clock className="h-4 w-4" />;
+      default:
+        return <Calendar className="h-4 w-4" />;
+    }
+  };
+
+  const truncateDescription = (description: string, maxLength: number = 120) => {
+    if (description.length <= maxLength) return description;
+    return description.substring(0, maxLength) + "...";
+  };
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-50 min-h-screen">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Memuat kegiatan...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-gray-50 min-h-screen">
       <div className="container mx-auto px-4">
@@ -19,95 +119,202 @@ export default function KegiatanPage() {
           </p>
         </div>
 
-        {/* Under Construction Notice */}
-        <Card className="max-w-4xl mx-auto mb-8">
-          <CardHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <Construction className="h-16 w-16 text-orange-500" />
-            </div>
-            <CardTitle className="text-2xl text-orange-600">Halaman Dalam Pengembangan</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            <p className="text-gray-600 mb-6">
-              Kami sedang mengembangkan halaman kegiatan ini untuk memberikan informasi yang lebih lengkap tentang berbagai acara dan program masjid.
+        {/* Search and Filter */}
+        <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              type="text"
+              placeholder="Cari kegiatan..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-gray-500" />
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Pilih kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Semua Kategori</SelectItem>
+                <SelectItem value="rutin">Rutin</SelectItem>
+                <SelectItem value="khusus">Khusus</SelectItem>
+                <SelectItem value="jadwal">Jadwal</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Activities Grid */}
+        {filteredActivities.length > 0 ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {filteredActivities.map((activity) => (
+              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
+                <CardHeader className="pb-3">
+                  {activity.imageUrl && (
+                    <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
+                      <Image
+                        src={activity.imageUrl}
+                        alt={activity.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge className={getCategoryColor(activity.category)}>
+                      <div className="flex items-center gap-1">
+                        {getCategoryIcon(activity.category)}
+                        {activity.category}
+                      </div>
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl mb-2 line-clamp-2">
+                    {activity.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 mb-4 line-clamp-3">
+                    {truncateDescription(activity.description)}
+                  </p>
+                  
+                  <div className="space-y-2 mb-4">
+                    {activity.schedule && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Clock className="mr-2 h-4 w-4 text-green-600" />
+                        {activity.schedule}
+                      </div>
+                    )}
+                    {activity.location && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="mr-2 h-4 w-4 text-red-600" />
+                        {activity.location}
+                      </div>
+                    )}
+                    {activity.participants && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Users className="mr-2 h-4 w-4 text-blue-600" />
+                        {activity.participants}
+                      </div>
+                    )}
+                  </div>
+
+                  <Link href={`/kegiatan/${activity.id}`}>
+                    <Button className="w-full group">
+                      Lihat Detail
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              {searchTerm || selectedCategory !== "all" 
+                ? "Tidak ada kegiatan yang ditemukan" 
+                : "Belum ada kegiatan tersedia"}
+            </h3>
+            <p className="text-gray-500">
+              {searchTerm || selectedCategory !== "all"
+                ? "Coba ubah kata kunci pencarian atau filter kategori"
+                : "Kegiatan akan segera ditambahkan"}
             </p>
-            <div className="flex justify-center space-x-4">
-              <Button variant="outline">
-                <Calendar className="mr-2 h-4 w-4" />
-                Lihat Jadwal Sholat
+            {(searchTerm || selectedCategory !== "all") && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedCategory("all");
+                }}
+                className="mt-4"
+              >
+                Reset Filter
               </Button>
-              <Button variant="outline">
-                <Users className="mr-2 h-4 w-4" />
-                Kontak Pengurus
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </div>
+        )}
 
-        {/* Preview of Upcoming Features */}
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          <Card>
+        {/* Category Overview */}
+        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <Card className="text-center">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Calendar className="mr-2 h-5 w-5 text-green-600" />
-                Kajian Rutin
-              </CardTitle>
+              <div className="text-green-600 text-3xl mb-2">
+                <Calendar className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle>Kegiatan Rutin</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600">
-                Kajian mingguan, bulanan, dan kajian khusus untuk meningkatkan pemahaman agama
+              <p className="text-sm text-gray-600 mb-2">
+                Kajian mingguan, bulanan, dan kegiatan rutin lainnya
               </p>
+              <div className="text-2xl font-bold text-green-600">
+                {activities.filter(a => a.category.toLowerCase() === 'rutin').length}
+              </div>
+              <div className="text-sm text-gray-500">Kegiatan</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="text-center">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Users className="mr-2 h-5 w-5 text-blue-600" />
-                Kegiatan Sosial
-              </CardTitle>
+              <div className="text-blue-600 text-3xl mb-2">
+                <Users className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle>Kegiatan Khusus</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600">
-                Program bakti sosial, pengajian anak, dan kegiatan kebersamaan warga
+              <p className="text-sm text-gray-600 mb-2">
+                Event spesial, perayaan hari besar, dan acara khusus
               </p>
+              <div className="text-2xl font-bold text-blue-600">
+                {activities.filter(a => a.category.toLowerCase() === 'khusus').length}
+              </div>
+              <div className="text-sm text-gray-500">Kegiatan</div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="text-center">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <MapPin className="mr-2 h-5 w-5 text-red-600" />
-                Event Khusus
-              </CardTitle>
+              <div className="text-purple-600 text-3xl mb-2">
+                <Clock className="h-8 w-8 mx-auto" />
+              </div>
+              <CardTitle>Jadwal Kegiatan</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600">
-                Hari besar Islam, peringatan hari-hari bersejarah, dan acara spesial lainnya
+              <p className="text-sm text-gray-600 mb-2">
+                Jadwal sholat, kajian, dan kegiatan terjadwal
               </p>
+              <div className="text-2xl font-bold text-purple-600">
+                {activities.filter(a => a.category.toLowerCase() === 'jadwal').length}
+              </div>
+              <div className="text-sm text-gray-500">Kegiatan</div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-12">
-          <Card className="max-w-2xl mx-auto">
-            <CardContent className="pt-6">
-              <h3 className="text-xl font-semibold mb-4">Ingin Mengikuti Kegiatan?</h3>
-              <p className="text-gray-600 mb-6">
-                Untuk informasi lebih lanjut tentang kegiatan masjid, silakan hubungi pengurus atau datang langsung ke masjid.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button disabled>
-                  <MapPin className="mr-2 h-4 w-4" />
-                  Lokasi Masjid
-                </Button>
-                <Button variant="outline" disabled>
-                  Hubungi Kami
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Stats */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center gap-4 bg-white p-4 rounded-lg shadow">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">{activities.length}</div>
+              <div className="text-sm text-gray-600">Total Kegiatan</div>
+            </div>
+            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">3</div>
+              <div className="text-sm text-gray-600">Kategori</div>
+            </div>
+            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600">{filteredActivities.length}</div>
+              <div className="text-sm text-gray-600">Ditampilkan</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

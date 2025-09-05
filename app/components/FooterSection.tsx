@@ -95,6 +95,22 @@ export default function FooterSection({
                                     Artikel
                                 </a>
                             </li>
+                            <li>
+                                <a
+                                    href="/gallery"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
+                                >
+                                    Gallery
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="/volunteer"
+                                    className="text-gray-400 hover:text-white hover:text-green-400 transition text-sm md:text-base font-inter"
+                                >
+                                    Volunteer
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

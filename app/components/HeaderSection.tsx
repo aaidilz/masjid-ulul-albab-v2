@@ -8,6 +8,9 @@ import {
     NavigationMenu,
     NavigationMenuList,
     NavigationMenuItem,
+    NavigationMenuContent,
+    NavigationMenuTrigger,
+    NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { Menu as MenuIcon, Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -101,6 +104,59 @@ export default function HeaderSection() {
         <NavigationMenuItem>
           <Link href="/artikel" className="text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
         </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">
+            Lainnya
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/gallery"
+                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                >
+                  <div className="text-sm font-medium leading-none">Gallery</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Dokumentasi foto kegiatan dan momen bersejarah masjid
+                  </p>
+                </Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/mading"
+                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                >
+                  <div className="text-sm font-medium leading-none">Mading</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Majalah dinding digital dengan informasi dan konten edukatif
+                  </p>
+                </Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/#announcements"
+                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                >
+                  <div className="text-sm font-medium leading-none">Pengumuman</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Pengumuman terbaru dan informasi penting dari masjid
+                  </p>
+                </Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/volunteer"
+                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                >
+                  <div className="text-sm font-medium leading-none">Volunteer</div>
+                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    Program relawan dan kesempatan berkontribusi untuk masjid
+                  </p>
+                </Link>
+              </NavigationMenuLink>
+            </div>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   </nav>
@@ -143,6 +199,18 @@ export default function HeaderSection() {
                             </NavigationMenuItem>
                             <NavigationMenuItem>
                                 <Link href="/artikel" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/gallery" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Gallery</Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/mading" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Mading</Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/#announcements" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Pengumuman</Link>
+                            </NavigationMenuItem>
+                            <NavigationMenuItem>
+                                <Link href="/volunteer" className="block text-gray-800 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Volunteer</Link>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
