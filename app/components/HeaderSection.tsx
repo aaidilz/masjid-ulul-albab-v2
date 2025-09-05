@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Link from "next/link";
 import {
     NavigationMenu,
     NavigationMenuList,
@@ -29,9 +30,11 @@ export default function HeaderSection() {
                         priority={true}
                         style={{ width: "auto", height: "30px" }}
                     />
-                    <h1 className="text-xl font-bold text-gray-800">
-                        Masjid <span className="text-green-600">Ulul Albaab</span>
-                    </h1>
+                    <Link href="/" className="text-gray-800 hover:text-green-600 transition">
+  <h1 className="text-xl font-bold text-gray-800">
+    Masjid <span className="text-green-600">Ulul Albaab</span>
+  </h1>
+</Link>
                 </div>
 
                 {/* Mobile menu button */}
@@ -44,30 +47,31 @@ export default function HeaderSection() {
                 </button>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:block">
-                    <NavigationMenu>
-                        <NavigationMenuList>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="#home" className="text-gray-800 hover:text-green-600 transition active-nav">Home</NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="#about" className="text-gray-800 hover:text-green-600 transition">Tentang</NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="#organization" className="text-gray-800 hover:text-green-600 transition">Struktur</NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="#finance" className="text-gray-800 hover:text-green-600 transition">Keuangan</NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="/kegiatan" className="text-gray-800 hover:text-green-600 transition">Kegiatan</NavigationMenuLink>
-                            </NavigationMenuItem>
-                            <NavigationMenuItem>
-                                <NavigationMenuLink href="/artikel" className="text-gray-800 hover:text-green-600 transition">Artikel</NavigationMenuLink>
-                            </NavigationMenuItem>
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                </nav>
+<nav className="hidden md:block">
+  <NavigationMenu>
+    <NavigationMenuList className="flex gap-x-6">
+      <NavigationMenuItem>
+        <Link href="/" className="block text-gray-800 hover:text-green-600 transition">Home</Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Link href="/#about" className="text-gray-800 hover:text-green-600 transition">Tentang</Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Link href="#organization" className="text-gray-800 hover:text-green-600 transition">Struktur</Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Link href="#finance" className="text-gray-800 hover:text-green-600 transition">Keuangan</Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Link href="/kegiatan" className="text-gray-800 hover:text-green-600 transition">Kegiatan</Link>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <Link href="/artikel" className="text-gray-800 hover:text-green-600 transition">Artikel</Link>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+  </NavigationMenu>
+</nav>
+
             </div>
 
             {/* Mobile NavigationMenu */}
@@ -76,23 +80,23 @@ export default function HeaderSection() {
             >
                 <NavigationMenu orientation="vertical">
                     <NavigationMenuList className="flex flex-col space-y-3 text-center">
-                        <NavigationMenuItem>
-                            <NavigationMenuLink href="#home" className="block text-gray-800 hover:text-green-600 transition">Home</NavigationMenuLink>
+                        <NavigationMenuItem>                            
+                            <Link href="/" className="block text-gray-800 hover:text-green-600 transition">Home</Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuLink href="#about" className="block text-gray-800 hover:text-green-600 transition">Tentang</NavigationMenuLink>
+                            <Link href="#about" className="block text-gray-800 hover:text-green-600 transition">Tentang</Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuLink href="#organization" className="block text-gray-800 hover:text-green-600 transition">Struktur</NavigationMenuLink>
+                            <Link href="#organization" className="block text-gray-800 hover:text-green-600 transition">Struktur</Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuLink href="#finance" className="block text-gray-800 hover:text-green-600 transition">Keuangan</NavigationMenuLink>
+                            <Link href="#finance" className="block text-gray-800 hover:text-green-600 transition">Keuangan</Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuLink href="/kegiatan" className="block text-gray-800 hover:text-green-600 transition">Kegiatan</NavigationMenuLink>
+                            <Link href="/kegiatan" className="block text-gray-800 hover:text-green-600 transition">Kegiatan</Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuLink href="/artikel" className="block text-gray-800 hover:text-green-600 transition">Artikel</NavigationMenuLink>
+                            <Link href="/artikel" className="block text-gray-800 hover:text-green-600 transition">Artikel</Link>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
