@@ -20,18 +20,18 @@ export const viewport: Viewport = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <Card>
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
-              <Building className="h-16 w-16 text-green-600" />
+              <Building className="h-16 w-16 text-green-600 dark:text-green-400" />
             </div>
-            <CardTitle className="text-3xl text-gray-900 mb-2">404</CardTitle>
-            <p className="text-xl text-gray-600">Halaman Tidak Ditemukan</p>
+            <CardTitle className="text-3xl text-gray-900 dark:text-gray-100 mb-2">404</CardTitle>
+            <p className="text-xl text-gray-600 dark:text-gray-300">Halaman Tidak Ditemukan</p>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-8">
+            <p className="text-gray-600 dark:text-gray-300 mb-8">
               Maaf, halaman yang Anda cari tidak dapat ditemukan di website Masjid Ulul Albab.
             </p>
 
@@ -57,19 +57,19 @@ export default function NotFound() {
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t">
-              <h3 className="font-semibold mb-4">Halaman Populer</h3>
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <h3 className="font-semibold mb-4 text-gray-800 dark:text-gray-100">Halaman Populer</h3>
               <div className="grid grid-cols-1 gap-2 text-sm">
-                <Link href="/" className="text-green-600 hover:text-green-800">
+                <Link href="/" className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
                   • Beranda
                 </Link>
-                <Link href="/#finance" className="text-green-600 hover:text-green-800">
+                <Link href="/#finance" className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
                   • Laporan Keuangan
                 </Link>
-                <Link href="/kegiatan" className="text-green-600 hover:text-green-800">
+                <Link href="/kegiatan" className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
                   • Kegiatan Masjid
                 </Link>
-                <Link href="/artikel" className="text-green-600 hover:text-green-800">
+                <Link href="/artikel" className="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300">
                   • Artikel & Tulisan
                 </Link>
               </div>
