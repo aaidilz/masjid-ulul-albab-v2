@@ -86,11 +86,11 @@ export default function ArtikelPage() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat artikel...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Memuat artikel...</p>
           </div>
         </div>
       </section>
@@ -98,12 +98,12 @@ export default function ArtikelPage() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700">Artikel & Tulisan</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Artikel & Tulisan</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Kumpulan artikel, khutbah, dan tulisan inspiratif tentang Islam, kehidupan sehari-hari, dan kegiatan masjid
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function ArtikelPage() {
         {/* Search and Filter */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
             <Input
               type="text"
               placeholder="Cari artikel..."
@@ -121,7 +121,7 @@ export default function ArtikelPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500" />
+            <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
@@ -157,7 +157,7 @@ export default function ArtikelPage() {
                   )}
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="secondary">{article.category}</Badge>
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                       <Clock className="mr-1 h-4 w-4" />
                       {formatDate(article.date)}
                     </div>
@@ -165,13 +165,13 @@ export default function ArtikelPage() {
                   <CardTitle className="text-xl mb-2 line-clamp-2">
                     {article.title}
                   </CardTitle>
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                     <User className="mr-1 h-4 w-4" />
                     {article.author}
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4 line-clamp-3">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
                     {truncateContent(article.content)}
                   </p>
                   <Link href={`/artikel/${article.id}`}>
@@ -186,13 +186,13 @@ export default function ArtikelPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+            <BookOpen className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
               {searchTerm || selectedCategory !== "all" 
                 ? "Tidak ada artikel yang ditemukan" 
                 : "Belum ada artikel tersedia"}
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 dark:text-gray-400">
               {searchTerm || selectedCategory !== "all"
                 ? "Coba ubah kata kunci pencarian atau filter kategori"
                 : "Artikel akan segera ditambahkan"}
@@ -214,20 +214,20 @@ export default function ArtikelPage() {
 
         {/* Stats */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-4 bg-white p-4 rounded-lg shadow">
+          <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{articles.length}</div>
-              <div className="text-sm text-gray-600">Total Artikel</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{articles.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total Artikel</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{categories.length}</div>
-              <div className="text-sm text-gray-600">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{categories.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{filteredArticles.length}</div>
-              <div className="text-sm text-gray-600">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredArticles.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
             </div>
           </div>
         </div>

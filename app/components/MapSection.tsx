@@ -7,21 +7,21 @@ import InfoIcon from '@mui/icons-material/Info';
 
 export default function MapSection() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center section-title">
+        <h2 className="text-3xl font-bold mb-12 text-center section-title text-gray-900 dark:text-white">
           Lokasi Kami
         </h2>
 
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
           <div className="p-6">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
               <div>
-                <h3 className="text-xl font-bold text-green-700 mb-2">
+                <h3 className="text-xl font-bold text-green-700 dark:text-green-400 mb-2">
                   Masjid Jami&apos; Ulul Albaab
                 </h3>
-                <p className="text-gray-600 flex items-center">
-                  <LocationOnIcon className="mr-2 text-green-600" />
+                <p className="text-gray-600 dark:text-gray-400 flex items-center">
+                  <LocationOnIcon className="mr-2 text-green-600 dark:text-green-400" />
                   Jl. Dr. Setiabudhi No. 193, Bandung
                 </p>
               </div>
@@ -30,7 +30,7 @@ export default function MapSection() {
                   href="https://maps.app.goo.gl/RJv2uqVD2fwq7vEx5"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition inline-flex items-center"
+                  className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition inline-flex items-center"
                 >
                   <LocationOnIcon className="mr-2" />
                   Buka di Google Maps
@@ -55,31 +55,31 @@ export default function MapSection() {
           </div>
 
           {/* Additional Info */}
-          <div className="p-6 bg-gray-50 border-t">
+          <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center">
-                <LocationOnIcon className="text-green-600 mr-2" />
-                <span>Kampus IV Universitas Pasundan</span>
+                <LocationOnIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <span className="text-gray-900 dark:text-gray-100">Kampus IV Universitas Pasundan</span>
               </div>
               <div className="flex items-center">
-                <AccessTimeIcon className="text-green-600 mr-2" />
-                <span>Buka 24 jam untuk jamaah</span>
+                <AccessTimeIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <span className="text-gray-900 dark:text-gray-100">Buka 24 jam untuk jamaah</span>
               </div>
               <div className="flex items-center">
-                <FullscreenIcon className="text-green-600 mr-2" />
-                <span>Parkir tersedia</span>
+                <FullscreenIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <span className="text-gray-900 dark:text-gray-100">Parkir tersedia</span>
               </div>
             </div>
           </div>
 
           {/* Transportation Info */}
           <div className="mt-8 grid md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h4 className="font-bold mb-3 text-green-700 flex items-center">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+              <h4 className="font-bold mb-3 text-green-700 dark:text-green-400 flex items-center">
                 <LocationOnIcon className="mr-2" />
                 Transportasi Umum
               </h4>
-              <ul className="space-y-2 text-sm text-gray-700">
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                 <li>• Angkot jurusan Cicaheum - Ledeng</li>
                 <li>• Trans Studio Bandung (TSB) - turun di Dago</li>
                 <li>• Ojek online dari berbagai titik di Bandung</li>
@@ -87,12 +87,12 @@ export default function MapSection() {
               </ul>
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow">
-              <h4 className="font-bold mb-3 text-green-700 flex items-center">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
+              <h4 className="font-bold mb-3 text-green-700 dark:text-green-400 flex items-center">
                 <InfoIcon className="mr-2" />
                 Petunjuk Arah
               </h4>
-              <ul className="space-y-2 text-sm text-gray-700">
+              <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                 <li>• Dari Dago Plaza: ±5 menit berkendara</li>
                 <li>• Dari Bandung Supermall: ±15 menit</li>
                 <li>• Dari Stasiun Bandung: ±20 menit</li>

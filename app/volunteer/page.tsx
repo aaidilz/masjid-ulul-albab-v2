@@ -56,25 +56,25 @@ export default function VolunteerPage() {
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
       case "pendidikan":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "pemeliharaan":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
       case "organisasi":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
       case "media":
-        return "bg-orange-100 text-orange-800";
+        return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
     }
   };
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700">Program Volunteer</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Program Volunteer</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Bergabunglah dengan tim relawan Masjid Ulul Albab dan berkontribusi untuk kemajuan umat
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function VolunteerPage() {
               <HandHeart className="h-16 w-16" />
             </div>
             <h2 className="text-2xl font-bold mb-4">Jadilah Bagian dari Perubahan</h2>
-            <p className="text-green-100 mb-6 max-w-2xl mx-auto">
+            <p className="text-green-100 dark:text-green-200 mb-6 max-w-2xl mx-auto">
               Setiap kontribusi Anda, sekecil apapun, memiliki dampak besar bagi kemajuan masjid dan pembinaan umat. 
               Mari bersama-sama membangun komunitas yang lebih baik.
             </p>
@@ -104,7 +104,7 @@ export default function VolunteerPage() {
 
         {/* Volunteer Opportunities */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Peluang Volunteer</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">Peluang Volunteer</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
             {volunteerOpportunities.map((opportunity) => (
               <Card key={opportunity.id} className="hover:shadow-lg transition-shadow duration-300">
@@ -113,36 +113,36 @@ export default function VolunteerPage() {
                     <Badge className={getCategoryColor(opportunity.category)}>
                       {opportunity.category}
                     </Badge>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
                       {opportunity.spots} posisi tersedia
                     </div>
                   </div>
                   <CardTitle className="text-xl mb-2">
                     {opportunity.title}
                   </CardTitle>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 dark:text-gray-300">
                     {opportunity.description}
                   </p>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3 mb-4">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Clock className="mr-2 h-4 w-4 text-green-600" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <Clock className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
                       {opportunity.time}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="mr-2 h-4 w-4 text-red-600" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <MapPin className="mr-2 h-4 w-4 text-red-600 dark:text-red-400" />
                       {opportunity.location}
                     </div>
-                    <div className="flex items-start text-sm text-gray-600">
-                      <User className="mr-2 h-4 w-4 text-blue-600 mt-0.5" />
+                    <div className="flex items-start text-sm text-gray-600 dark:text-gray-400">
+                      <User className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
                       <div>
-                        <div className="font-medium">Persyaratan:</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">Persyaratan:</div>
                         <div>{opportunity.requirements}</div>
                       </div>
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Heart className="mr-2 h-4 w-4 text-purple-600" />
+                    <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                      <Heart className="mr-2 h-4 w-4 text-purple-600 dark:text-purple-400" />
                       Komitmen: {opportunity.commitment}
                     </div>
                   </div>
@@ -157,17 +157,17 @@ export default function VolunteerPage() {
 
         {/* Benefits Section */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Manfaat Menjadi Volunteer</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">Manfaat Menjadi Volunteer</h2>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <Card className="text-center">
               <CardHeader>
-                <div className="text-green-600 text-3xl mb-2">
+                <div className="text-green-600 dark:text-green-400 text-3xl mb-2">
                   <Heart className="h-8 w-8 mx-auto" />
                 </div>
                 <CardTitle>Pahala & Berkah</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Mendapatkan pahala dari Allah SWT atas setiap kebaikan yang dilakukan untuk kemajuan masjid dan umat
                 </p>
               </CardContent>
@@ -175,13 +175,13 @@ export default function VolunteerPage() {
 
             <Card className="text-center">
               <CardHeader>
-                <div className="text-blue-600 text-3xl mb-2">
+                <div className="text-blue-600 dark:text-blue-400 text-3xl mb-2">
                   <Users className="h-8 w-8 mx-auto" />
                 </div>
                 <CardTitle>Komunitas Positif</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Bergabung dengan komunitas yang positif dan saling mendukung dalam kebaikan
                 </p>
               </CardContent>
@@ -189,13 +189,13 @@ export default function VolunteerPage() {
 
             <Card className="text-center">
               <CardHeader>
-                <div className="text-purple-600 text-3xl mb-2">
+                <div className="text-purple-600 dark:text-purple-400 text-3xl mb-2">
                   <HandHeart className="h-8 w-8 mx-auto" />
                 </div>
                 <CardTitle>Pengembangan Diri</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Mengembangkan skill, pengalaman, dan kepribadian melalui berbagai kegiatan volunteer
                 </p>
               </CardContent>
@@ -204,58 +204,57 @@ export default function VolunteerPage() {
         </div>
 
         {/* How to Join */}
+        {/* How to Join */}
         <Card className="max-w-4xl mx-auto mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl text-center text-gray-800">Cara Bergabung</CardTitle>
+            <CardTitle className="text-2xl text-center text-gray-800 dark:text-gray-100">Cara Bergabung</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div>
-                <div className="bg-green-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-green-600 font-bold text-lg">1</span>
+                <div className="bg-green-100 dark:bg-green-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-green-600 dark:text-green-400 font-bold text-lg">1</span>
                 </div>
-                <h3 className="font-semibold mb-2">Pilih Program</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-100">Pilih Program</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Pilih program volunteer yang sesuai dengan minat dan kemampuan Anda
                 </p>
               </div>
               <div>
-                <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-blue-600 font-bold text-lg">2</span>
+                <div className="bg-blue-100 dark:bg-blue-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-600 dark:text-blue-400 font-bold text-lg">2</span>
                 </div>
-                <h3 className="font-semibold mb-2">Daftar & Interview</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-100">Daftar & Interview</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Isi formulir pendaftaran dan ikuti sesi wawancara singkat
                 </p>
               </div>
               <div>
-                <div className="bg-purple-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
-                  <span className="text-purple-600 font-bold text-lg">3</span>
+                <div className="bg-purple-100 dark:bg-purple-900 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-purple-600 dark:text-purple-400 font-bold text-lg">3</span>
                 </div>
-                <h3 className="font-semibold mb-2">Mulai Berkontribusi</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-semibold mb-2 text-gray-800 dark:text-gray-100">Mulai Berkontribusi</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Ikuti orientasi dan mulai berkontribusi sesuai program yang dipilih
                 </p>
               </div>
             </div>
           </CardContent>
-        </Card>
-
-        {/* Contact for Volunteer */}
+        </Card>        {/* Contact for Volunteer */}
         <Card className="max-w-2xl mx-auto">
           <CardHeader>
             <CardTitle className="text-xl text-center">Tertarik Bergabung?</CardTitle>
           </CardHeader>
           <CardContent className="text-center">
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               Hubungi koordinator volunteer untuk informasi lebih lanjut dan proses pendaftaran
             </p>
             <div className="space-y-2 mb-6">
               <div className="text-sm">
-                <span className="font-medium">WhatsApp:</span> 0812-2476-4338
+                <span className="font-medium text-gray-800 dark:text-gray-100">WhatsApp:</span> 0812-2476-4338
               </div>
               <div className="text-sm">
-                <span className="font-medium">Email:</span> sekretariat.albaab@gmail.com
+                <span className="font-medium text-gray-800 dark:text-gray-100">Email:</span> sekretariat.albaab@gmail.com
               </div>
             </div>
             <Button size="lg" className="w-full" asChild>

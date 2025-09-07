@@ -91,11 +91,11 @@ export default function GalleryPage() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat galeri...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Memuat galeri...</p>
           </div>
         </div>
       </section>
@@ -103,12 +103,12 @@ export default function GalleryPage() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700">Galeri Foto</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Galeri Foto</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Dokumentasi kegiatan dan momen bersejarah di Masjid Ulul Albab
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function GalleryPage() {
         {/* Search and Filter */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
             <Input
               type="text"
               placeholder="Cari foto..."
@@ -126,7 +126,7 @@ export default function GalleryPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500" />
+            <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
@@ -165,19 +165,19 @@ export default function GalleryPage() {
                       <Eye className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                     <div className="absolute top-2 left-2">
-                      <Badge variant="secondary" className="bg-white/90 text-gray-800">
+                      <Badge variant="secondary" className="bg-white/90 text-gray-800 dark:bg-gray-800/90 dark:text-gray-100">
                         {item.category}
                       </Badge>
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+                    <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-800 dark:text-gray-100">
                       {item.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
                       {item.description}
                     </p>
-                    <div className="flex items-center text-sm text-gray-500">
+                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                       <Calendar className="mr-1 h-4 w-4" />
                       {formatDate(item.date)}
                     </div>
@@ -188,13 +188,13 @@ export default function GalleryPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <ImageIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+            <ImageIcon className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
               {searchTerm || selectedCategory !== "all" 
                 ? "Tidak ada foto yang ditemukan" 
                 : "Belum ada foto tersedia"}
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 dark:text-gray-400">
               {searchTerm || selectedCategory !== "all"
                 ? "Coba ubah kata kunci pencarian atau filter kategori"
                 : "Foto akan segera ditambahkan"}
@@ -216,20 +216,20 @@ export default function GalleryPage() {
 
         {/* Stats */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-4 bg-white p-4 rounded-lg shadow">
+          <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{galleryItems.length}</div>
-              <div className="text-sm text-gray-600">Total Foto</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{galleryItems.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total Foto</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{categories.length}</div>
-              <div className="text-sm text-gray-600">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{categories.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{filteredItems.length}</div>
-              <div className="text-sm text-gray-600">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredItems.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
             </div>
           </div>
         </div>
@@ -241,15 +241,15 @@ export default function GalleryPage() {
             onClick={closeImageModal}
           >
             <div
-              className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-auto"
+              className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl max-h-[90vh] overflow-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800">
+                  <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
                     {selectedImage.title}
                   </h3>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                     <Badge variant="secondary">{selectedImage.category}</Badge>
                     <div className="flex items-center">
                       <Calendar className="mr-1 h-4 w-4" />
@@ -260,7 +260,7 @@ export default function GalleryPage() {
                 <Button
                   variant="outline"
                   onClick={closeImageModal}
-                  className="text-gray-600 hover:text-gray-800"
+                  className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
                 >
                   ✕ Tutup
                 </Button>
@@ -276,7 +276,7 @@ export default function GalleryPage() {
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   {selectedImage.description}
                 </p>
               </div>

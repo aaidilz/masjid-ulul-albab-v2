@@ -51,13 +51,13 @@ export default function ActivityDetailPage() {
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
       case "rutin":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "khusus":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
       case "jadwal":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
     }
   };
 
@@ -102,11 +102,11 @@ export default function ActivityDetailPage() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat kegiatan...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Memuat kegiatan...</p>
           </div>
         </div>
       </section>
@@ -115,12 +115,12 @@ export default function ActivityDetailPage() {
 
   if (!activity) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Kegiatan Tidak Ditemukan</h1>
-            <p className="text-gray-600 mb-6">
+            <Calendar className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Kegiatan Tidak Ditemukan</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               Kegiatan yang Anda cari tidak dapat ditemukan atau mungkin telah dihapus.
             </p>
             <Link href="/kegiatan">
@@ -136,7 +136,7 @@ export default function ActivityDetailPage() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Back Button */}
         <div className="mb-6">
@@ -199,7 +199,7 @@ export default function ActivityDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="prose prose-lg max-w-none">
-                    <div className="text-gray-800 leading-relaxed">
+                    <div className="text-gray-800 dark:text-gray-100 leading-relaxed">
                       {formatDescription(activity.description)}
                     </div>
                   </div>
@@ -216,40 +216,40 @@ export default function ActivityDetailPage() {
                 <CardContent className="space-y-4">
                   {activity.schedule && (
                     <div className="flex items-start gap-3">
-                      <Clock className="h-5 w-5 text-green-600 mt-0.5" />
+                      <Clock className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800">Jadwal</div>
-                        <div className="text-gray-600">{activity.schedule}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">Jadwal</div>
+                        <div className="text-gray-600 dark:text-gray-300">{activity.schedule}</div>
                       </div>
                     </div>
                   )}
                   
                   {activity.location && (
                     <div className="flex items-start gap-3">
-                      <MapPin className="h-5 w-5 text-red-600 mt-0.5" />
+                      <MapPin className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800">Lokasi</div>
-                        <div className="text-gray-600">{activity.location}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">Lokasi</div>
+                        <div className="text-gray-600 dark:text-gray-300">{activity.location}</div>
                       </div>
                     </div>
                   )}
                   
                   {activity.participants && (
                     <div className="flex items-start gap-3">
-                      <Users className="h-5 w-5 text-blue-600 mt-0.5" />
+                      <Users className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800">Peserta</div>
-                        <div className="text-gray-600">{activity.participants}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">Peserta</div>
+                        <div className="text-gray-600 dark:text-gray-300">{activity.participants}</div>
                       </div>
                     </div>
                   )}
                   
                   {activity.instructor && (
                     <div className="flex items-start gap-3">
-                      <User className="h-5 w-5 text-purple-600 mt-0.5" />
+                      <User className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800">Pembimbing</div>
-                        <div className="text-gray-600">{activity.instructor}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">Pembimbing</div>
+                        <div className="text-gray-600 dark:text-gray-300">{activity.instructor}</div>
                       </div>
                     </div>
                   )}
@@ -262,15 +262,15 @@ export default function ActivityDetailPage() {
                   <CardTitle className="text-lg">Informasi Lebih Lanjut</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Untuk informasi lebih lanjut tentang kegiatan ini, silakan hubungi:
                   </p>
                   <div className="space-y-2">
                     <div className="text-sm">
-                      <span className="font-medium">WhatsApp:</span> 0812-2476-4338
+                      <span className="font-medium text-gray-800 dark:text-gray-100">WhatsApp:</span> 0812-2476-4338
                     </div>
                     <div className="text-sm">
-                      <span className="font-medium">Email:</span> sekretariat.albaab@gmail.com
+                      <span className="font-medium text-gray-800 dark:text-gray-100">Email:</span> sekretariat.albaab@gmail.com
                     </div>
                   </div>
                   <Button className="w-full mt-4" asChild>
@@ -290,7 +290,7 @@ export default function ActivityDetailPage() {
           {/* Related Activities */}
           {relatedActivities.length > 0 && (
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">Kegiatan Terkait</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">Kegiatan Terkait</h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {relatedActivities.map((relatedActivity) => (
                   <Card key={relatedActivity.id} className="hover:shadow-lg transition-shadow">
@@ -314,7 +314,7 @@ export default function ActivityDetailPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">
                         {relatedActivity.description}
                       </p>
                       <Link href={`/kegiatan/${relatedActivity.id}`}>

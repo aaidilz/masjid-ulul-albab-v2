@@ -67,13 +67,13 @@ export default function KegiatanPage() {
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
       case "rutin":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "khusus":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
       case "jadwal":
-        return "bg-purple-100 text-purple-800";
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200";
     }
   };
 
@@ -97,11 +97,11 @@ export default function KegiatanPage() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat kegiatan...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Memuat kegiatan...</p>
           </div>
         </div>
       </section>
@@ -109,12 +109,12 @@ export default function KegiatanPage() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700">Kegiatan Masjid</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Kegiatan Masjid</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Berbagai kegiatan dan acara yang diselenggarakan oleh Masjid Ulul Albab untuk meningkatkan keimanan dan kualitas hidup masyarakat
           </p>
         </div>
@@ -122,7 +122,7 @@ export default function KegiatanPage() {
         {/* Search and Filter */}
         <div className="mb-8 flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
             <Input
               type="text"
               placeholder="Cari kegiatan..."
@@ -132,7 +132,7 @@ export default function KegiatanPage() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500" />
+            <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
@@ -177,26 +177,26 @@ export default function KegiatanPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 mb-4 line-clamp-3">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
                     {truncateDescription(activity.description)}
                   </p>
                   
                   <div className="space-y-2 mb-4">
                     {activity.schedule && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Clock className="mr-2 h-4 w-4 text-green-600" />
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <Clock className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
                         {activity.schedule}
                       </div>
                     )}
                     {activity.location && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <MapPin className="mr-2 h-4 w-4 text-red-600" />
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <MapPin className="mr-2 h-4 w-4 text-red-600 dark:text-red-400" />
                         {activity.location}
                       </div>
                     )}
                     {activity.participants && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Users className="mr-2 h-4 w-4 text-blue-600" />
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <Users className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
                         {activity.participants}
                       </div>
                     )}
@@ -214,13 +214,13 @@ export default function KegiatanPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <Calendar className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+            <Calendar className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
               {searchTerm || selectedCategory !== "all" 
                 ? "Tidak ada kegiatan yang ditemukan" 
                 : "Belum ada kegiatan tersedia"}
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 dark:text-gray-400">
               {searchTerm || selectedCategory !== "all"
                 ? "Coba ubah kata kunci pencarian atau filter kategori"
                 : "Kegiatan akan segera ditambahkan"}
@@ -244,75 +244,75 @@ export default function KegiatanPage() {
         <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <Card className="text-center">
             <CardHeader>
-              <div className="text-green-600 text-3xl mb-2">
+              <div className="text-green-600 dark:text-green-400 text-3xl mb-2">
                 <Calendar className="h-8 w-8 mx-auto" />
               </div>
               <CardTitle>Kegiatan Rutin</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Kajian mingguan, bulanan, dan kegiatan rutin lainnya
               </p>
-              <div className="text-2xl font-bold text-green-600">
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {activities.filter(a => a.category.toLowerCase() === 'rutin').length}
               </div>
-              <div className="text-sm text-gray-500">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
             </CardContent>
           </Card>
 
           <Card className="text-center">
             <CardHeader>
-              <div className="text-blue-600 text-3xl mb-2">
+              <div className="text-blue-600 dark:text-blue-400 text-3xl mb-2">
                 <Users className="h-8 w-8 mx-auto" />
               </div>
               <CardTitle>Kegiatan Khusus</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Event spesial, perayaan hari besar, dan acara khusus
               </p>
-              <div className="text-2xl font-bold text-blue-600">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                 {activities.filter(a => a.category.toLowerCase() === 'khusus').length}
               </div>
-              <div className="text-sm text-gray-500">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
             </CardContent>
           </Card>
 
           <Card className="text-center">
             <CardHeader>
-              <div className="text-purple-600 text-3xl mb-2">
+              <div className="text-purple-600 dark:text-purple-400 text-3xl mb-2">
                 <Clock className="h-8 w-8 mx-auto" />
               </div>
               <CardTitle>Jadwal Kegiatan</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 Jadwal sholat, kajian, dan kegiatan terjadwal
               </p>
-              <div className="text-2xl font-bold text-purple-600">
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                 {activities.filter(a => a.category.toLowerCase() === 'jadwal').length}
               </div>
-              <div className="text-sm text-gray-500">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Stats */}
         <div className="mt-8 text-center">
-          <div className="inline-flex items-center gap-4 bg-white p-4 rounded-lg shadow">
+          <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{activities.length}</div>
-              <div className="text-sm text-gray-600">Total Kegiatan</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{activities.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total Kegiatan</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">3</div>
-              <div className="text-sm text-gray-600">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">3</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
             </div>
-            <div className="w-px h-8 bg-gray-300"></div>
+            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600">{filteredActivities.length}</div>
-              <div className="text-sm text-gray-600">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredActivities.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
             </div>
           </div>
         </div>

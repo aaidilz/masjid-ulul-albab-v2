@@ -90,11 +90,11 @@ export default function ArticleDetailPage() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Memuat artikel...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
+            <p className="text-gray-600 dark:text-gray-300">Memuat artikel...</p>
           </div>
         </div>
       </section>
@@ -103,12 +103,12 @@ export default function ArticleDetailPage() {
 
   if (!article) {
     return (
-      <section className="py-16 bg-gray-50 min-h-screen">
+      <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Artikel Tidak Ditemukan</h1>
-            <p className="text-gray-600 mb-6">
+            <BookOpen className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Artikel Tidak Ditemukan</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               Artikel yang Anda cari tidak dapat ditemukan atau mungkin telah dihapus.
             </p>
             <Link href="/artikel">
@@ -124,7 +124,7 @@ export default function ArticleDetailPage() {
   }
 
   return (
-    <section className="py-16 bg-gray-50 min-h-screen">
+    <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
       <div className="container mx-auto px-4">
         {/* Back Button */}
         <div className="mb-6">
@@ -157,7 +157,7 @@ export default function ArticleDetailPage() {
                 {article.title}
               </CardTitle>
 
-              <div className="flex flex-col md:flex-row md:items-center gap-4 text-gray-600">
+              <div className="flex flex-col md:flex-row md:items-center gap-4 text-gray-600 dark:text-gray-400">
                 <div className="flex items-center">
                   <User className="mr-2 h-4 w-4" />
                   <span className="font-medium">{article.author}</span>
@@ -191,7 +191,7 @@ export default function ArticleDetailPage() {
           <Card className="mb-8">
             <CardContent className="pt-6">
               <div className="prose prose-lg max-w-none">
-                <div className="text-gray-800 leading-relaxed">
+                <div className="text-gray-800 dark:text-gray-100 leading-relaxed">
                   {formatContent(article.content)}
                 </div>
               </div>
@@ -203,8 +203,8 @@ export default function ArticleDetailPage() {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">Tentang Penulis</h4>
-                  <p className="text-gray-600">{article.author}</p>
+                  <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Tentang Penulis</h4>
+                  <p className="text-gray-600 dark:text-gray-300">{article.author}</p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleShare}>
@@ -225,7 +225,7 @@ export default function ArticleDetailPage() {
           {/* Related Articles */}
           {relatedArticles.length > 0 && (
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">Artikel Terkait</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">Artikel Terkait</h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {relatedArticles.map((relatedArticle) => (
                   <Card key={relatedArticle.id} className="hover:shadow-lg transition-shadow">
@@ -244,7 +244,7 @@ export default function ArticleDetailPage() {
                       <CardTitle className="text-lg line-clamp-2">
                         {relatedArticle.title}
                       </CardTitle>
-                      <div className="flex items-center text-sm text-gray-500">
+                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
                         <User className="mr-1 h-3 w-3" />
                         {relatedArticle.author}
                       </div>

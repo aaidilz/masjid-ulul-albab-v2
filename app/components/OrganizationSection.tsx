@@ -67,9 +67,9 @@ export default function OrganizationSection({
     };
   }, [showOrgChart, handleKeyDown]);
   return (
-    <section id="organization" className="py-16 bg-white">
+    <section id="organization" className="py-16 bg-white dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center section-title">
+        <h2 className="text-3xl font-bold mb-12 text-center section-title text-gray-900 dark:text-white">
           Struktur Organisasi
         </h2>
 
@@ -77,11 +77,11 @@ export default function OrganizationSection({
         <div className="mb-12">
           <div className="max-w-4xl mx-auto">
             <div
-              className="bg-white border-2 border-gray-200 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+              className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
               onClick={() => setShowOrgChart(true)}
             >
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-4 text-green-700 text-center">
+                <h3 className="text-xl font-bold mb-4 text-green-700 dark:text-green-400 text-center">
                   Bagan Struktur Organisasi DKM Ulul Albaab
                 </h3>
                 <div className="relative">
@@ -97,17 +97,17 @@ export default function OrganizationSection({
                     }}
                   />
                   <div className="absolute inset-0 bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 rounded-lg flex items-center justify-center">
-                    <div className="bg-white bg-opacity-90 px-4 py-2 rounded-lg opacity-0 hover:opacity-100 transition-opacity">
-                      <p className="text-sm font-medium text-gray-800">
+                    <div className="bg-white dark:bg-gray-700 bg-opacity-90 dark:bg-opacity-90 px-4 py-2 rounded-lg opacity-0 hover:opacity-100 transition-opacity">
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
                         Klik untuk melihat detail
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-6 py-3 border-t">
+              <div className="bg-gray-50 dark:bg-gray-800 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     <ExpandIcon className="mr-1 text-xs" />
                     Klik untuk memperbesar
                   </span>
@@ -116,7 +116,7 @@ export default function OrganizationSection({
                       e.stopPropagation();
                       handleDownloadOrgChart();
                     }}
-                    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium transition flex items-center cursor-pointer"
+                    className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white px-3 py-1 rounded text-sm font-medium transition flex items-center cursor-pointer"
                   >
                     <PictureAsPdfIcon className="mr-1 text-xs" />
                     Download
@@ -134,17 +134,17 @@ export default function OrganizationSection({
             onClick={() => setShowOrgChart(false)}
           >
             <div
-              className="bg-white rounded-lg max-w-6xl max-h-[90vh] overflow-auto"
+              className="bg-white dark:bg-gray-800 rounded-lg max-w-6xl max-h-[90vh] overflow-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-                <h3 className="text-lg font-bold text-gray-800">
+              <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
                   Struktur Organisasi DKM Ulul Albaab
                 </h3>
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={() => setShowOrgChart(false)}
-                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
+                    className="bg-gray-500 hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition"
                   >
                     ✕ Tutup
                   </button>
@@ -165,14 +165,14 @@ export default function OrganizationSection({
         )}
 
         {/* Existing content - Tugas dan Fungsi */}
-        <div className="mt-12 bg-green-50 p-6 rounded-lg">
-          <h3 className="text-xl font-bold mb-4 text-green-700">
+        <div className="mt-12 bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-100 dark:border-green-800">
+          <h3 className="text-xl font-bold mb-4 text-green-700 dark:text-green-400">
             Tugas dan Fungsi
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-bold mb-2">Dewan Kemakmuran Masjid DKM</h4>
-              <ul className="list-disc pl-5 text-gray-700 space-y-1">
+              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">Dewan Kemakmuran Masjid DKM</h4>
+              <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
                 <li>
                   DKM UAB UNPAS berfungsi sebagai Lembaga Dakwah Kampus (LDK)
                 </li>
@@ -181,23 +181,23 @@ export default function OrganizationSection({
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-2">Departemen DKM UAB</h4>
-              <ul className="list-disc pl-5 text-gray-700 space-y-1">
+              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">Departemen DKM UAB</h4>
+              <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
                 <li>
-                  <strong>Syiar Media:</strong> Menyebarkan dakwah Islam melalui
+                  <strong className="text-gray-900 dark:text-gray-100">Syiar Media:</strong> Menyebarkan dakwah Islam melalui
                   media cetak dan media sosial.
                 </li>
                 <li>
-                  <strong>Pelayanan Umat:</strong> Mengelola masjid dan
+                  <strong className="text-gray-900 dark:text-gray-100">Pelayanan Umat:</strong> Mengelola masjid dan
                   memfasilitasi kebutuhan ibadah jamaah.
                 </li>
                 <li>
-                  <strong>Kaderisasi:</strong> Mengembangkan SDM pengurus
+                  <strong className="text-gray-900 dark:text-gray-100">Kaderisasi:</strong> Mengembangkan SDM pengurus
                   melalui pelatihan fisik dan spiritual, serta merekrut dan
                   membina anggota DKM.
                 </li>
                 <li>
-                  <strong>Kemuslimahan:</strong> Membina dan mengkoordinasi
+                  <strong className="text-gray-900 dark:text-gray-100">Kemuslimahan:</strong> Membina dan mengkoordinasi
                   kegiatan pengurus Akhwat DKM Ulul Albaab.
                 </li>
               </ul>
