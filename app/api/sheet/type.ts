@@ -86,6 +86,57 @@ export interface ContactSubmissionResponse {
   data?: ContactData;
 }
 
+export interface VolunteerData {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  requirements: string;
+  commitment: string;
+  spots: number;
+  time: string;
+  location: string;
+  isActive: boolean;
+}
+
+export interface MadingData {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  date: string;
+  category: string;
+  imageUrl: string;
+  isActive: boolean;
+}
+
+export interface DkmMemberData {
+  nama: string;
+  nim: string;
+  fakultas: string;
+  prodi: string;
+  angkatan: string;
+  email: string;
+  whatsapp: string;
+  alamat: string;
+  motivasi: string;
+  pengalaman: string;
+  tanggal: string;
+}
+
+export interface VolunteerRegistrationData {
+  nama: string;
+  email: string;
+  whatsapp: string;
+  alamat: string;
+  pekerjaan: string;
+  keahlian: string;
+  programDipilih: string;
+  motivasi: string;
+  waktuTersedia: string;
+  tanggal: string;
+}
+
 export interface AnnouncementDetailData {
   id: string;
   title: string;

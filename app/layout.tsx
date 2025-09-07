@@ -6,6 +6,7 @@ import HeaderSection from "./components/HeaderSection";
 import FooterSection from "./components/FooterSection";
 import { ThemeProvider } from "./components/ThemeProvider";
 import AnnouncementBanner from "./components/AnnouncementBanner";
+import NotificationManager from "./components/NotificationManager";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -76,6 +77,7 @@ export default function RootLayout({
           <HeaderSection />
           {children}
           <FooterSection />
+          <NotificationManager />
         </ThemeProvider>
       </body>
     </html>

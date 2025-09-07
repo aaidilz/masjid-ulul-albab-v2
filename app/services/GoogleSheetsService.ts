@@ -9,7 +9,11 @@ import type {
   ContactData,
   ContactSubmissionResponse,
   AnnouncementDetailData,
-  ArticleData
+  ArticleData,
+  VolunteerData,
+  MadingData,
+  DkmMemberData,
+  VolunteerRegistrationData
 } from "@/app/api/sheet/type";
 
 class GoogleSheetsService {
@@ -226,6 +230,16 @@ class GoogleSheetsService {
   async getArticleById(id: string): Promise<ArticleData | null> {
     const articles = await this.getArticles();
     return articles.find((article) => article.id === id) || null;
+  }
+
+  async getVolunteers(): Promise<VolunteerData[]> {
+    const rows = await this.fetchFromApi<VolunteerData>("volunteer");
+    return rows.filter((volunteer) => volunteer.isActive);
+  }
+
+  async getMadingItems(): Promise<MadingData[]> {
+    const rows = await this.fetchFromApi<MadingData>("mading");
+    return rows.filter((mading) => mading.isActive);
   }
 
   async getAnnouncementDetailById(
@@ -585,6 +599,92 @@ class GoogleSheetsService {
       return {
         success: false,
         message: errorMessage + " Atau hubungi kami langsung via WhatsApp.",
+      };
+    }
+  }
+
+  async submitDkmRegistration(
+    memberData: Omit<DkmMemberData, "tanggal">
+  ): Promise<ContactSubmissionResponse> {
+    try {
+      if (
+        !memberData.nama ||
+        !memberData.nim ||
+        !memberData.email ||
+        !memberData.whatsapp
+      ) {
+        throw new Error("Field wajib harus diisi");
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(memberData.email)) {
+        throw new Error("Format email tidak valid");
+      }
+
+      // Simulate API call for now
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      return {
+        success: true,
+        message: "Pendaftaran DKM berhasil dikirim! Tim akan menghubungi Anda segera.",
+        data: { ...memberData, tanggal: this.getCurrentDateTimeString() },
+      };
+    } catch (error) {
+      let errorMessage = "Terjadi kesalahan saat mengirim pendaftaran.";
+      if (error instanceof Error) {
+        if (
+          error.message.includes("wajib harus diisi") ||
+          error.message.includes("email tidak valid")
+        ) {
+          errorMessage = error.message;
+        }
+      }
+      return {
+        success: false,
+        message: errorMessage + " Silakan coba lagi atau hubungi admin.",
+      };
+    }
+  }
+
+  async submitVolunteerRegistration(
+    volunteerData: Omit<VolunteerRegistrationData, "tanggal">
+  ): Promise<ContactSubmissionResponse> {
+    try {
+      if (
+        !volunteerData.nama ||
+        !volunteerData.email ||
+        !volunteerData.whatsapp ||
+        !volunteerData.programDipilih
+      ) {
+        throw new Error("Field wajib harus diisi");
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(volunteerData.email)) {
+        throw new Error("Format email tidak valid");
+      }
+
+      // Simulate API call for now
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      return {
+        success: true,
+        message: "Pendaftaran volunteer berhasil dikirim! Tim akan menghubungi Anda segera.",
+        data: { ...volunteerData, tanggal: this.getCurrentDateTimeString() },
+      };
+    } catch (error) {
+      let errorMessage = "Terjadi kesalahan saat mengirim pendaftaran.";
+      if (error instanceof Error) {
+        if (
+          error.message.includes("wajib harus diisi") ||
+          error.message.includes("email tidak valid")
+        ) {
+          errorMessage = error.message;
+        }
+      }
+      return {
+        success: false,
+        message: errorMessage + " Silakan coba lagi atau hubungi admin.",
       };
     }
   }

@@ -4,6 +4,8 @@ import {
   FinanceData,
   GalleryData,
   ArticleData,
+  VolunteerData,
+  MadingData,
 } from "@/app/api/sheet/type";
 import { NextRequest, NextResponse } from "next/server";
 import { parseCurrency, formatCurrency, parseDate } from "@/app/utils/currency"
@@ -75,6 +77,34 @@ function parseRowToArticle(row: string[]) {
   };
 }
 
+function parseRowToVolunteer(row: string[]) {
+  return {
+    id: row[0] || "",
+    title: row[1] || "",
+    description: row[2] || "",
+    category: row[3] || "",
+    requirements: row[4] || "",
+    commitment: row[5] || "",
+    spots: parseInt(row[6]) || 0,
+    time: row[7] || "",
+    location: row[8] || "",
+    isActive: row[9]?.toLowerCase() === "true",
+  };
+}
+
+function parseRowToMading(row: string[]) {
+  return {
+    id: row[0] || "",
+    title: row[1] || "",
+    content: row[2] || "",
+    author: row[3] || "",
+    date: row[4] || "",
+    category: row[5] || "",
+    imageUrl: row[6] || "",
+    isActive: row[7]?.toLowerCase() === "true",
+  };
+}
+
 function parseRowToAnnouncementDetail(row: string[]) {
   return {
     id: row[0] || "",
@@ -117,6 +147,8 @@ function getSheetUrl(type: string) {
   else if (type === "gallery") sheetName = "Galeri";
   else if (type === "activity") sheetName = "Kegiatan";
   else if (type === "article") sheetName = "Artikel";
+  else if (type === "volunteer") sheetName = "Volunteer";
+  else if (type === "mading") sheetName = "Mading";
   else if (type === "announcement-detail") sheetName = "Detail_Pengumuman";
   else if (type === "finance") {
     sheetName = "Dashboard";
@@ -184,6 +216,20 @@ export async function GET(req: NextRequest) {
       const parsed = rows
         .map(parseRowToArticle)
         .filter((article: ArticleData) => article.isActive);
+      return NextResponse.json({ values: parsed });
+    }
+
+    if (type === "volunteer") {
+      const parsed = rows
+        .map(parseRowToVolunteer)
+        .filter((volunteer: VolunteerData) => volunteer.isActive);
+      return NextResponse.json({ values: parsed });
+    }
+
+    if (type === "mading") {
+      const parsed = rows
+        .map(parseRowToMading)
+        .filter((mading: MadingData) => mading.isActive);
       return NextResponse.json({ values: parsed });
     }
 

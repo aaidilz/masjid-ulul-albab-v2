@@ -324,6 +324,17 @@ export default function HeaderSection() {
                           </p>
                         </Link>
                       </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href="/dkm/daftar"
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                        >
+                          <div className="text-sm font-medium leading-none">Daftar DKM</div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Pendaftaran anggota Dewan Kemakmuran Masjid
+                          </p>
+                        </Link>
+                      </NavigationMenuLink>
                     </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
@@ -380,6 +391,9 @@ export default function HeaderSection() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link href="/volunteer" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Volunteer</Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/dkm/daftar" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Daftar DKM</Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>

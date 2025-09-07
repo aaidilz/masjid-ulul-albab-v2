@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, Info, AlertTriangle, Calendar, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { AnnouncementData } from "@/app/api/sheet/type";
 
@@ -82,6 +83,14 @@ export default function AnnouncementBanner() {
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
+            <Link
+              href={`/pengumuman/${currentAnnouncement.id}`}
+              className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
+            >
+              Info Lengkap
+              <Info className="h-3 w-3" />
+            </Link>
+
             {currentAnnouncement.buttonText && currentAnnouncement.buttonLink && (
               <a
                 href={currentAnnouncement.buttonLink}
