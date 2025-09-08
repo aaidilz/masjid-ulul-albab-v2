@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from 'react';
+import { useCallback, useMemo, memo } from 'react';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -23,7 +23,7 @@ interface PrayerTimesSectionProps {
   };
 }
 
-export default function PrayerTimesSection({
+function PrayerTimesSection({
   prayerTimes: externalPrayerTimes = null,
   loading: externalLoading = false,
   error: externalError = null,
@@ -46,11 +46,11 @@ export default function PrayerTimesSection({
   const location = externalLocation || "Bandung, Indonesia";
   const meta = externalMeta;
 
-  // Default/fallback jika meta tidak ada
-  const methodName = meta?.methodName || "KEMENAG (Kementerian Agama RI)";
-  const schoolName = meta?.schoolName || "Syafi'i";
-  const fajrDegree = meta?.fajrDegree || "20°";
-  const ishaDegree = meta?.ishaDegree || "18°";
+  // Memoize computed values to prevent unnecessary recalculations
+  const methodName = useMemo(() => meta?.methodName || "KEMENAG (Kementerian Agama RI)", [meta?.methodName]);
+  const schoolName = useMemo(() => meta?.schoolName || "Syafi'i", [meta?.schoolName]);
+  const fajrDegree = useMemo(() => meta?.fajrDegree || "20°", [meta?.fajrDegree]);
+  const ishaDegree = useMemo(() => meta?.ishaDegree || "18°", [meta?.ishaDegree]);
 
   const handleRefresh = useCallback(() => {
     if (externalOnRefresh) {
@@ -59,6 +59,102 @@ export default function PrayerTimesSection({
       internalRefetch();
     }
   }, [externalOnRefresh, internalRefetch]);
+
+  // Memoize the main prayer times grid to prevent unnecessary re-renders
+  const mainPrayerTimesGrid = useMemo(() => {
+    if (!prayerTimes) return null;
+
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-6">
+        <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
+          <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Subuh</h3>
+          <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.fajr}</p>
+        </div>
+        <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
+          <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Dzuhur</h3>
+          <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.dhuhr}</p>
+        </div>
+        <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
+          <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Ashar</h3>
+          <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.asr}</p>
+        </div>
+        <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
+          <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Maghrib</h3>
+          <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.maghrib}</p>
+        </div>
+        <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200 md:col-span-1 col-span-2">
+          <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Isya</h3>
+          <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.isha}</p>
+        </div>
+      </div>
+    );
+  }, [prayerTimes]);
+
+  // Memoize the additional prayer times grid
+  const additionalPrayerTimesGrid = useMemo(() => {
+    if (!prayerTimes) return null;
+
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
+          <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Imsak</span>
+          <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.imsak}</p>
+        </div>
+        <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
+          <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Terbit</span>
+          <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.sunrise}</p>
+        </div>
+        <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
+          <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Tenggelam</span>
+          <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.sunset}</p>
+        </div>
+        <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
+          <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Sumber</span>
+          <p className="text-xs font-semibold text-white dark:text-gray-100">Aladhan API</p>
+        </div>
+      </div>
+    );
+  }, [prayerTimes]);
+
+  // Memoize the method info section
+  const methodInfoSection = useMemo(() => {
+    if (!prayerTimes) return null;
+
+    return (
+      <div className="text-center border-t border-white/20 dark:border-gray-600/50 pt-4">
+        <p className="text-xs md:text-sm opacity-75 text-gray-200 dark:text-gray-300">
+          Metode: {methodName} (Subuh: {fajrDegree}, Isya: {ishaDegree}) |
+          Mazhab: {schoolName}
+        </p>
+      </div>
+    );
+  }, [prayerTimes, methodName, fajrDegree, ishaDegree, schoolName]);
+
+  // Memoize loading state
+  const loadingState = useMemo(() => {
+    if (!loading || prayerTimes) return null;
+
+    return (
+      <div className="text-center py-12">
+        <AutorenewIcon className="animate-spin text-4xl mb-4 text-green-200 dark:text-green-400" />
+        <p className="text-lg font-medium text-white dark:text-gray-100">Memuat jadwal sholat...</p>
+        <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Mohon tunggu sebentar</p>
+      </div>
+    );
+  }, [loading, prayerTimes]);
+
+  // Memoize no data state
+  const noDataState = useMemo(() => {
+    if (loading || prayerTimes || error) return null;
+
+    return (
+      <div className="text-center py-12">
+        <AccessTimeIcon className="text-4xl mb-4 text-green-200 dark:text-green-400 opacity-50" />
+        <p className="text-lg font-medium text-white dark:text-gray-100">Jadwal sholat tidak tersedia</p>
+        <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Silakan periksa koneksi internet Anda</p>
+      </div>
+    );
+  }, [loading, prayerTimes, error]);
 
   return (
     <section id="prayer-times" className="bg-gradient-to-b from-green-600 to-green-800 dark:from-green-800 dark:to-green-900 text-white py-8 md:py-12 transition-colors">
@@ -114,76 +210,23 @@ export default function PrayerTimesSection({
             </div>
 
             {/* Main Prayer Times */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-6">
-              <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
-                <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Subuh</h3>
-                <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.fajr}</p>
-              </div>
-              <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
-                <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Dzuhur</h3>
-                <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.dhuhr}</p>
-              </div>
-              <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
-                <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Ashar</h3>
-                <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.asr}</p>
-              </div>
-              <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200">
-                <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Maghrib</h3>
-                <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.maghrib}</p>
-              </div>
-              <div className="prayer-time p-4 md:p-6 rounded-lg text-center bg-white/10 dark:bg-gray-800/60 backdrop-blur-sm border border-white/20 dark:border-gray-600/50 hover:bg-white/15 dark:hover:bg-gray-700/60 transition-all duration-200 md:col-span-1 col-span-2">
-                <h3 className="font-bold text-base md:text-lg mb-2 text-white dark:text-gray-100">Isya</h3>
-                <p className="text-xl md:text-2xl font-mono font-bold text-white dark:text-gray-100">{prayerTimes.isha}</p>
-              </div>
-            </div>
+            {mainPrayerTimesGrid}
 
             {/* Additional prayer times */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-              <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
-                <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Imsak</span>
-                <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.imsak}</p>
-              </div>
-              <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
-                <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Terbit</span>
-                <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.sunrise}</p>
-              </div>
-              <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
-                <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Tenggelam</span>
-                <p className="font-mono font-semibold text-white dark:text-gray-100">{prayerTimes.sunset}</p>
-              </div>
-              <div className="text-center bg-white/5 dark:bg-gray-700/40 rounded-lg p-3 border border-white/10 dark:border-gray-600/30">
-                <span className="opacity-75 text-sm text-gray-200 dark:text-gray-300">Sumber</span>
-                <p className="text-xs font-semibold text-white dark:text-gray-100">Aladhan API</p>
-              </div>
-            </div>
+            {additionalPrayerTimesGrid}
 
             {/* Method Info */}
-            <div className="text-center border-t border-white/20 dark:border-gray-600/50 pt-4">
-              <p className="text-xs md:text-sm opacity-75 text-gray-200 dark:text-gray-300">
-                Metode: {methodName} (Subuh: {fajrDegree}, Isya: {ishaDegree}) |
-                Mazhab: {schoolName}
-              </p>
-            </div>
+            {methodInfoSection}
           </>
         )}
 
-        {loading && !prayerTimes && (
-          <div className="text-center py-12">
-            <AutorenewIcon className="animate-spin text-4xl mb-4 text-green-200 dark:text-green-400" />
-            <p className="text-lg font-medium text-white dark:text-gray-100">Memuat jadwal sholat...</p>
-            <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Mohon tunggu sebentar</p>
-          </div>
-        )}
+        {loadingState}
 
         {/* No Data State */}
-        {!loading && !prayerTimes && !error && (
-          <div className="text-center py-12">
-            <AccessTimeIcon className="text-4xl mb-4 text-green-200 dark:text-green-400 opacity-50" />
-            <p className="text-lg font-medium text-white dark:text-gray-100">Jadwal sholat tidak tersedia</p>
-            <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Silakan periksa koneksi internet Anda</p>
-          </div>
-        )}
+        {noDataState}
       </div>
     </section>
   );
 }
+
+export default memo(PrayerTimesSection);

@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useMemo, memo } from "react";
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import InfoIcon from '@mui/icons-material/Info';
@@ -38,7 +39,7 @@ interface FinanceSectionProps {
   ) => ReactElement; // Fix JSX.Element to ReactElement
 }
 
-export default function FinanceSection({
+function FinanceSection({
   loadingFinance,
   financeSummary,
   paginatedFinanceData,
@@ -49,6 +50,221 @@ export default function FinanceSection({
   onRefresh,
   getSortIcon,
 }: FinanceSectionProps) {
+  // Memoize computed values to prevent unnecessary recalculations
+  const sortFieldDisplayText = useMemo(() => {
+    switch (financeFilter.sortField) {
+      case "date":
+        return "Tanggal";
+      case "description":
+        return "Deskripsi";
+      case "income":
+        return "Pemasukan";
+      case "expense":
+        return "Pengeluaran";
+      default:
+        return "Tanggal";
+    }
+  }, [financeFilter.sortField]);
+
+  const sortDirectionText = useMemo(() => {
+    return financeFilter.sortDirection === "desc"
+      ? "Terbesar → Terkecil"
+      : "Terkecil → Terbesar";
+  }, [financeFilter.sortDirection]);
+
+  // Memoize pagination calculations
+  const paginationInfo = useMemo(() => {
+    if (!paginatedFinanceData) return null;
+
+    const startItem = (paginatedFinanceData.currentPage - 1) * financeFilter.itemsPerPage + 1;
+    const endItem = Math.min(
+      paginatedFinanceData.currentPage * financeFilter.itemsPerPage,
+      paginatedFinanceData.totalItems
+    );
+
+    return {
+      startItem,
+      endItem,
+      totalItems: paginatedFinanceData.totalItems,
+      currentPage: paginatedFinanceData.currentPage,
+      totalPages: paginatedFinanceData.totalPages,
+      hasPrevPage: paginatedFinanceData.hasPrevPage,
+      hasNextPage: paginatedFinanceData.hasNextPage,
+    };
+  }, [paginatedFinanceData, financeFilter.itemsPerPage]);
+
+  // Memoize page numbers for pagination
+  const pageNumbers = useMemo(() => {
+    if (!paginatedFinanceData || paginatedFinanceData.totalPages <= 1) return [];
+
+    const pages = [];
+    const totalPages = paginatedFinanceData.totalPages;
+    const currentPage = paginatedFinanceData.currentPage;
+
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else if (currentPage <= 3) {
+      for (let i = 1; i <= 5; i++) {
+        pages.push(i);
+      }
+    } else if (currentPage >= totalPages - 2) {
+      for (let i = totalPages - 4; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  }, [paginatedFinanceData]);
+
+  // Memoize event handlers
+  const handlePeriodChange = useCallback((value: string) => {
+    onPeriodChange(value as "week" | "month" | "year" | "all");
+  }, [onPeriodChange]);
+
+  const handlePageChange = useCallback((page: number) => {
+    onPageChange(page);
+  }, [onPageChange]);
+
+  const handleSort = useCallback((field: "date" | "description" | "income" | "expense") => {
+    onSort(field);
+  }, [onSort]);
+
+  const handleRefreshClick = useCallback(() => {
+    onRefresh();
+  }, [onRefresh]);
+
+  // Memoize the summary cards section
+  const summaryCardsSection = useMemo(() => {
+    if (!financeSummary) return null;
+
+    return (
+      <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pemasukan</CardTitle>
+            <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+              <ArrowUpwardIcon className="mr-1 text-xs" />
+              Dana Ummat
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{financeSummary.formattedTotalIncome}</div>
+            <p className="text-xs text-muted-foreground dark:text-gray-400">
+              {financeSummary.transactionCount} transaksi
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pengeluaran</CardTitle>
+            <Badge variant="secondary" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+              <ArrowUpwardIcon className="mr-1 rotate-180 text-xs" />
+              Dana Ummat
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400">{financeSummary.formattedTotalExpense}</div>
+            <p className="text-xs text-muted-foreground dark:text-gray-400">
+              Update: {financeSummary.lastUpdated}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="dark:bg-gray-800 dark:border-gray-700">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Saldo Dana Ummat</CardTitle>
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+              <InfoIcon className="mr-1 text-xs" />
+              Real-time
+            </Badge>
+          </CardHeader>
+          <CardContent>
+            <div className={`text-2xl font-bold ${financeSummary.balance >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+              {financeSummary.formattedBalance}
+            </div>
+            <p className="text-xs text-muted-foreground dark:text-gray-400">
+              Per {financeSummary.lastUpdated}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }, [financeSummary]);
+
+  // Memoize the donation methods section (static content)
+  const donationMethodsSection = useMemo(() => (
+    <div className="grid md:grid-cols-3 gap-6">
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
+            <MoneyIcon />
+          </div>
+          <CardTitle className="text-gray-900 dark:text-gray-100">Tunai</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground dark:text-gray-300 mb-3">
+            Anda dapat menitipkan donasi di kotak infaq masjid atau langsung
+            ke bendahara masjid.
+          </p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400">Setiap Jumat & Ahad pagi</p>
+        </CardContent>
+      </Card>
+
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
+            <SchoolIcon />
+          </div>
+          <CardTitle className="text-gray-900 dark:text-gray-100">Transfer Bank</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground dark:text-gray-300 mb-1">SeaBank</p>
+          <p className="font-mono font-bold mb-3 text-gray-900 dark:text-gray-100">9013 7458 0025</p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400 mb-1">a.n. Azhar Muttaqien</p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400">
+            (Bendahara Periode 2025/2026)
+          </p>
+          <p className="text-sm text-muted-foreground dark:text-gray-400 mt-2">
+            Konfirmasi via WA: 0818-0352-8486
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card className="dark:bg-gray-800 dark:border-gray-700">
+        <CardHeader>
+          <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
+            <QrCodeIcon />
+          </div>
+          <CardTitle className="text-gray-900 dark:text-gray-100">QRIS</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground dark:text-gray-300 mb-3">
+            Untuk donasi melalui QRIS, silakan hubungi admin untuk
+            mendapatkan kode QRIS terbaru.
+          </p>
+          <div className="bg-muted dark:bg-gray-700 p-4 rounded-lg text-center">
+            <p className="text-sm text-muted-foreground dark:text-gray-400 mb-2">
+              QRIS akan tersedia segera
+            </p>
+            <Button variant="outline" size="sm" className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">
+              Hubungi Admin
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground dark:text-gray-500 mt-2">
+            *QRIS harus disetup melalui aplikasi SeaBank resmi
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  ), []);
+
   return (
     <section id="finance" className="py-16 bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="container mx-auto px-4">
@@ -75,57 +291,7 @@ export default function FinanceSection({
           ) : financeSummary ? (
             <>
               {/* Summary Cards */}
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pemasukan</CardTitle>
-                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                      <ArrowUpwardIcon className="mr-1 text-xs" />
-                      Dana Ummat
-                    </Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">{financeSummary.formattedTotalIncome}</div>
-                    <p className="text-xs text-muted-foreground dark:text-gray-400">
-                      {financeSummary.transactionCount} transaksi
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pengeluaran</CardTitle>
-                    <Badge variant="secondary" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-                      <ArrowUpwardIcon className="mr-1 rotate-180 text-xs" />
-                      Dana Ummat
-                    </Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-red-600 dark:text-red-400">{financeSummary.formattedTotalExpense}</div>
-                    <p className="text-xs text-muted-foreground dark:text-gray-400">
-                      Update: {financeSummary.lastUpdated}
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="dark:bg-gray-800 dark:border-gray-700">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Saldo Dana Ummat</CardTitle>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                      <InfoIcon className="mr-1 text-xs" />
-                      Real-time
-                    </Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <div className={`text-2xl font-bold ${financeSummary.balance >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
-                      {financeSummary.formattedBalance}
-                    </div>
-                    <p className="text-xs text-muted-foreground dark:text-gray-400">
-                      Per {financeSummary.lastUpdated}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              {summaryCardsSection}
 
               {/* Recent Transactions dengan Filter dan Pagination */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
@@ -139,9 +305,7 @@ export default function FinanceSection({
                       <span className="text-sm text-gray-600 dark:text-gray-400">Periode:</span>
                       <Select
                         value={financeFilter.period}
-                        onValueChange={(value) =>
-                          onPeriodChange(value as "week" | "month" | "year" | "all")
-                        }
+                        onValueChange={handlePeriodChange}
                       >
                         <SelectTrigger className="w-[180px] dark:bg-gray-700 dark:border-gray-600">
                           <SelectValue placeholder="Pilih periode" />
@@ -157,7 +321,7 @@ export default function FinanceSection({
 
                     {/* Refresh Button */}
                     <Button
-                      onClick={onRefresh}
+                      onClick={handleRefreshClick}
                       disabled={loadingFinance}
                       variant="outline"
                       size="sm"
@@ -182,19 +346,11 @@ export default function FinanceSection({
                             <InfoIcon className="mr-1 inline" />
                             Diurutkan berdasarkan:
                             <span className="font-semibold ml-1 text-gray-900 dark:text-gray-100">
-                              {financeFilter.sortField === "date" && "Tanggal"}
-                              {financeFilter.sortField === "description" &&
-                                "Deskripsi"}
-                              {financeFilter.sortField === "income" &&
-                                "Pemasukan"}
-                              {financeFilter.sortField === "expense" &&
-                                "Pengeluaran"}
+                              {sortFieldDisplayText}
                             </span>
                             <span className="ml-1">
                               (
-                              {financeFilter.sortDirection === "desc"
-                                ? "Terbesar → Terkecil"
-                                : "Terkecil → Terbesar"}
+                              {sortDirectionText}
                               )
                             </span>
                           </div>
@@ -204,7 +360,7 @@ export default function FinanceSection({
                           <Button
                             variant={financeFilter.sortField === "date" ? "default" : "outline"}
                             size="sm"
-                            onClick={() => onSort("date")}
+                            onClick={() => handleSort("date")}
                             className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                           >
                             Tanggal
@@ -212,7 +368,7 @@ export default function FinanceSection({
                           <Button
                             variant={financeFilter.sortField === "income" ? "default" : "outline"}
                             size="sm"
-                            onClick={() => onSort("income")}
+                            onClick={() => handleSort("income")}
                             className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                           >
                             Pemasukan
@@ -220,7 +376,7 @@ export default function FinanceSection({
                           <Button
                             variant={financeFilter.sortField === "expense" ? "default" : "outline"}
                             size="sm"
-                            onClick={() => onSort("expense")}
+                            onClick={() => handleSort("expense")}
                             className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                           >
                             Pengeluaran
@@ -248,7 +404,7 @@ export default function FinanceSection({
                         <TableHead className="whitespace-nowrap text-gray-900 dark:text-gray-100">
                           <Button
                             variant="ghost"
-                            onClick={() => onSort("date")}
+                            onClick={() => handleSort("date")}
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Tanggal</span>
@@ -258,7 +414,7 @@ export default function FinanceSection({
                         <TableHead className="text-gray-900 dark:text-gray-100">
                           <Button
                             variant="ghost"
-                            onClick={() => onSort("description")}
+                            onClick={() => handleSort("description")}
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Deskripsi</span>
@@ -268,7 +424,7 @@ export default function FinanceSection({
                         <TableHead className="whitespace-nowrap text-gray-900 dark:text-gray-100">
                           <Button
                             variant="ghost"
-                            onClick={() => onSort("income")}
+                            onClick={() => handleSort("income")}
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Pemasukan</span>
@@ -278,7 +434,7 @@ export default function FinanceSection({
                         <TableHead className="whitespace-nowrap text-gray-900 dark:text-gray-100">
                           <Button
                             variant="ghost"
-                            onClick={() => onSort("expense")}
+                            onClick={() => handleSort("expense")}
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Pengeluaran</span>
@@ -374,11 +530,11 @@ export default function FinanceSection({
                       <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-sm text-gray-700 dark:text-gray-300">
                         <span>
                           Menampilkan {paginatedFinanceData.data.length} dari{" "}
-                          {paginatedFinanceData.totalItems} transaksi
+                          {paginationInfo?.totalItems} transaksi
                         </span>
                         <span>
-                          Halaman {paginatedFinanceData.currentPage} dari{" "}
-                          {paginatedFinanceData.totalPages}
+                          Halaman {paginationInfo?.currentPage} dari{" "}
+                          {paginationInfo?.totalPages}
                         </span>
                       </div>
                     </CardContent>
@@ -397,21 +553,15 @@ export default function FinanceSection({
                           <>
                             Menampilkan{" "}
                             <span className="font-medium text-gray-900 dark:text-gray-100">
-                              {(paginatedFinanceData.currentPage - 1) *
-                                financeFilter.itemsPerPage +
-                                1}
+                              {paginationInfo?.startItem}
                             </span>{" "}
                             -{" "}
                             <span className="font-medium text-gray-900 dark:text-gray-100">
-                              {Math.min(
-                                paginatedFinanceData.currentPage *
-                                financeFilter.itemsPerPage,
-                                paginatedFinanceData.totalItems
-                              )}
+                              {paginationInfo?.endItem}
                             </span>{" "}
                             dari{" "}
                             <span className="font-medium text-gray-900 dark:text-gray-100">
-                              {paginatedFinanceData.totalItems}
+                              {paginationInfo?.totalItems}
                             </span>{" "}
                             transaksi
                           </>
@@ -423,8 +573,8 @@ export default function FinanceSection({
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => onPageChange(paginatedFinanceData.currentPage - 1)}
-                          disabled={!paginatedFinanceData.hasPrevPage || loadingFinance}
+                          onClick={() => handlePageChange(paginationInfo!.currentPage - 1)}
+                          disabled={!paginationInfo?.hasPrevPage || loadingFinance}
                           className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                         >
                           Sebelumnya
@@ -432,54 +582,26 @@ export default function FinanceSection({
 
                         {/* Page Numbers */}
                         <div className="flex">
-                          {Array.from(
-                            {
-                              length: Math.min(
-                                5,
-                                paginatedFinanceData.totalPages
-                              ),
-                            },
-                            (_, i) => {
-                              let pageNum;
-                              if (paginatedFinanceData.totalPages <= 5) {
-                                pageNum = i + 1;
-                              } else if (
-                                paginatedFinanceData.currentPage <= 3
-                              ) {
-                                pageNum = i + 1;
-                              } else if (
-                                paginatedFinanceData.currentPage >=
-                                paginatedFinanceData.totalPages - 2
-                              ) {
-                                pageNum =
-                                  paginatedFinanceData.totalPages - 4 + i;
-                              } else {
-                                pageNum =
-                                  paginatedFinanceData.currentPage - 2 + i;
-                              }
-
-                              return (
-                                <Button
-                                  key={pageNum}
-                                  variant={pageNum === paginatedFinanceData.currentPage ? "default" : "outline"}
-                                  size="sm"
-                                  onClick={() => onPageChange(pageNum)}
-                                  disabled={loadingFinance}
-                                  className={`w-10 ${pageNum === paginatedFinanceData.currentPage ? "dark:bg-green-600 dark:text-white" : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"}`}
-                                >
-                                  {pageNum}
-                                </Button>
-                              );
-                            }
-                          )}
+                          {pageNumbers.map((pageNum) => (
+                            <Button
+                              key={pageNum}
+                              variant={pageNum === paginationInfo?.currentPage ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => handlePageChange(pageNum)}
+                              disabled={loadingFinance}
+                              className={`w-10 ${pageNum === paginationInfo?.currentPage ? "dark:bg-green-600 dark:text-white" : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"}`}
+                            >
+                              {pageNum}
+                            </Button>
+                          ))}
                         </div>
 
                         {/* Next Button */}
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => onPageChange(paginatedFinanceData.currentPage + 1)}
-                          disabled={!paginatedFinanceData.hasNextPage || loadingFinance}
+                          onClick={() => handlePageChange(paginationInfo!.currentPage + 1)}
+                          disabled={!paginationInfo?.hasNextPage || loadingFinance}
                           className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                         >
                           Selanjutnya
@@ -496,21 +618,21 @@ export default function FinanceSection({
                       <Input
                         type="number"
                         min="1"
-                        max={paginatedFinanceData.totalPages}
-                        value={paginatedFinanceData.currentPage}
+                        max={paginationInfo?.totalPages}
+                        value={paginationInfo?.currentPage}
                         onChange={(e) => {
                           const page = parseInt(e.target.value);
                           if (
                             page >= 1 &&
-                            page <= paginatedFinanceData.totalPages
+                            page <= (paginationInfo?.totalPages || 1)
                           ) {
-                            onPageChange(page);
+                            handlePageChange(page);
                           }
                         }}
                         className="w-16 text-center dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
                       />
                       <span className="text-sm text-muted-foreground dark:text-gray-400">
-                        dari {paginatedFinanceData.totalPages}
+                        dari {paginationInfo?.totalPages}
                       </span>
                     </div>
                   )}
@@ -530,69 +652,7 @@ export default function FinanceSection({
           <h3 className="text-xl font-bold mb-6 text-green-700 dark:text-green-400">
             Cara Berdonasi
           </h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-                  <MoneyIcon />
-                </div>
-                <CardTitle className="text-gray-900 dark:text-gray-100">Tunai</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground dark:text-gray-300 mb-3">
-                  Anda dapat menitipkan donasi di kotak infaq masjid atau langsung
-                  ke bendahara masjid.
-                </p>
-                <p className="text-sm text-muted-foreground dark:text-gray-400">Setiap Jumat & Ahad pagi</p>
-              </CardContent>
-            </Card>
-
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-                  <SchoolIcon />
-                </div>
-                <CardTitle className="text-gray-900 dark:text-gray-100">Transfer Bank</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground dark:text-gray-300 mb-1">SeaBank</p>
-                <p className="font-mono font-bold mb-3 text-gray-900 dark:text-gray-100">9013 7458 0025</p>
-                <p className="text-sm text-muted-foreground dark:text-gray-400 mb-1">a.n. Azhar Muttaqien</p>
-                <p className="text-sm text-muted-foreground dark:text-gray-400">
-                  (Bendahara Periode 2025/2026)
-                </p>
-                <p className="text-sm text-muted-foreground dark:text-gray-400 mt-2">
-                  Konfirmasi via WA: 0818-0352-8486
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="dark:bg-gray-800 dark:border-gray-700">
-              <CardHeader>
-                <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-                  <QrCodeIcon />
-                </div>
-                <CardTitle className="text-gray-900 dark:text-gray-100">QRIS</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground dark:text-gray-300 mb-3">
-                  Untuk donasi melalui QRIS, silakan hubungi admin untuk
-                  mendapatkan kode QRIS terbaru.
-                </p>
-                <div className="bg-muted dark:bg-gray-700 p-4 rounded-lg text-center">
-                  <p className="text-sm text-muted-foreground dark:text-gray-400 mb-2">
-                    QRIS akan tersedia segera
-                  </p>
-                  <Button variant="outline" size="sm" className="dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600">
-                    Hubungi Admin
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground dark:text-gray-500 mt-2">
-                  *QRIS harus disetup melalui aplikasi SeaBank resmi
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          {donationMethodsSection}
         </div>
 
         <Separator className="my-8 dark:bg-gray-700" />
@@ -673,3 +733,5 @@ export default function FinanceSection({
     </section>
   );
 }
+
+export default memo(FinanceSection);
