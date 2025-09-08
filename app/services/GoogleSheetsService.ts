@@ -271,7 +271,8 @@ class GoogleSheetsService {
       category: (row[3] as "urgent" | "info" | "event") || "info",
       startDate: row[4] || "",
       endDate: row[5] || "",
-      isActive: row[6]?.toLowerCase() === "true",
+      // isActive: row[6]?.toLowerCase() === "true",
+      isActive: String(row[6]).toLowerCase() === "true",
       buttonText: row[7] || "",
       buttonLink: row[8] || "",
     };
@@ -285,7 +286,8 @@ class GoogleSheetsService {
       description: row[3] || "",
       category: row[4] || "",
       date: row[5] || "",
-      isActive: row[6]?.toLowerCase() === "true",
+      // isActive: row[6]?.toLowerCase() === "true",
+      isActive: String(row[6]).toLowerCase() === "true",
     };
   }
 

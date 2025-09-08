@@ -157,9 +157,12 @@ export default function VolunteerPage() {
         <div className="mb-12">
           <h2 className="text-2xl font-bold mb-8 text-center text-gray-800 dark:text-gray-100">Peluang Volunteer</h2>
           {filteredVolunteers.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-              {filteredVolunteers.map((opportunity) => (
-                <Card key={opportunity.id} className="hover:shadow-lg transition-shadow duration-300">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+  {filteredVolunteers.map((opportunity) => (
+    <Card
+      key={opportunity.id}
+      className="flex flex-col justify-between hover:shadow-lg transition-all duration-300 rounded-xl"
+    >
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <Badge className={getCategoryColor(opportunity.category)}>

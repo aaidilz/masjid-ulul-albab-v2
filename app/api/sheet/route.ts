@@ -27,13 +27,13 @@ function parseRowToAnnouncement(row: string[]) {
   return {
     id: row[0] || "",
     title: row[1] || "",
-    content: row[2] || "",
-    category: (row[3] as "urgent" | "info" | "event") || "info",
-    startDate: row[4] || "",
-    endDate: row[5] || "",
-    isActive: row[6]?.toLowerCase() === "true",
-    buttonText: row[7] || "",
-    buttonLink: row[8] || "",
+    content: row[8] || "",
+    category: (row[9] as "urgent" | "info" | "event") || "info",
+    startDate: row[5] || "",
+    endDate: row[10] || "",
+    isActive: row[11]?.toLowerCase() === "true",
+    // buttonText: row[7] || "",
+    // buttonLink: row[8] || "",
   };
 }
 
@@ -113,9 +113,10 @@ function parseRowToAnnouncementDetail(row: string[]) {
     speaker: row[3] || "",
     staff: row[4] || "",
     datetime: row[5] || "",
+    // startDate: row[5] || "",
     location: row[6] || "",
     participants: row[7] || "",
-    isActive: row[8]?.toLowerCase() === "true",
+    isActive: row[11]?.toLowerCase() === "true",
   };
 }
 
@@ -149,7 +150,7 @@ function getSheetUrl(type: string) {
   else if (type === "article") sheetName = "Artikel";
   else if (type === "volunteer") sheetName = "Volunteer";
   else if (type === "mading") sheetName = "Mading";
-  else if (type === "announcement-detail") sheetName = "Detail_Pengumuman";
+  else if (type === "announcement-detail") sheetName = "Pengumuman";
   else if (type === "finance") {
     sheetName = "Dashboard";
     spreadsheetId = FINANCE_SPREADSHEET_ID;
