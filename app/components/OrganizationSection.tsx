@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from 'react';
-import ExpandIcon from '@mui/icons-material/Expand';
+import { Expand } from 'lucide-react';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import Image from "next/image";
 
@@ -108,7 +108,7 @@ export default function OrganizationSection({
               <div className="bg-gray-50 dark:bg-gray-800 px-6 py-3 border-t border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 dark:text-gray-400">
-                    <ExpandIcon className="mr-1 text-xs" />
+                    <Expand className="mr-1 text-xs" />
                     Klik untuk memperbesar
                   </span>
                   <button

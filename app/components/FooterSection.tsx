@@ -1,7 +1,7 @@
 'use client';
 
 import MosqueIcon from '@mui/icons-material/Mosque';
-import SendIcon from '@mui/icons-material/Send';
+import { Send } from 'lucide-react'; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -161,7 +161,7 @@ export default function FooterSection({
                                 className="bg-green-600 hover:bg-green-700 rounded-l-none rounded-r-lg px-4"
                                 disabled
                             >
-                                <SendIcon />
+                                <Send />
                             </Button>
                         </div>
 

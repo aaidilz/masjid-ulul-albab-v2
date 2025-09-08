@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bell, BellOff, Settings } from 'lucide-react';
 import { notificationService } from '@/app/utils/notifications';
 import { googleSheetsService } from '@/app/services/GoogleSheetsService';
-import type { AnnouncementData } from '@/app/api/sheet/type';
 
 export default function NotificationManager() {
   const [permission, setPermission] = useState<NotificationPermission>('default');
@@ -14,24 +13,7 @@ export default function NotificationManager() {
   const [lastChecked, setLastChecked] = useState<string | null>(null);
   const [showSettings, setShowSettings] = useState(false);
 
-  useEffect(() => {
-    setIsSupported(notificationService.isSupported());
-    setPermission(notificationService.getPermissionStatus());
-    
-    // Load last checked time from localStorage
-    const stored = localStorage.getItem('masjid-notifications-last-checked');
-    setLastChecked(stored);
-
-    // Check for new announcements every 5 minutes
-    const interval = setInterval(checkForNewAnnouncements, 5 * 60 * 1000);
-    
-    // Check immediately on load
-    checkForNewAnnouncements();
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const checkForNewAnnouncements = async () => {
+  const checkForNewAnnouncements = useCallback(async () => {
     if (permission !== 'granted') return;
 
     try {
@@ -60,7 +42,24 @@ export default function NotificationManager() {
     } catch (error) {
       console.error('Error checking for new announcements:', error);
     }
-  };
+  }, [permission, lastChecked]);
+
+  useEffect(() => {
+    setIsSupported(notificationService.isSupported());
+    setPermission(notificationService.getPermissionStatus());
+    
+    // Load last checked time from localStorage
+    const stored = localStorage.getItem('masjid-notifications-last-checked');
+    setLastChecked(stored);
+
+    // Check for new announcements every 5 minutes
+    const interval = setInterval(checkForNewAnnouncements, 5 * 60 * 1000);
+    
+    // Check immediately on load
+    checkForNewAnnouncements();
+
+    return () => clearInterval(interval);
+  }, [checkForNewAnnouncements]);
 
   const requestPermission = async () => {
     const newPermission = await notificationService.requestPermission();
@@ -184,7 +183,7 @@ export default function NotificationManager() {
                 <div className="text-xs text-gray-500 dark:text-gray-400 p-2 bg-gray-100 dark:bg-gray-800 rounded">
                   <p className="font-medium mb-1">Cara mengaktifkan:</p>
                   <p>1. Klik ikon gembok di address bar</p>
-                  <p>2. Ubah "Notifications" ke "Allow"</p>
+                  <p>2. Ubah &quot;Notifications&quot; ke &quot;Allow&quot;</p>
                   <p>3. Refresh halaman</p>
                 </div>
               )}

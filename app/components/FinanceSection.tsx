@@ -1,12 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, memo } from "react";
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import InfoIcon from '@mui/icons-material/Info';
-import MoneyIcon from '@mui/icons-material/Money';
-import SchoolIcon from '@mui/icons-material/School';
-import QrCodeIcon from '@mui/icons-material/QrCode';
+import { Loader, ArrowUp, ArrowDown, Info, HandCoins, School, QrCode, Calendar } from "lucide-react";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 import { Button } from "@/components/ui/button";
@@ -47,8 +42,7 @@ function FinanceSection({
   onPeriodChange,
   onPageChange,
   onSort,
-  onRefresh,
-  getSortIcon,
+  onRefresh
 }: FinanceSectionProps) {
   // Memoize computed values to prevent unnecessary recalculations
   const sortFieldDisplayText = useMemo(() => {
@@ -149,7 +143,7 @@ function FinanceSection({
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pemasukan</CardTitle>
             <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-              <ArrowUpwardIcon className="mr-1 text-xs" />
+              <ArrowDown className="mr-1 text-xs" />
               Dana Ummat
             </Badge>
           </CardHeader>
@@ -165,7 +159,7 @@ function FinanceSection({
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Total Pengeluaran</CardTitle>
             <Badge variant="secondary" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-              <ArrowUpwardIcon className="mr-1 rotate-180 text-xs" />
+              <ArrowUp className="mr-1 text-xs" />
               Dana Ummat
             </Badge>
           </CardHeader>
@@ -181,7 +175,7 @@ function FinanceSection({
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-gray-900 dark:text-gray-100">Saldo Dana Ummat</CardTitle>
             <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-              <InfoIcon className="mr-1 text-xs" />
+              <Info className="mr-1 text-xs" />
               Real-time
             </Badge>
           </CardHeader>
@@ -204,7 +198,7 @@ function FinanceSection({
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-            <MoneyIcon />
+            <HandCoins />
           </div>
           <CardTitle className="text-gray-900 dark:text-gray-100">Tunai</CardTitle>
         </CardHeader>
@@ -220,7 +214,7 @@ function FinanceSection({
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-            <SchoolIcon />
+            <School />
           </div>
           <CardTitle className="text-gray-900 dark:text-gray-100">Transfer Bank</CardTitle>
         </CardHeader>
@@ -240,7 +234,7 @@ function FinanceSection({
       <Card className="dark:bg-gray-800 dark:border-gray-700">
         <CardHeader>
           <div className="text-green-600 dark:text-green-400 text-3xl mb-4">
-            <QrCodeIcon />
+            <QrCode />
           </div>
           <CardTitle className="text-gray-900 dark:text-gray-100">QRIS</CardTitle>
         </CardHeader>
@@ -283,7 +277,7 @@ function FinanceSection({
 
           {loadingFinance ? (
             <div className="text-center py-8">
-              <AutorenewIcon
+              <Loader
                 className="animate-spin text-3xl mb-4 text-gray-400 dark:text-gray-500"
               />
               <p className="text-gray-600 dark:text-gray-400">Memuat data keuangan...</p>
@@ -328,9 +322,9 @@ function FinanceSection({
                       className="flex items-center space-x-1 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
                     >
                       {loadingFinance ? (
-                        <AutorenewIcon className="animate-spin text-sm" />
+                        <Loader className="animate-spin text-sm" />
                       ) : (
-                        <AutorenewIcon className="text-sm" />
+                        <Loader className="text-sm" />
                       )}
                       <span className="hidden sm:inline">Refresh</span>
                     </Button>
@@ -343,7 +337,7 @@ function FinanceSection({
                       <CardContent className="pt-6">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-sm text-gray-700 dark:text-gray-300">
                           <div className="mb-2 md:mb-0">
-                            <InfoIcon className="mr-1 inline" />
+                            <Info className="mr-1 inline" />
                             Diurutkan berdasarkan:
                             <span className="font-semibold ml-1 text-gray-900 dark:text-gray-100">
                               {sortFieldDisplayText}
@@ -355,47 +349,37 @@ function FinanceSection({
                             </span>
                           </div>
 
-                        {/* Quick Sort Buttons */}
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant={financeFilter.sortField === "date" ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleSort("date")}
-                            className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
-                          >
-                            Tanggal
-                          </Button>
-                          <Button
-                            variant={financeFilter.sortField === "income" ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleSort("income")}
-                            className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
-                          >
-                            Pemasukan
-                          </Button>
-                          <Button
-                            variant={financeFilter.sortField === "expense" ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleSort("expense")}
-                            className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
-                          >
-                            Pengeluaran
-                          </Button>
-                        </div>
+                          {/* Quick Sort Buttons */}
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant={financeFilter.sortField === "date" ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => handleSort("date")}
+                              className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
+                            >
+                              Tanggal
+                            </Button>
+                            <Button
+                              variant={financeFilter.sortField === "income" ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => handleSort("income")}
+                              className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
+                            >
+                              Pemasukan
+                            </Button>
+                            <Button
+                              variant={financeFilter.sortField === "expense" ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => handleSort("expense")}
+                              className="text-xs dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
+                            >
+                              Pengeluaran
+                            </Button>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
                   )}
-
-                {/* Mobile: Scrollable indicator */}
-                <div className="block md:hidden mb-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex items-center">
-                    <ArrowUpwardIcon className="mr-1 rotate-90 text-xs" />
-                    Geser tabel ke kiri/kanan untuk melihat semua kolom
-                    <ArrowUpwardIcon className="ml-1 -rotate-90 text-xs" />
-                  </p>
-                </div>
-
                 {/* Transactions Table */}
                 <div className="rounded-md border border-gray-200 dark:border-gray-700">
                   <Table>
@@ -408,7 +392,7 @@ function FinanceSection({
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Tanggal</span>
-                            {getSortIcon("date")}
+                            <Calendar className="ml-1 text-xs" />
                           </Button>
                         </TableHead>
                         <TableHead className="text-gray-900 dark:text-gray-100">
@@ -418,7 +402,7 @@ function FinanceSection({
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Deskripsi</span>
-                            {getSortIcon("description")}
+                            <Info className="ml-1 text-xs" />
                           </Button>
                         </TableHead>
                         <TableHead className="whitespace-nowrap text-gray-900 dark:text-gray-100">
@@ -428,7 +412,7 @@ function FinanceSection({
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Pemasukan</span>
-                            {getSortIcon("income")}
+                            <ArrowDown className="ml-1 text-xs text-green-600" />
                           </Button>
                         </TableHead>
                         <TableHead className="whitespace-nowrap text-gray-900 dark:text-gray-100">
@@ -438,7 +422,7 @@ function FinanceSection({
                             className="flex items-center hover:text-green-600 dark:hover:text-green-400 transition group h-auto p-0 font-medium text-gray-900 dark:text-gray-100"
                           >
                             <span>Pengeluaran</span>
-                            {getSortIcon("expense")}
+                            <ArrowUp className="ml-1 text-xs text-red-600" />
                           </Button>
                         </TableHead>
                       </TableRow>
@@ -485,7 +469,7 @@ function FinanceSection({
                               <TableCell>
                                 {transaction.income > 0 ? (
                                   <div className="flex items-center text-green-600 dark:text-green-400 font-semibold">
-                                    <ArrowUpwardIcon className="mr-1 text-xs" />
+                                    <ArrowDown className="mr-1 text-xs" />
                                     {transaction.formattedIncome}
                                   </div>
                                 ) : (
@@ -495,7 +479,7 @@ function FinanceSection({
                               <TableCell>
                                 {transaction.expense > 0 ? (
                                   <div className="flex items-center text-red-600 dark:text-red-400 font-semibold">
-                                    <ArrowUpwardIcon className="mr-1 text-xs rotate-180" />
+                                    <ArrowUp className="mr-1 text-xs" />
                                     {transaction.formattedExpense}
                                   </div>
                                 ) : (
@@ -510,7 +494,7 @@ function FinanceSection({
                           <TableCell colSpan={4} className="text-center py-8 text-muted-foreground dark:text-gray-400">
                             {loadingFinance ? (
                               <div className="flex items-center justify-center">
-                                <AutorenewIcon className="animate-spin mr-2" />
+                                <Loader className="animate-spin mr-2" />
                                 Memuat data...
                               </div>
                             ) : (
@@ -523,7 +507,7 @@ function FinanceSection({
                   </Table>
                 </div>
 
-                 {/* Data Info */}
+                {/* Data Info */}
                 {paginatedFinanceData && (
                   <Card className="mb-4 dark:bg-gray-800 dark:border-gray-700">
                     <CardContent className="pt-6">
@@ -542,7 +526,7 @@ function FinanceSection({
                 )}
 
                 {/* Sorting Info */}
-                
+
 
                 {/* Pagination */}
                 {paginatedFinanceData &&
@@ -663,14 +647,6 @@ function FinanceSection({
             Arsip Laporan Keuangan
           </h3>
 
-          {/* Mobile: Scrollable table dengan indikator */}
-          <div className="block md:hidden mb-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex items-center">
-              <ArrowUpwardIcon className="mr-1 rotate-90" />
-              Geser tabel ke kiri/kanan untuk melihat semua kolom
-              <ArrowUpwardIcon className="ml-1 -rotate-90" />
-            </p>
-          </div>
 
           <div className="rounded-md border border-gray-200 dark:border-gray-700">
             <Table>
@@ -710,7 +686,7 @@ function FinanceSection({
           <div className="block md:hidden mt-6">
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
               <div className="flex items-center mb-2">
-                <InfoIcon className="text-blue-600 dark:text-blue-400 mr-2" />
+                <Info className="text-blue-600 dark:text-blue-400 mr-2" />
                 <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
                   Info Mobile
                 </span>

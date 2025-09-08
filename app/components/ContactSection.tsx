@@ -1,18 +1,11 @@
 "use client";
 
 import { RefObject, useEffect, useState } from "react";
-
-import PinDropIcon from '@mui/icons-material/PinDrop';
-import EmailIcon from '@mui/icons-material/Email';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { MapPin, Mail, Send, Info, CircleCheck, Ban, Loader, Phone, Clock } from 'lucide-react';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import SendIcon from '@mui/icons-material/Send';
-import InfoIcon from '@mui/icons-material/Info';
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
+
 
 interface ContactSectionProps {
   contactLoading: boolean;
@@ -68,7 +61,7 @@ export default function ContactSection({
             <div className="space-y-4">
               <div className="flex items-start">
                 <div className="text-green-600 dark:text-green-400 text-xl mr-4 mt-1">
-                  <PinDropIcon />
+                  <MapPin />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-gray-100">Alamat</h4>
@@ -80,7 +73,7 @@ export default function ContactSection({
 
               <div className="flex items-start">
                 <div className="text-green-600 dark:text-green-400 text-xl mr-4 mt-1">
-                  <EmailIcon />
+                  <Phone />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-gray-100">Telepon</h4>
@@ -90,7 +83,7 @@ export default function ContactSection({
 
               <div className="flex items-start">
                 <div className="text-green-600 dark:text-green-400 text-xl mr-4 mt-1">
-                  <EmailIcon />
+                  <Mail />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-gray-100">Email</h4>
@@ -100,7 +93,7 @@ export default function ContactSection({
 
               <div className="flex items-start">
                 <div className="text-green-600 dark:text-green-400 text-xl mr-4 mt-1">
-                  <AccessTimeIcon />
+                  <Clock />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-gray-100">Jam Operasional</h4>
@@ -157,9 +150,9 @@ export default function ContactSection({
               >
                 <div className="flex items-start">
                   {contactMessage.type === "success" ? (
-                    <CheckCircleIcon className="mr-2 mt-0.5 text-green-500 dark:text-green-400" />
+                    <CircleCheck className="mr-2 mt-0.5 text-green-500 dark:text-green-400" />
                   ) : (
-                    <ErrorIcon className="mr-2 mt-0.5 text-red-500 dark:text-red-400" />
+                    <Ban className="mr-2 mt-0.5 text-red-500 dark:text-red-400" />
                   )}
                   <p className="text-sm">{contactMessage.text}</p>
                 </div>
@@ -258,12 +251,12 @@ export default function ContactSection({
               >
                 {contactLoading ? (
                   <>
-                    <AutorenewIcon className="animate-spin mr-2" />
+                    <Loader className="animate-spin mr-2" />
                     Mengirim Pesan...
                   </>
                 ) : (
                   <>
-                    <SendIcon className="mr-2" />
+                    <Send className="mr-2" />
                     Kirim Pesan
                   </>
                 )}
@@ -273,7 +266,7 @@ export default function ContactSection({
             {/* Form Info */}
             <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
               <div className="flex items-start">
-                <InfoIcon className="text-blue-600 dark:text-blue-400 mr-2 mt-0.5" />
+                <Info className="text-blue-600 dark:text-blue-400 mr-2 mt-0.5" />
                 <div>
                   <p className="text-sm text-blue-700 dark:text-blue-300">
                     <strong className="text-blue-800 dark:text-blue-200">Info:</strong> Pesan Anda akan langsung tersimpan di

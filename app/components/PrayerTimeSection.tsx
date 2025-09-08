@@ -1,10 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, memo } from 'react';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import {Loader, RefreshCw, MapPinned, Clock} from 'lucide-react';
 import { usePrayerTimes } from '@/app/hooks/usePrayerTimes';
 import { PrayerTime } from '@/app/types/prayer';
 
@@ -136,7 +133,7 @@ function PrayerTimesSection({
 
     return (
       <div className="text-center py-12">
-        <AutorenewIcon className="animate-spin text-4xl mb-4 text-green-200 dark:text-green-400" />
+        <Loader className="animate-spin text-4xl mb-4 text-green-200 dark:text-green-400" />
         <p className="text-lg font-medium text-white dark:text-gray-100">Memuat jadwal sholat...</p>
         <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Mohon tunggu sebentar</p>
       </div>
@@ -149,7 +146,7 @@ function PrayerTimesSection({
 
     return (
       <div className="text-center py-12">
-        <AccessTimeIcon className="text-4xl mb-4 text-green-200 dark:text-green-400 opacity-50" />
+        <Clock className="text-4xl mb-4 text-green-200 dark:text-green-400 opacity-50" />
         <p className="text-lg font-medium text-white dark:text-gray-100">Jadwal sholat tidak tersedia</p>
         <p className="text-sm opacity-75 mt-2 text-gray-200 dark:text-gray-400">Silakan periksa koneksi internet Anda</p>
       </div>
@@ -162,7 +159,7 @@ function PrayerTimesSection({
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div className="flex items-center gap-2">
-            <AccessTimeIcon className="text-green-200 dark:text-green-300" />
+            <Clock className="text-green-200 dark:text-green-300" />
             <h2 className="text-2xl md:text-3xl font-bold text-white dark:text-gray-100">Waktu Sholat Hari Ini</h2>
           </div>
           <div className="flex flex-col items-end gap-2">
@@ -172,9 +169,9 @@ function PrayerTimesSection({
               className="bg-green-700 hover:bg-green-800 dark:bg-green-900 dark:hover:bg-green-800 disabled:bg-green-900 dark:disabled:bg-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-white dark:text-gray-100"
             >
               {loading ? (
-                <AutorenewIcon className="animate-spin" />
+                <Loader className="animate-spin" />
               ) : (
-                <RefreshIcon />
+                <RefreshCw />
               )}
               {loading ? "Memuat..." : "Perbarui"}
             </button>
@@ -183,7 +180,7 @@ function PrayerTimesSection({
 
         {/* Location Info */}
         <div className="flex items-center justify-center gap-2 mb-4 text-green-100 dark:text-green-300">
-          <LocationOnIcon className="text-sm" />
+          <MapPinned className="text-sm" />
           <span className="text-sm font-medium">{location}</span>
         </div>
 

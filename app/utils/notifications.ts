@@ -78,17 +78,7 @@ export class NotificationService {
       {
         body: announcement.content,
         tag: 'masjid-announcement',
-        requireInteraction: announcement.category === 'urgent',
-        actions: [
-          {
-            action: 'view',
-            title: 'Lihat Detail'
-          },
-          {
-            action: 'dismiss',
-            title: 'Tutup'
-          }
-        ]
+        requireInteraction: announcement.category === 'urgent'
       }
     );
   }
@@ -104,17 +94,7 @@ export class NotificationService {
       {
         body: `Pemateri: ${kajian.speaker}\nWaktu: ${kajian.datetime}\nTempat: ${kajian.location}`,
         tag: 'masjid-kajian',
-        requireInteraction: true,
-        actions: [
-          {
-            action: 'remind',
-            title: 'Ingatkan Saya'
-          },
-          {
-            action: 'dismiss',
-            title: 'Tutup'
-          }
-        ]
+        requireInteraction: true
       }
     );
   }
