@@ -1,9 +1,7 @@
 "use client";
 
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import InfoIcon from '@mui/icons-material/Info';
+import {MapPinned, Clock, Expand, Info } from 'lucide-react';
+
 
 export default function MapSection() {
   return (
@@ -21,7 +19,7 @@ export default function MapSection() {
                   Masjid Jami&apos; Ulul Albaab
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 flex items-center">
-                  <LocationOnIcon className="mr-2 text-green-600 dark:text-green-400" />
+                  <MapPinned className="mr-2 text-green-600 dark:text-green-400" />
                   Jl. Dr. Setiabudhi No. 193, Bandung
                 </p>
               </div>
@@ -32,7 +30,7 @@ export default function MapSection() {
                   rel="noopener noreferrer"
                   className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition inline-flex items-center"
                 >
-                  <LocationOnIcon className="mr-2" />
+                  <MapPinned className="mr-2" />
                   Buka di Google Maps
                 </a>
               </div>
@@ -58,15 +56,15 @@ export default function MapSection() {
           <div className="p-6 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center">
-                <LocationOnIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <MapPinned className="text-green-600 dark:text-green-400 mr-2" />
                 <span className="text-gray-900 dark:text-gray-100">Kampus IV Universitas Pasundan</span>
               </div>
               <div className="flex items-center">
-                <AccessTimeIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <Clock className="text-green-600 dark:text-green-400 mr-2" />
                 <span className="text-gray-900 dark:text-gray-100">Buka 24 jam untuk jamaah</span>
               </div>
               <div className="flex items-center">
-                <FullscreenIcon className="text-green-600 dark:text-green-400 mr-2" />
+                <Expand className="text-green-600 dark:text-green-400 mr-2" />
                 <span className="text-gray-900 dark:text-gray-100">Parkir tersedia</span>
               </div>
             </div>
@@ -76,7 +74,7 @@ export default function MapSection() {
           <div className="mt-8 grid md:grid-cols-2 gap-6">
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
               <h4 className="font-bold mb-3 text-green-700 dark:text-green-400 flex items-center">
-                <LocationOnIcon className="mr-2" />
+                <MapPinned className="mr-2" />
                 Transportasi Umum
               </h4>
               <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
@@ -89,7 +87,7 @@ export default function MapSection() {
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
               <h4 className="font-bold mb-3 text-green-700 dark:text-green-400 flex items-center">
-                <InfoIcon className="mr-2" />
+                <Info className="mr-2" />
                 Petunjuk Arah
               </h4>
               <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">

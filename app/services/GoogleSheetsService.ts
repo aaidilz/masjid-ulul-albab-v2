@@ -13,7 +13,9 @@ import type {
   VolunteerData,
   MadingData,
   DkmMemberData,
-  VolunteerRegistrationData
+  DkmSubmissionResponse,
+  VolunteerRegistrationData,
+  VolunteerSubmissionResponse
 } from "@/app/api/sheet/type";
 
 class GoogleSheetsService {
@@ -605,7 +607,7 @@ class GoogleSheetsService {
 
   async submitDkmRegistration(
     memberData: Omit<DkmMemberData, "tanggal">
-  ): Promise<ContactSubmissionResponse> {
+  ): Promise<DkmSubmissionResponse> {
     try {
       if (
         !memberData.nama ||
@@ -648,7 +650,7 @@ class GoogleSheetsService {
 
   async submitVolunteerRegistration(
     volunteerData: Omit<VolunteerRegistrationData, "tanggal">
-  ): Promise<ContactSubmissionResponse> {
+  ): Promise<VolunteerSubmissionResponse> {
     try {
       if (
         !volunteerData.nama ||

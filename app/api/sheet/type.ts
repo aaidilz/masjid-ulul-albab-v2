@@ -110,18 +110,10 @@ export interface MadingData {
   isActive: boolean;
 }
 
-export interface DkmMemberData {
-  nama: string;
-  nim: string;
-  fakultas: string;
-  prodi: string;
-  angkatan: string;
-  email: string;
-  whatsapp: string;
-  alamat: string;
-  motivasi: string;
-  pengalaman: string;
-  tanggal: string;
+export interface DkmSubmissionResponse {
+  success: boolean;
+  message: string;
+  data?: DkmMemberData;
 }
 
 export interface VolunteerRegistrationData {
@@ -135,6 +127,12 @@ export interface VolunteerRegistrationData {
   motivasi: string;
   waktuTersedia: string;
   tanggal: string;
+}
+
+export interface VolunteerSubmissionResponse {
+  success: boolean;
+  message: string;
+  data?: VolunteerRegistrationData;
 }
 
 export interface AnnouncementDetailData {
@@ -158,4 +156,18 @@ export interface ArticleData {
   content: string;
   imageUrl: string;
   isActive: boolean;
+}
+
+export interface DkmMemberData {
+  nama: string;
+  nim: string;
+  fakultas: string;
+  prodi: string;
+  angkatan: string;
+  email: string;
+  whatsapp: string;
+  alamat: string;
+  motivasi: string;
+  pengalaman: string;
+  tanggal: string;
 }

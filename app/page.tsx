@@ -37,7 +37,7 @@ export default function Home() {
   const pesanRef = useRef<HTMLTextAreaElement>(null);
 
   // Contact form handlers
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleContactSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setContactLoading(true);
     setContactMessage(null);
@@ -66,11 +66,11 @@ export default function Home() {
     } finally {
       setContactLoading(false);
     }
-  };
+  }, []);
 
-  const handleClearMessage = () => {
+  const handleClearMessage = useCallback(() => {
     setContactMessage(null);
-  };
+  }, []);
 
   // Load initial data only once on mount
   useEffect(() => {

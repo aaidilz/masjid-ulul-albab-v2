@@ -1,10 +1,7 @@
 "use client";
 
+import { Ruler, BookOpenText, BookCopy, Wifi, Network} from 'lucide-react';
 import MosqueIcon from "@mui/icons-material/Mosque";
-import StraightenIcon from '@mui/icons-material/Straighten';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import WifiIcon from '@mui/icons-material/Wifi';
-import CellWifiIcon from '@mui/icons-material/CellWifi';
 
 export default function FacilitiesSection() {
   return (
@@ -25,14 +22,14 @@ export default function FacilitiesSection() {
               angin.
             </p>
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <StraightenIcon className="mr-2" />
+              <Ruler className="mr-2" />
               <span>+-800 m²</span>
             </div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 transition-colors">
             <div className="text-green-600 text-4xl mb-4">
-              <AutoStoriesIcon />
+              <BookOpenText />
             </div>
             <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Pojok Baca</h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -40,14 +37,14 @@ export default function FacilitiesSection() {
               untuk umum.
             </p>
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <AutoStoriesIcon className="mr-2" />
+              <BookCopy className="mr-2" />
               <span>200+ buku</span>
             </div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-100 dark:border-gray-700 transition-colors">
             <div className="text-green-600 text-4xl mb-4">
-              <WifiIcon />
+              <Wifi />
             </div>
             <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">WiFi Gratis</h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -55,7 +52,7 @@ export default function FacilitiesSection() {
               online dan kemudahan ibadah digital.
             </p>
             <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <CellWifiIcon className="mr-2" />
+              <Network className="mr-2" />
               <span>24/7 tersedia</span>
             </div>
           </div>
