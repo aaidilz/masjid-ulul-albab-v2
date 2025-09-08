@@ -34,6 +34,7 @@ interface FinanceSectionProps {
   ) => ReactElement; // Fix JSX.Element to ReactElement
 }
 
+
 function FinanceSection({
   loadingFinance,
   financeSummary,
@@ -566,18 +567,38 @@ function FinanceSection({
 
                         {/* Page Numbers */}
                         <div className="flex">
-                          {pageNumbers.map((pageNum) => (
-                            <Button
-                              key={pageNum}
-                              variant={pageNum === paginationInfo?.currentPage ? "default" : "outline"}
-                              size="sm"
-                              onClick={() => handlePageChange(pageNum)}
-                              disabled={loadingFinance}
-                              className={`w-10 ${pageNum === paginationInfo?.currentPage ? "dark:bg-green-600 dark:text-white" : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"}`}
-                            >
-                              {pageNum}
-                            </Button>
-                          ))}
+                          {pageNumbers
+    .filter((pageNum) => {
+      if (paginationInfo!.currentPage === 1) {
+        // kalau di page 1, tampilkan 1 dan 2
+        return pageNum === 1 || pageNum === 2;
+      } else if (paginationInfo!.currentPage === paginationInfo!.totalPages) {
+        // kalau di page terakhir, tampilkan current dan sebelumnya
+        return (
+          pageNum === paginationInfo!.totalPages ||
+          pageNum === paginationInfo!.totalPages - 1
+        );
+      } else {
+        // selain itu, tampilkan current dan next
+        return pageNum === paginationInfo!.currentPage || pageNum === paginationInfo!.currentPage + 1;
+      }
+    })
+    .map((pageNum) => (
+      <Button
+        key={pageNum}
+        variant={pageNum === paginationInfo?.currentPage ? "default" : "outline"}
+        size="sm"
+        onClick={() => handlePageChange(pageNum)}
+        disabled={loadingFinance}
+        className={`w-10 ${
+          pageNum === paginationInfo?.currentPage
+            ? "dark:bg-green-600 dark:text-white"
+            : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
+        }`}
+      >
+        {pageNum}
+      </Button>
+    ))}
                         </div>
 
                         {/* Next Button */}
