@@ -14,6 +14,19 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Menu as MenuIcon, Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Home,
+  Users,
+  DollarSign,
+  Calendar,
+  FileText,
+  Image as ImageIcon,
+  Newspaper,
+  Megaphone,
+  HandHeart,
+  ClipboardList,
+  ChevronDown,
+} from "lucide-react";
 
 export default function HeaderSection() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -91,10 +104,10 @@ export default function HeaderSection() {
                     <Link href="/#about" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
+                    <Link href="/#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
+                    <Link href="/#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <Link href="/kegiatan" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
@@ -263,10 +276,10 @@ export default function HeaderSection() {
                   <Link href="/#about" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
+                  <Link href="/#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
+                  <Link href="/#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/kegiatan" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
@@ -358,61 +371,107 @@ export default function HeaderSection() {
       </div>
 
       {/* Mobile NavigationMenu */}
+      {/* Mobile Sidebar */}
       <div
-        className={`md:hidden bg-gray-100 dark:bg-gray-800 py-3 px-4 shadow-lg transition-colors ${isMobileMenuOpen ? '' : 'hidden'}`}
-      >
-        <div className="flex flex-col items-center space-y-4">
-          <NavigationMenu orientation="vertical">
-            <NavigationMenuList className="flex flex-col space-y-3 text-center">
+  className={`fixed top-0 left-0 h-screen w-64 bg-gray-100 dark:bg-gray-800 shadow-lg z-50 transform transition-transform duration-300 ${
+    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
+  {/* Header */}
+  <div className="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Menu</h2>
+    <button
+      onClick={toggleMobileMenu}
+      className="text-gray-800 dark:text-gray-200 hover:text-red-500"
+      aria-label="Close menu"
+    >
+      ✕
+    </button>
+  </div>
 
-              <NavigationMenuItem>
-                <Link href="#about" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="#organization" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="#finance" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/kegiatan" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/artikel" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/gallery" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Gallery</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/mading" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Mading</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/#announcements" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Pengumuman</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/volunteer" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Volunteer</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/dkm/daftar" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Daftar DKM</Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+  {/* Menu */}
+  <nav className="p-2 divide-y divide-gray-300 dark:divide-gray-700">
+    {/* Bagian Utama */}
+    <div className="space-y-1 py-2">
+      <Link href="/#about" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <Home className="h-5 w-5 text-gray-500" />
+        <span>Tentang</span>
+      </Link>
+      <Link href="/#organization" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <Users className="h-5 w-5 text-gray-500" />
+        <span>Struktur</span>
+      </Link>
+      <Link href="/#finance" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <DollarSign className="h-5 w-5 text-gray-500" />
+        <span>Keuangan</span>
+      </Link>
+      <Link href="/kegiatan" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <Calendar className="h-5 w-5 text-gray-500" />
+        <span>Kegiatan</span>
+      </Link>
+      <Link href="/artikel" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <FileText className="h-5 w-5 text-gray-500" />
+        <span>Artikel</span>
+      </Link>
+    </div>
 
-          {/* Mobile Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={cycleTheme}
-            className="flex items-center gap-2"
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
-          >
-            {getThemeIcon()}
-            <span className="text-sm">
-              {theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System'}
-            </span>
-          </Button>
+    {/* Bagian Dropdown */}
+    <div className="py-2">
+      <details className="group">
+        <summary className="flex items-center gap-3 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition list-none">
+          <ChevronDown className="h-4 w-4 text-gray-500 group-open:rotate-180 transition-transform" />
+          <span>Lainnya</span>
+        </summary>
+        <div className="pl-8 mt-2 space-y-1">
+          <Link href="/gallery" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <ImageIcon className="h-5 w-5 text-gray-500" />
+            <span>Gallery</span>
+          </Link>
+          <Link href="/mading" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <Newspaper className="h-5 w-5 text-gray-500" />
+            <span>Mading</span>
+          </Link>
+          <Link href="/#announcements" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <Megaphone className="h-5 w-5 text-gray-500" />
+            <span>Pengumuman</span>
+          </Link>
+          <Link href="/volunteer" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <HandHeart className="h-5 w-5 text-gray-500" />
+            <span>Volunteer</span>
+          </Link>
+          <Link href="/dkm/daftar" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <ClipboardList className="h-5 w-5 text-gray-500" />
+            <span>Daftar DKM</span>
+          </Link>
         </div>
-      </div>
+      </details>
+    </div>
+  </nav>
+
+  {/* Theme Toggle */}
+  <div className="p-4 border-t border-gray-300 dark:border-gray-700">
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={cycleTheme}
+      className="flex items-center gap-2 w-full justify-start"
+    >
+      {getThemeIcon()}
+      <span className="text-sm">
+        {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "System"}
+      </span>
+    </Button>
+  </div>
+</div>
+
+{/* Backdrop */}
+{isMobileMenuOpen && (
+  <div
+    className="fixed inset-0 bg-black/40 z-40 md:hidden"
+    onClick={toggleMobileMenu}
+  ></div>
+)}
+
     </header>
   );
 }

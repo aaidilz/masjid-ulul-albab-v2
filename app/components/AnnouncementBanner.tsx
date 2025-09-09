@@ -84,24 +84,13 @@ export default function AnnouncementBanner() {
 
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
-              href={`/pengumuman/${currentAnnouncement.id}`}
-              className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
-            >
-              Info Lengkap
-              <Info className="h-3 w-3" />
-            </Link>
-
-            {currentAnnouncement.buttonText && currentAnnouncement.buttonLink && (
-              <a
-                href={currentAnnouncement.buttonLink}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/pengumuman/${currentAnnouncement.id}`}
                 className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
               >
-                {currentAnnouncement.buttonText}
+                Info Lengkap
                 <ExternalLink className="h-3 w-3" />
-              </a>
-            )}
+              </Link>
+
 
             {announcements.length > 1 && (
               <div className="flex gap-1">
@@ -128,9 +117,9 @@ export default function AnnouncementBanner() {
       </div>
 
       {/* Animated background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
-      </div>
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
+</div>
     </div>
   );
 }
