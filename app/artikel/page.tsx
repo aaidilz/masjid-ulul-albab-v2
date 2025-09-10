@@ -68,12 +68,18 @@ export default function ArtikelPage() {
 
   const formatDate = (dateStr: string) => {
     try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
+      // Parse DD/MM/YYYY format
+      const [day, month, year] = dateStr.split('/');
+      if (day && month && year) {
+        const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        if (isNaN(date.getTime())) throw new Error('Invalid date');
+        return date.toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+      throw new Error('Invalid format');
     } catch {
       return dateStr;
     }
