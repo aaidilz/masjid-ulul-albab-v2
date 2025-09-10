@@ -65,11 +65,15 @@ function parseRowToActivity(row: string[]) {
 }
 
 function parseRowToArticle(row: string[]) {
+  const originalDate = row[3] || "";
+  const parsedDate = parseDate(originalDate);
+  const formattedDate = formatDateToIndonesian(parsedDate);
+
   return {
     id: row[0] || "",
     title: row[1] || "",
     author: row[2] || "",
-    date: row[3] || "",
+    date: formattedDate,
     category: row[4] || "",
     content: row[5] || "",
     imageUrl: row[6] || "",
