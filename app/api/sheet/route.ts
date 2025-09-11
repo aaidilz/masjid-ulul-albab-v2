@@ -8,7 +8,40 @@ import {
   MadingData,
 } from "@/app/api/sheet/type";
 import { NextRequest, NextResponse } from "next/server";
-import { parseCurrency, formatCurrency, parseDate } from "@/app/utils/currency"
+import { parseCurrency, formatCurrency, parseDate } from "@/app/utils/currency";
+
+// Add interfaces for form submissions
+interface DkmRegistrationData {
+  nama: string;
+  nim: string;
+  fakultas: string;
+  prodi: string;
+  angkatan: string;
+  email: string;
+  whatsapp: string;
+  alamat: string;
+  motivasi: string;
+  pengalaman: string;
+}
+
+interface VolunteerRegistrationData {
+  nama: string;
+  email: string;
+  whatsapp: string;
+  alamat: string;
+  pekerjaan: string;
+  keahlian: string;
+  programDipilih: string;
+  motivasi: string;
+  waktuTersedia: string;
+}
+
+interface ContactFormData {
+  nama: string;
+  email: string;
+  subjek: string;
+  pesan: string;
+}
 
 const BASE_URL = "https://sheets.googleapis.com/v4/spreadsheets";
 const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
@@ -256,5 +289,106 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Internal error " }, { status: 500 });
     // Log the error for debugging
     console.error("Error fetching sheet data:", e);
+  }
+}
+
+// POST handler for form submissions
+export async function POST(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
+
+  if (!type) {
+    return NextResponse.json(
+      { error: "Missing type parameter" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const body = await req.json();
+
+    // Add timestamp
+    const timestamp = new Date().toLocaleString("id-ID", {
+      timeZone: "Asia/Jakarta",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    let response;
+
+    switch (type) {
+      case "dkm-registration":
+        response = await submitToGoogleSheets("dkm", {
+          ...body,
+          tanggal: timestamp,
+        });
+        break;
+      case "volunteer-registration":
+        response = await submitToGoogleSheets("volunteer", {
+          ...body,
+          tanggal: timestamp,
+        });
+        break;
+      case "contact":
+        response = await submitToGoogleSheets("contact", {
+          ...body,
+          tanggal: timestamp,
+        });
+        break;
+      default:
+        return NextResponse.json(
+          { error: "Invalid submission type" },
+          { status: 400 }
+        );
+    }
+
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error("Error processing form submission:", error);
+    return NextResponse.json(
+      { error: "Failed to process submission" },
+      { status: 500 }
+    );
+  }
+}
+
+async function submitToGoogleSheets(sheetType: string, data: any) {
+  const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
+
+  if (!APPS_SCRIPT_URL) {
+    // Fallback for development/demo
+    console.log(`[DEMO] ${sheetType} submission:`, data);
+    return {
+      success: true,
+      message: `Pendaftaran ${sheetType} berhasil dikirim! (Mode demo - data tidak tersimpan)`,
+      data,
+    };
+  }
+
+  try {
+    const response = await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: sheetType,
+        data: data,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(`Error submitting to Google Sheets (${sheetType}):`, error);
+    throw error;
   }
 }
