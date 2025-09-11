@@ -11,37 +11,37 @@ import { NextRequest, NextResponse } from "next/server";
 import { parseCurrency, formatCurrency, parseDate } from "@/app/utils/currency";
 
 // Add interfaces for form submissions
-interface DkmRegistrationData {
-  nama: string;
-  nim: string;
-  fakultas: string;
-  prodi: string;
-  angkatan: string;
-  email: string;
-  whatsapp: string;
-  alamat: string;
-  motivasi: string;
-  pengalaman: string;
-}
+// interface DkmRegistrationData {
+//   nama: string;
+//   nim: string;
+//   fakultas: string;
+//   prodi: string;
+//   angkatan: string;
+//   email: string;
+//   whatsapp: string;
+//   alamat: string;
+//   motivasi: string;
+//   pengalaman: string;
+// }
 
-interface VolunteerRegistrationData {
-  nama: string;
-  email: string;
-  whatsapp: string;
-  alamat: string;
-  pekerjaan: string;
-  keahlian: string;
-  programDipilih: string;
-  motivasi: string;
-  waktuTersedia: string;
-}
+// interface VolunteerRegistrationData {
+//   nama: string;
+//   email: string;
+//   whatsapp: string;
+//   alamat: string;
+//   pekerjaan: string;
+//   keahlian: string;
+//   programDipilih: string;
+//   motivasi: string;
+//   waktuTersedia: string;
+// }
 
-interface ContactFormData {
-  nama: string;
-  email: string;
-  subjek: string;
-  pesan: string;
-}
+// interface ContactFormData {
+//   nama: string;
+//   email: string;
+//   subjek: string;
+//   pesan: string;
+// }
 
 const BASE_URL = "https://sheets.googleapis.com/v4/spreadsheets";
 const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
@@ -356,7 +356,10 @@ export async function POST(req: NextRequest) {
   }
 }
 
-async function submitToGoogleSheets(sheetType: string, data: any) {
+async function submitToGoogleSheets<T>(
+  sheetType: string,
+  data: T
+): Promise<{ success: boolean; message: string; data: T }> {
   const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
 
   if (!APPS_SCRIPT_URL) {
