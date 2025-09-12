@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, MapPin, Search, Filter, ArrowRight, Clock } from "lucide-react";
+import { Calendar, Users, MapPin, Search, Filter, ArrowRight, Clock, Loader } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
@@ -23,6 +23,7 @@ export default function KegiatanPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredActivities, setFilteredActivities] = useState<ActivityData[]>([]);
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -39,6 +40,18 @@ export default function KegiatanPage() {
     };
 
     fetchActivities();
+  }, []);
+
+  // Reset loading state when activities change
+  useEffect(() => {
+    setLoadingActivityId(null);
+  }, [filteredActivities]);
+
+  // Cleanup loading state on unmount
+  useEffect(() => {
+    return () => {
+      setLoadingActivityId(null);
+    };
   }, []);
 
   useEffect(() => {
@@ -88,6 +101,12 @@ export default function KegiatanPage() {
       default:
         return <Calendar className="h-4 w-4" />;
     }
+  };
+
+  const handleActivityClick = async (activityId: string) => {
+    setLoadingActivityId(activityId);
+    // Add a small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 300));
   };
 
   const truncateDescription = (description: string, maxLength: number = 120) => {
@@ -150,8 +169,8 @@ export default function KegiatanPage() {
         {/* Activities Grid */}
         {filteredActivities.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {filteredActivities.map((activity) => (
-              <Card key={activity.id} className="hover:shadow-lg transition-shadow duration-300">
+            {filteredActivities.map((activity, index) => (
+              <Card key={`${activity.id}-${index}`} className="hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="pb-3">
                   {activity.imageUrl && (
                     <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
@@ -203,9 +222,21 @@ export default function KegiatanPage() {
                   </div>
 
                   <Link href={`/kegiatan/${activity.id}`}>
-                    <Button className="w-full group">
-                      Lihat Detail
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <Button
+                      className="w-full group"
+                      disabled={loadingActivityId === activity.id}
+                      onClick={() => handleActivityClick(activity.id)}
+                    >
+                      {loadingActivityId === activity.id ? (
+                        <>
+                          Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Lihat Detail
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
                     </Button>
                   </Link>
                 </CardContent>

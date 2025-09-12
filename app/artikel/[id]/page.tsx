@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, User, Clock, Share2, BookOpen, Tag } from "lucide-react";
+import { ArrowLeft, User, Clock, Share2, BookOpen, Tag, Loader } from "lucide-react";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ArticleData } from "@/app/api/sheet/type";
 import Image from "next/image";
@@ -17,6 +17,20 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState<ArticleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedArticles, setRelatedArticles] = useState<ArticleData[]>([]);
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
+
+
+  // Reset loading state when activities change
+  useEffect(() => {
+    setLoadingActivityId(null);
+  }, [relatedArticles]);
+
+  // Cleanup loading state on unmount
+  useEffect(() => {
+    return () => {
+      setLoadingActivityId(null);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -86,6 +100,12 @@ export default function ArticleDetailPage() {
         {paragraph}
       </p>
     ));
+  };
+
+  const handleActivityClick = async (activityId: string) => {
+    setLoadingActivityId(activityId);
+    // Add a small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 300));
   };
 
   if (loading) {
@@ -251,8 +271,16 @@ export default function ArticleDetailPage() {
                     </CardHeader>
                     <CardContent>
                       <Link href={`/artikel/${relatedArticle.id}`}>
-                        <Button size="sm" className="w-full">
-                          Baca Artikel
+                        <Button size="sm" className="w-full" disabled={loadingActivityId === relatedArticle.id} onClick={() => handleActivityClick(relatedArticle.id)}>
+                          {loadingActivityId === relatedArticle.id ? (
+                            <>
+                              Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                            </>
+                          ) : (
+                            <>
+                              Baca Selengkapnya
+                            </>
+                          )}
                         </Button>
                       </Link>
                     </CardContent>
