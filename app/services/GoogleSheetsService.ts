@@ -33,7 +33,8 @@ const ERROR_MESSAGES = {
   REQUIRED_FIELD: "Field wajib harus diisi",
   INVALID_EMAIL: "Format email tidak valid",
   SUBMISSION_ERROR: "Terjadi kesalahan saat mengirim",
-  CONNECTION_ERROR: "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
+  CONNECTION_ERROR:
+    "Tidak dapat terhubung ke server. Periksa koneksi internet Anda.",
 } as const;
 
 /**
@@ -47,7 +48,10 @@ class Logger {
   }
 
   log(message: string, data?: unknown): void {
-    if (this.isDev && (message.includes("error") || message.includes("failed"))) {
+    if (
+      this.isDev &&
+      (message.includes("error") || message.includes("failed"))
+    ) {
       console.log(`[GoogleSheets] ${message}`, data || "");
     }
   }
@@ -108,7 +112,9 @@ class DataParser {
         if (this.isValidDate(parsedDay, parsedMonth, parsedYear)) {
           const date = new Date(parsedYear, parsedMonth - 1, parsedDay);
           if (this.isDateValid(date, parsedDay, parsedMonth - 1, parsedYear)) {
-            this.logger.log(`Parsed date: ${cleanDateStr} → ${date.toISOString()}`);
+            this.logger.log(
+              `Parsed date: ${cleanDateStr} → ${date.toISOString()}`,
+            );
             return date;
           }
         }
@@ -125,7 +131,9 @@ class DataParser {
         if (this.isValidDate(parsedDay, parsedMonth, parsedYear)) {
           const date = new Date(parsedYear, parsedMonth - 1, parsedDay);
           if (this.isDateValid(date, parsedDay, parsedMonth - 1, parsedYear)) {
-            this.logger.log(`Parsed date (ISO): ${cleanDateStr} → ${date.toISOString()}`);
+            this.logger.log(
+              `Parsed date (ISO): ${cleanDateStr} → ${date.toISOString()}`,
+            );
             return date;
           }
         }
@@ -134,7 +142,9 @@ class DataParser {
       // Fallback to native Date parsing
       const fallbackDate = new Date(cleanDateStr);
       if (!isNaN(fallbackDate.getTime())) {
-        this.logger.log(`Parsed date (fallback): ${cleanDateStr} → ${fallbackDate.toISOString()}`);
+        this.logger.log(
+          `Parsed date (fallback): ${cleanDateStr} → ${fallbackDate.toISOString()}`,
+        );
         return fallbackDate;
       }
 
@@ -148,14 +158,21 @@ class DataParser {
 
   private isValidDate(day: number, month: number, year: number): boolean {
     return (
-      day >= 1 && day <= 31 &&
-      month >= 1 && month <= 12 &&
+      day >= 1 &&
+      day <= 31 &&
+      month >= 1 &&
+      month <= 12 &&
       year >= VALIDATION_RULES.DATE_RANGE.MIN_YEAR &&
       year <= VALIDATION_RULES.DATE_RANGE.MAX_YEAR
     );
   }
 
-  private isDateValid(date: Date, expectedDay: number, expectedMonth: number, expectedYear: number): boolean {
+  private isDateValid(
+    date: Date,
+    expectedDay: number,
+    expectedMonth: number,
+    expectedYear: number,
+  ): boolean {
     return (
       date.getDate() === expectedDay &&
       date.getMonth() === expectedMonth &&
@@ -289,7 +306,10 @@ class ApiClient {
     }
   }
 
-  async submitForm<T = unknown>(type: string, data: Record<string, unknown>): Promise<{ success: boolean; message: string; data?: T }> {
+  async submitForm<T = unknown>(
+    type: string,
+    data: Record<string, unknown>,
+  ): Promise<{ success: boolean; message: string; data?: T }> {
     const response = await fetch(`/api/sheet?type=${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -318,7 +338,10 @@ class FinanceCalculator {
 
   calculateSummary(financeData: FinanceData[]): FinanceSummary {
     const totalIncome = financeData.reduce((sum, item) => sum + item.income, 0);
-    const totalExpense = financeData.reduce((sum, item) => sum + item.expense, 0);
+    const totalExpense = financeData.reduce(
+      (sum, item) => sum + item.expense,
+      0,
+    );
     const balance = totalIncome - totalExpense;
 
     const summary: FinanceSummary = {
@@ -340,7 +363,10 @@ class FinanceCalculator {
     return summary;
   }
 
-  filterByPeriod(data: FinanceData[], period: "week" | "month" | "year" | "all"): FinanceData[] {
+  filterByPeriod(
+    data: FinanceData[],
+    period: "week" | "month" | "year" | "all",
+  ): FinanceData[] {
     if (period === "all") return data;
 
     const now = new Date();
@@ -369,7 +395,7 @@ class FinanceCalculator {
   sortData(
     data: FinanceData[],
     field: "date" | "description" | "income" | "expense",
-    direction: "asc" | "desc"
+    direction: "asc" | "desc",
   ): FinanceData[] {
     return [...data].sort((a, b) => {
       let aValue: string | number;
@@ -409,7 +435,7 @@ class FinanceCalculator {
   paginateData<T>(
     data: T[],
     page: number,
-    itemsPerPage: number
+    itemsPerPage: number,
   ): PaginatedFinanceData {
     const totalItems = data.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -456,7 +482,9 @@ class FormValidator {
     }
   }
 
-  validateVolunteerRegistration(data: Omit<VolunteerRegistrationData, "tanggal">): void {
+  validateVolunteerRegistration(
+    data: Omit<VolunteerRegistrationData, "tanggal">,
+  ): void {
     if (!data.nama || !data.email || !data.whatsapp || !data.programDipilih) {
       throw new Error(ERROR_MESSAGES.REQUIRED_FIELD);
     }
@@ -467,8 +495,10 @@ class FormValidator {
 
   getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
-      if (error.message.includes(ERROR_MESSAGES.REQUIRED_FIELD) ||
-          error.message.includes(ERROR_MESSAGES.INVALID_EMAIL)) {
+      if (
+        error.message.includes(ERROR_MESSAGES.REQUIRED_FIELD) ||
+        error.message.includes(ERROR_MESSAGES.INVALID_EMAIL)
+      ) {
         return error.message;
       }
       if (error.name === "TypeError") {
@@ -491,7 +521,10 @@ class GoogleSheetsService {
     this.logger = new Logger();
     this.dataParser = new DataParser(this.logger);
     this.apiClient = new ApiClient(this.logger);
-    this.financeCalculator = new FinanceCalculator(this.dataParser, this.logger);
+    this.financeCalculator = new FinanceCalculator(
+      this.dataParser,
+      this.logger,
+    );
     this.formValidator = new FormValidator(this.logger);
   }
 
@@ -504,7 +537,8 @@ class GoogleSheetsService {
 
   // Data fetching methods (keeping same public API)
   async getAnnouncements(): Promise<AnnouncementData[]> {
-    const announcements = await this.apiClient.fetchFromApi<AnnouncementData>("announcement");
+    const announcements =
+      await this.apiClient.fetchFromApi<AnnouncementData>("announcement");
     return announcements.filter((announcement) => {
       if (!announcement.isActive) return false;
       if (!announcement.endDate) return true;
@@ -554,8 +588,12 @@ class GoogleSheetsService {
     return rows.filter((mading) => mading.isActive);
   }
 
-  async getAnnouncementDetailById(id: string): Promise<AnnouncementDetailData | null> {
-    const rows = await this.apiClient.fetchFromApi<AnnouncementDetailData>("announcement-detail");
+  async getAnnouncementDetailById(
+    id: string,
+  ): Promise<AnnouncementDetailData | null> {
+    const rows = await this.apiClient.fetchFromApi<AnnouncementDetailData>(
+      "announcement-detail",
+    );
     const announcement = rows.find((row) => row.id === id) || null;
     return announcement;
   }
@@ -576,17 +614,34 @@ class GoogleSheetsService {
     return this.financeCalculator.calculateSummary(financeData);
   }
 
-  async getFinanceDataPaginated(filter: FinanceFilter): Promise<PaginatedFinanceData> {
+  async getFinanceDataPaginated(
+    filter: FinanceFilter,
+  ): Promise<PaginatedFinanceData> {
     const allData = await this.getFinanceData();
-    const filteredData = this.financeCalculator.filterByPeriod(allData, filter.period);
-    const sortedData = this.financeCalculator.sortData(filteredData, filter.sortField, filter.sortDirection);
-    const paginatedResult = this.financeCalculator.paginateData(sortedData, filter.page, filter.itemsPerPage);
+    const filteredData = this.financeCalculator.filterByPeriod(
+      allData,
+      filter.period,
+    );
+    const sortedData = this.financeCalculator.sortData(
+      filteredData,
+      filter.sortField,
+      filter.sortDirection,
+    );
+    const paginatedResult = this.financeCalculator.paginateData(
+      sortedData,
+      filter.page,
+      filter.itemsPerPage,
+    );
 
-    this.logger.log(`Finance data: ${filteredData.length} items → sorted by ${filter.sortField} (${filter.sortDirection}) → page ${filter.page}/${paginatedResult.totalPages}`);
+    this.logger.log(
+      `Finance data: ${filteredData.length} items → sorted by ${filter.sortField} (${filter.sortDirection}) → page ${filter.page}/${paginatedResult.totalPages}`,
+    );
     return paginatedResult;
   }
 
-  async getFinanceSummaryByPeriod(period: "week" | "month" | "year" | "all"): Promise<FinanceSummary> {
+  async getFinanceSummaryByPeriod(
+    period: "week" | "month" | "year" | "all",
+  ): Promise<FinanceSummary> {
     const allData = await this.getFinanceData();
     const filteredData = this.financeCalculator.filterByPeriod(allData, period);
     const summary = this.financeCalculator.calculateSummary(filteredData);
@@ -598,11 +653,14 @@ class GoogleSheetsService {
       all: "Semua Periode",
     };
 
-    summary.lastUpdated = `${periodLabels[period]} - ${new Date().toLocaleDateString("id-ID", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    })}`;
+    summary.lastUpdated = `${periodLabels[period]} - ${new Date().toLocaleDateString(
+      "id-ID",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      },
+    )}`;
 
     this.logger.log(`Finance summary calculated for ${period}:`, summary);
     return summary;
@@ -631,10 +689,15 @@ class GoogleSheetsService {
     return `${day}/${month}/${year} ${hour}:${minute}:${second}`;
   }
 
-  async submitContactForm(contactData: Omit<ContactData, "tanggal">): Promise<ContactSubmissionResponse> {
+  async submitContactForm(
+    contactData: Omit<ContactData, "tanggal">,
+  ): Promise<ContactSubmissionResponse> {
     try {
       this.formValidator.validateContactForm(contactData);
-      const result = await this.apiClient.submitForm<ContactData>("contact", contactData);
+      const result = await this.apiClient.submitForm<ContactData>(
+        "contact",
+        contactData,
+      );
       return result;
     } catch (error) {
       const errorMessage = this.formValidator.getErrorMessage(error);
@@ -645,10 +708,15 @@ class GoogleSheetsService {
     }
   }
 
-  async submitDkmRegistration(memberData: Omit<DkmMemberData, "tanggal">): Promise<DkmSubmissionResponse> {
+  async submitDkmRegistration(
+    memberData: Omit<DkmMemberData, "tanggal">,
+  ): Promise<DkmSubmissionResponse> {
     try {
       this.formValidator.validateDkmRegistration(memberData);
-      const result = await this.apiClient.submitForm<DkmMemberData>("dkm-registration", memberData);
+      const result = await this.apiClient.submitForm<DkmMemberData>(
+        "dkm-registration",
+        memberData,
+      );
       return result;
     } catch (error) {
       const errorMessage = this.formValidator.getErrorMessage(error);
@@ -659,10 +727,15 @@ class GoogleSheetsService {
     }
   }
 
-  async submitVolunteerRegistration(volunteerData: Omit<VolunteerRegistrationData, "tanggal">): Promise<VolunteerSubmissionResponse> {
+  async submitVolunteerRegistration(
+    volunteerData: Omit<VolunteerRegistrationData, "tanggal">,
+  ): Promise<VolunteerSubmissionResponse> {
     try {
       this.formValidator.validateVolunteerRegistration(volunteerData);
-      const result = await this.apiClient.submitForm<VolunteerRegistrationData>("volunteer-registration", volunteerData);
+      const result = await this.apiClient.submitForm<VolunteerRegistrationData>(
+        "volunteer-registration",
+        volunteerData,
+      );
       return result;
     } catch (error) {
       const errorMessage = this.formValidator.getErrorMessage(error);

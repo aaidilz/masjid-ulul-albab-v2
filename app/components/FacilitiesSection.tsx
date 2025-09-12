@@ -1,6 +1,6 @@
 "use client";
 
-import { Ruler, BookOpenText, BookCopy, Wifi, Network} from 'lucide-react';
+import { Ruler, BookOpenText, BookCopy, Wifi, Network } from "lucide-react";
 import MosqueIcon from "@mui/icons-material/Mosque";
 
 export default function FacilitiesSection() {
@@ -16,7 +16,9 @@ export default function FacilitiesSection() {
             <div className="text-green-600 text-4xl mb-4">
               <MosqueIcon />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Ruang Sholat</h3>
+            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+              Ruang Sholat
+            </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               Kapasitas 500 jamaah dengan alas sajadah yang nyaman dan kipas
               angin.
@@ -31,7 +33,9 @@ export default function FacilitiesSection() {
             <div className="text-green-600 text-4xl mb-4">
               <BookOpenText />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Pojok Baca</h3>
+            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+              Pojok Baca
+            </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               Koleksi lebih dari 200 buku Islami berbagai disiplin ilmu, terbuka
               untuk umum.
@@ -46,7 +50,9 @@ export default function FacilitiesSection() {
             <div className="text-green-600 text-4xl mb-4">
               <Wifi />
             </div>
-            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">WiFi Gratis</h3>
+            <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+              WiFi Gratis
+            </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               Akses internet gratis untuk jamaah, mendukung kegiatan kajian
               online dan kemudahan ibadah digital.

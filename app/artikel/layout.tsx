@@ -2,7 +2,8 @@ import type { Viewport } from "next";
 
 export const metadata = {
   title: "Artikel | Masjid Ulul Albab",
-  description: "Artikel dan tulisan tentang Islam, kehidupan, dan kegiatan masjid",
+  description:
+    "Artikel dan tulisan tentang Islam, kehidupan, dan kegiatan masjid",
 };
 
 export const viewport: Viewport = {
@@ -14,6 +15,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function ArtikelLayout({ children }: { children: React.ReactNode }) {
+export default function ArtikelLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

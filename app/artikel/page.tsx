@@ -4,9 +4,23 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, User, Clock, Search, Filter, ArrowRight, Loader } from "lucide-react";
+import {
+  BookOpen,
+  User,
+  Clock,
+  Search,
+  Filter,
+  ArrowRight,
+  Loader,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ArticleData } from "@/app/api/sheet/type";
 import Link from "next/link";
@@ -18,7 +32,9 @@ export default function ArtikelPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredArticles, setFilteredArticles] = useState<ArticleData[]>([]);
-  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
+    null,
+  );
 
   // Reset loading state when activities change
   useEffect(() => {
@@ -58,36 +74,43 @@ export default function ArtikelPage() {
         (article) =>
           article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           article.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          article.author.toLowerCase().includes(searchTerm.toLowerCase())
+          article.author.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
     // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (article) => article.category.toLowerCase() === selectedCategory.toLowerCase()
+        (article) =>
+          article.category.toLowerCase() === selectedCategory.toLowerCase(),
       );
     }
 
     setFilteredArticles(filtered);
   }, [articles, searchTerm, selectedCategory]);
 
-  const categories = Array.from(new Set(articles.map(article => article.category)));
+  const categories = Array.from(
+    new Set(articles.map((article) => article.category)),
+  );
 
   const formatDate = (dateStr: string) => {
     try {
       // Parse DD/MM/YYYY format
-      const [day, month, year] = dateStr.split('/');
+      const [day, month, year] = dateStr.split("/");
       if (day && month && year) {
-        const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-        if (isNaN(date.getTime())) throw new Error('Invalid date');
+        const date = new Date(
+          parseInt(year),
+          parseInt(month) - 1,
+          parseInt(day),
+        );
+        if (isNaN(date.getTime())) throw new Error("Invalid date");
         return date.toLocaleDateString("id-ID", {
           day: "numeric",
           month: "long",
           year: "numeric",
         });
       }
-      throw new Error('Invalid format');
+      throw new Error("Invalid format");
     } catch {
       return dateStr;
     }
@@ -101,9 +124,8 @@ export default function ArtikelPage() {
   const handleActivityClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
     // Add a small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   };
-
 
   if (loading) {
     return (
@@ -111,7 +133,9 @@ export default function ArtikelPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Memuat artikel...</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Memuat artikel...
+            </p>
           </div>
         </div>
       </section>
@@ -123,9 +147,12 @@ export default function ArtikelPage() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Artikel & Tulisan</h1>
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">
+            Artikel & Tulisan
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Kumpulan artikel, khutbah, dan tulisan inspiratif tentang Islam, kehidupan sehari-hari, dan kegiatan masjid
+            Kumpulan artikel, khutbah, dan tulisan inspiratif tentang Islam,
+            kehidupan sehari-hari, dan kegiatan masjid
           </p>
         </div>
 
@@ -143,7 +170,10 @@ export default function ArtikelPage() {
           </div>
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
               </SelectTrigger>
@@ -163,7 +193,10 @@ export default function ArtikelPage() {
         {filteredArticles.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {filteredArticles.map((article, index) => (
-              <Card key={`${article.id}-${index}`} className="hover:shadow-lg transition-shadow duration-300">
+              <Card
+                key={`${article.id}-${index}`}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
                 <CardHeader className="pb-3">
                   {article.imageUrl && (
                     <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
@@ -196,10 +229,15 @@ export default function ArtikelPage() {
                     {truncateContent(article.content)}
                   </p>
                   <Link href={`/artikel/${article.id}`}>
-                    <Button className="w-full group" disabled={loadingActivityId === article.id} onClick={() => handleActivityClick(article.id)}>
+                    <Button
+                      className="w-full group"
+                      disabled={loadingActivityId === article.id}
+                      onClick={() => handleActivityClick(article.id)}
+                    >
                       {loadingActivityId === article.id ? (
                         <>
-                          Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                          Memuat{" "}
+                          <Loader className="inline h-4 w-4 animate-spin" />
                         </>
                       ) : (
                         <>
@@ -245,18 +283,30 @@ export default function ArtikelPage() {
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{articles.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Artikel</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {articles.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Total Artikel
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{categories.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {categories.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Kategori
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredArticles.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                {filteredArticles.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Ditampilkan
+              </div>
             </div>
           </div>
         </div>

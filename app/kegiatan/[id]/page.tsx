@@ -5,7 +5,16 @@ import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, MapPin, Clock, Users, User, Share2, Calendar, Loader } from "lucide-react";
+import {
+  ArrowLeft,
+  MapPin,
+  Clock,
+  Users,
+  User,
+  Share2,
+  Calendar,
+  Loader,
+} from "lucide-react";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ActivityData } from "@/app/api/sheet/type";
 import Image from "next/image";
@@ -16,9 +25,12 @@ export default function ActivityDetailPage() {
   const router = useRouter();
   const [activity, setActivity] = useState<ActivityData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [relatedActivities, setRelatedActivities] = useState<ActivityData[]>([]);
-  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
-
+  const [relatedActivities, setRelatedActivities] = useState<ActivityData[]>(
+    [],
+  );
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchActivity = async () => {
@@ -34,7 +46,7 @@ export default function ActivityDetailPage() {
         if (activityData) {
           const allActivities = await googleSheetsService.getActivities();
           const related = allActivities
-            .filter(a => a.id !== id && a.category === activityData.category)
+            .filter((a) => a.id !== id && a.category === activityData.category)
             .slice(0, 3);
           setRelatedActivities(related);
         }
@@ -61,7 +73,6 @@ export default function ActivityDetailPage() {
       setLoadingActivityId(null);
     };
   }, []);
-
 
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
@@ -110,11 +121,11 @@ export default function ActivityDetailPage() {
   const handleRelatedClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
     // Add a small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   };
 
   const formatDescription = (description: string) => {
-    return description.split('\n').map((paragraph, index) => (
+    return description.split("\n").map((paragraph, index) => (
       <p key={index} className="mb-4 leading-relaxed">
         {paragraph}
       </p>
@@ -127,7 +138,9 @@ export default function ActivityDetailPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Memuat kegiatan...</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Memuat kegiatan...
+            </p>
           </div>
         </div>
       </section>
@@ -140,9 +153,12 @@ export default function ActivityDetailPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <Calendar className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Kegiatan Tidak Ditemukan</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+              Kegiatan Tidak Ditemukan
+            </h1>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Kegiatan yang Anda cari tidak dapat ditemukan atau mungkin telah dihapus.
+              Kegiatan yang Anda cari tidak dapat ditemukan atau mungkin telah
+              dihapus.
             </p>
             <Link href="/kegiatan">
               <Button>
@@ -239,8 +255,12 @@ export default function ActivityDetailPage() {
                     <div className="flex items-start gap-3">
                       <Clock className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800 dark:text-gray-100">Jadwal</div>
-                        <div className="text-gray-600 dark:text-gray-300">{activity.schedule}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">
+                          Jadwal
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-300">
+                          {activity.schedule}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -249,8 +269,12 @@ export default function ActivityDetailPage() {
                     <div className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800 dark:text-gray-100">Lokasi</div>
-                        <div className="text-gray-600 dark:text-gray-300">{activity.location}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">
+                          Lokasi
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-300">
+                          {activity.location}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -259,8 +283,12 @@ export default function ActivityDetailPage() {
                     <div className="flex items-start gap-3">
                       <Users className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800 dark:text-gray-100">Peserta</div>
-                        <div className="text-gray-600 dark:text-gray-300">{activity.participants}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">
+                          Peserta
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-300">
+                          {activity.participants}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -269,8 +297,12 @@ export default function ActivityDetailPage() {
                     <div className="flex items-start gap-3">
                       <User className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5" />
                       <div>
-                        <div className="font-medium text-gray-800 dark:text-gray-100">Pembimbing</div>
-                        <div className="text-gray-600 dark:text-gray-300">{activity.instructor}</div>
+                        <div className="font-medium text-gray-800 dark:text-gray-100">
+                          Pembimbing
+                        </div>
+                        <div className="text-gray-600 dark:text-gray-300">
+                          {activity.instructor}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -280,18 +312,27 @@ export default function ActivityDetailPage() {
               {/* Contact Info */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Informasi Lebih Lanjut</CardTitle>
+                  <CardTitle className="text-lg">
+                    Informasi Lebih Lanjut
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    Untuk informasi lebih lanjut tentang kegiatan ini, silakan hubungi:
+                    Untuk informasi lebih lanjut tentang kegiatan ini, silakan
+                    hubungi:
                   </p>
                   <div className="space-y-2">
                     <div className="text-sm">
-                      <span className="font-medium text-gray-800 dark:text-gray-100">WhatsApp:</span> 0812-2476-4338
+                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                        WhatsApp:
+                      </span>{" "}
+                      0812-2476-4338
                     </div>
                     <div className="text-sm">
-                      <span className="font-medium text-gray-800 dark:text-gray-100">Email:</span> sekretariat.albaab@gmail.com
+                      <span className="font-medium text-gray-800 dark:text-gray-100">
+                        Email:
+                      </span>{" "}
+                      sekretariat.albaab@gmail.com
                     </div>
                   </div>
                   <Button className="w-full mt-4" asChild>
@@ -311,10 +352,15 @@ export default function ActivityDetailPage() {
           {/* Related Activities */}
           {relatedActivities.length > 0 && (
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">Kegiatan Terkait</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+                Kegiatan Terkait
+              </h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {relatedActivities.map((relatedActivity) => (
-                  <Card key={relatedActivity.id} className="hover:shadow-lg transition-shadow">
+                  <Card
+                    key={relatedActivity.id}
+                    className="hover:shadow-lg transition-shadow"
+                  >
                     <CardHeader className="pb-3">
                       {relatedActivity.imageUrl && (
                         <div className="relative h-32 mb-3 rounded-lg overflow-hidden">
@@ -327,7 +373,9 @@ export default function ActivityDetailPage() {
                           />
                         </div>
                       )}
-                      <Badge className={getCategoryColor(relatedActivity.category)}>
+                      <Badge
+                        className={getCategoryColor(relatedActivity.category)}
+                      >
                         {relatedActivity.category}
                       </Badge>
                       <CardTitle className="text-lg line-clamp-2 mt-2">
@@ -339,15 +387,18 @@ export default function ActivityDetailPage() {
                         {relatedActivity.description}
                       </p>
                       <Link href={`/kegiatan/${relatedActivity.id}`}>
-                        <Button size="sm" className="w-full" disabled={loadingActivityId === relatedActivity.id} onClick={() => handleRelatedClick(relatedActivity.id)}>
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          disabled={loadingActivityId === relatedActivity.id}
+                          onClick={() => handleRelatedClick(relatedActivity.id)}
+                        >
                           {loadingActivityId === relatedActivity.id ? (
                             <>
-                            Memuat <Loader className="h-4 w-4 animate-spin" />
+                              Memuat <Loader className="h-4 w-4 animate-spin" />
                             </>
                           ) : (
-                            <>
-                            Lihat Detail
-                            </>
+                            <>Lihat Detail</>
                           )}
                         </Button>
                       </Link>

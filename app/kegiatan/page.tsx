@@ -4,9 +4,24 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, MapPin, Search, Filter, ArrowRight, Clock, Loader } from "lucide-react";
+import {
+  Calendar,
+  Users,
+  MapPin,
+  Search,
+  Filter,
+  ArrowRight,
+  Clock,
+  Loader,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ActivityData } from "@/app/api/sheet/type";
 import Link from "next/link";
@@ -22,8 +37,12 @@ export default function KegiatanPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [filteredActivities, setFilteredActivities] = useState<ActivityData[]>([]);
-  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
+  const [filteredActivities, setFilteredActivities] = useState<ActivityData[]>(
+    [],
+  );
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -62,15 +81,18 @@ export default function KegiatanPage() {
       filtered = filtered.filter(
         (activity) =>
           activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          activity.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          activity.location.toLowerCase().includes(searchTerm.toLowerCase())
+          activity.description
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          activity.location.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
     // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (activity) => activity.category.toLowerCase() === selectedCategory.toLowerCase()
+        (activity) =>
+          activity.category.toLowerCase() === selectedCategory.toLowerCase(),
       );
     }
 
@@ -106,10 +128,13 @@ export default function KegiatanPage() {
   const handleActivityClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
     // Add a small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   };
 
-  const truncateDescription = (description: string, maxLength: number = 120) => {
+  const truncateDescription = (
+    description: string,
+    maxLength: number = 120,
+  ) => {
     if (description.length <= maxLength) return description;
     return description.substring(0, maxLength) + "...";
   };
@@ -120,7 +145,9 @@ export default function KegiatanPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Memuat kegiatan...</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Memuat kegiatan...
+            </p>
           </div>
         </div>
       </section>
@@ -132,9 +159,12 @@ export default function KegiatanPage() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Kegiatan Masjid</h1>
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">
+            Kegiatan Masjid
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Berbagai kegiatan dan acara yang diselenggarakan oleh Masjid Ulul Albab untuk meningkatkan keimanan dan kualitas hidup masyarakat
+            Berbagai kegiatan dan acara yang diselenggarakan oleh Masjid Ulul
+            Albab untuk meningkatkan keimanan dan kualitas hidup masyarakat
           </p>
         </div>
 
@@ -152,7 +182,10 @@ export default function KegiatanPage() {
           </div>
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
               </SelectTrigger>
@@ -170,7 +203,10 @@ export default function KegiatanPage() {
         {filteredActivities.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {filteredActivities.map((activity, index) => (
-              <Card key={`${activity.id}-${index}`} className="hover:shadow-lg transition-shadow duration-300">
+              <Card
+                key={`${activity.id}-${index}`}
+                className="hover:shadow-lg transition-shadow duration-300"
+              >
                 <CardHeader className="pb-3">
                   {activity.imageUrl && (
                     <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
@@ -199,7 +235,7 @@ export default function KegiatanPage() {
                   <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
                     {truncateDescription(activity.description)}
                   </p>
-                  
+
                   <div className="space-y-2 mb-4">
                     {activity.schedule && (
                       <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
@@ -229,7 +265,8 @@ export default function KegiatanPage() {
                     >
                       {loadingActivityId === activity.id ? (
                         <>
-                          Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                          Memuat{" "}
+                          <Loader className="inline h-4 w-4 animate-spin" />
                         </>
                       ) : (
                         <>
@@ -247,8 +284,8 @@ export default function KegiatanPage() {
           <div className="text-center py-12">
             <Calendar className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
-              {searchTerm || selectedCategory !== "all" 
-                ? "Tidak ada kegiatan yang ditemukan" 
+              {searchTerm || selectedCategory !== "all"
+                ? "Tidak ada kegiatan yang ditemukan"
                 : "Belum ada kegiatan tersedia"}
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
@@ -285,9 +322,14 @@ export default function KegiatanPage() {
                 Kajian mingguan, bulanan, dan kegiatan rutin lainnya
               </p>
               <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {activities.filter(a => a.category.toLowerCase() === 'rutin').length}
+                {
+                  activities.filter((a) => a.category.toLowerCase() === "rutin")
+                    .length
+                }
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Kegiatan
+              </div>
             </CardContent>
           </Card>
 
@@ -303,9 +345,15 @@ export default function KegiatanPage() {
                 Event spesial, perayaan hari besar, dan acara khusus
               </p>
               <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                {activities.filter(a => a.category.toLowerCase() === 'khusus').length}
+                {
+                  activities.filter(
+                    (a) => a.category.toLowerCase() === "khusus",
+                  ).length
+                }
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Kegiatan
+              </div>
             </CardContent>
           </Card>
 
@@ -321,9 +369,15 @@ export default function KegiatanPage() {
                 Jadwal sholat, kajian, dan kegiatan terjadwal
               </p>
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {activities.filter(a => a.category.toLowerCase() === 'jadwal').length}
+                {
+                  activities.filter(
+                    (a) => a.category.toLowerCase() === "jadwal",
+                  ).length
+                }
               </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">Kegiatan</div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Kegiatan
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -332,18 +386,30 @@ export default function KegiatanPage() {
         <div className="mt-8 text-center">
           <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{activities.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Kegiatan</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {activities.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Total Kegiatan
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">3</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                3
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Kategori
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredActivities.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                {filteredActivities.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Ditampilkan
+              </div>
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { Expand } from 'lucide-react';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { useState, useEffect, useCallback } from "react";
+import { Expand } from "lucide-react";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import Image from "next/image";
 
 interface OrganizationSectionProps {
@@ -20,7 +20,10 @@ export default function OrganizationSection({
   const [internalShowOrgChart, setInternalShowOrgChart] = useState(false);
 
   // Use external props if provided, otherwise use internal state
-  const showOrgChart = externalShowOrgChart !== undefined ? externalShowOrgChart : internalShowOrgChart;
+  const showOrgChart =
+    externalShowOrgChart !== undefined
+      ? externalShowOrgChart
+      : internalShowOrgChart;
   const setShowOrgChart = externalSetShowOrgChart || setInternalShowOrgChart;
 
   // Default download function
@@ -30,44 +33,50 @@ export default function OrganizationSection({
     } else {
       // Default download implementation
       try {
-        const link = document.createElement('a');
-        link.href = '/img/struktur-organisasi.jpg';
-        link.download = 'struktur-organisasi-dkm-ulul-albaab.jpg';
-        link.target = '_blank';
+        const link = document.createElement("a");
+        link.href = "/img/struktur-organisasi.jpg";
+        link.download = "struktur-organisasi-dkm-ulul-albaab.jpg";
+        link.target = "_blank";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       } catch (error) {
-        console.error('Error downloading organization chart:', error);
+        console.error("Error downloading organization chart:", error);
         // Fallback: open in new tab
-        window.open('/img/struktur-organisasi.jpg', '_blank');
+        window.open("/img/struktur-organisasi.jpg", "_blank");
       }
     }
   };
 
   // Handle modal close with ESC key
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === 'Escape' && showOrgChart) {
-      setShowOrgChart(false);
-    }
-  }, [showOrgChart, setShowOrgChart]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showOrgChart) {
+        setShowOrgChart(false);
+      }
+    },
+    [showOrgChart, setShowOrgChart],
+  );
 
   // Add/remove event listener for ESC key and prevent body scroll
   useEffect(() => {
     if (showOrgChart) {
-      document.addEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'hidden';
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
     };
   }, [showOrgChart, handleKeyDown]);
   return (
-    <section id="organization" className="py-16 bg-white dark:bg-gray-900 transition-colors">
+    <section
+      id="organization"
+      className="py-16 bg-white dark:bg-gray-900 transition-colors"
+    >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-12 text-center section-title text-gray-900 dark:text-white">
           Struktur Organisasi
@@ -171,7 +180,9 @@ export default function OrganizationSection({
           </h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">Dewan Kemakmuran Masjid DKM</h4>
+              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">
+                Dewan Kemakmuran Masjid DKM
+              </h4>
               <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
                 <li>
                   DKM UAB UNPAS berfungsi sebagai Lembaga Dakwah Kampus (LDK)
@@ -181,24 +192,35 @@ export default function OrganizationSection({
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">Departemen DKM UAB</h4>
+              <h4 className="font-bold mb-2 text-gray-900 dark:text-gray-100">
+                Departemen DKM UAB
+              </h4>
               <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300 space-y-1">
                 <li>
-                  <strong className="text-gray-900 dark:text-gray-100">Syiar Media:</strong> Menyebarkan dakwah Islam melalui
-                  media cetak dan media sosial.
+                  <strong className="text-gray-900 dark:text-gray-100">
+                    Syiar Media:
+                  </strong>{" "}
+                  Menyebarkan dakwah Islam melalui media cetak dan media sosial.
                 </li>
                 <li>
-                  <strong className="text-gray-900 dark:text-gray-100">Pelayanan Umat:</strong> Mengelola masjid dan
-                  memfasilitasi kebutuhan ibadah jamaah.
+                  <strong className="text-gray-900 dark:text-gray-100">
+                    Pelayanan Umat:
+                  </strong>{" "}
+                  Mengelola masjid dan memfasilitasi kebutuhan ibadah jamaah.
                 </li>
                 <li>
-                  <strong className="text-gray-900 dark:text-gray-100">Kaderisasi:</strong> Mengembangkan SDM pengurus
-                  melalui pelatihan fisik dan spiritual, serta merekrut dan
-                  membina anggota DKM.
+                  <strong className="text-gray-900 dark:text-gray-100">
+                    Kaderisasi:
+                  </strong>{" "}
+                  Mengembangkan SDM pengurus melalui pelatihan fisik dan
+                  spiritual, serta merekrut dan membina anggota DKM.
                 </li>
                 <li>
-                  <strong className="text-gray-900 dark:text-gray-100">Kemuslimahan:</strong> Membina dan mengkoordinasi
-                  kegiatan pengurus Akhwat DKM Ulul Albaab.
+                  <strong className="text-gray-900 dark:text-gray-100">
+                    Kemuslimahan:
+                  </strong>{" "}
+                  Membina dan mengkoordinasi kegiatan pengurus Akhwat DKM Ulul
+                  Albaab.
                 </li>
               </ul>
             </div>

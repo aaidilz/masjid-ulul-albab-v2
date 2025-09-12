@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useCallback, useMemo, useState, useRef } from "react";
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { ReactElement } from "react";
 
 import HeroSection from "@/app/components/HeroSection";
@@ -30,7 +30,10 @@ export default function Home() {
 
   // Contact form state
   const [contactLoading, setContactLoading] = useState(false);
-  const [contactMessage, setContactMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [contactMessage, setContactMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
   const namaRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const subjekRef = useRef<HTMLInputElement>(null);
@@ -45,11 +48,11 @@ export default function Home() {
     try {
       // Here you would typically send the form data to your backend
       // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate API call
 
       setContactMessage({
         type: "success",
-        text: "Pesan Anda telah berhasil dikirim! Tim kami akan merespons dalam 1x24 jam."
+        text: "Pesan Anda telah berhasil dikirim! Tim kami akan merespons dalam 1x24 jam.",
       });
 
       // Clear form
@@ -57,11 +60,10 @@ export default function Home() {
       if (emailRef.current) emailRef.current.value = "";
       if (subjekRef.current) subjekRef.current.value = "";
       if (pesanRef.current) pesanRef.current.value = "";
-
     } catch {
       setContactMessage({
         type: "error",
-        text: "Terjadi kesalahan saat mengirim pesan. Silakan coba lagi."
+        text: "Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.",
       });
     } finally {
       setContactLoading(false);
@@ -91,37 +93,42 @@ export default function Home() {
       if (financeFilter.sortField !== field) {
         return <ArrowUpwardIcon className="text-gray-400" />;
       }
-      return financeFilter.sortDirection === "asc"
-        ? <ArrowUpwardIcon className="text-green-600" />
-        : <ArrowDownwardIcon className="text-green-600" />;
+      return financeFilter.sortDirection === "asc" ? (
+        <ArrowUpwardIcon className="text-green-600" />
+      ) : (
+        <ArrowDownwardIcon className="text-green-600" />
+      );
     },
-    [financeFilter.sortField, financeFilter.sortDirection] // Only re-create when sort state changes
+    [financeFilter.sortField, financeFilter.sortDirection], // Only re-create when sort state changes
   );
 
   // Memoize the FinanceSection to prevent unnecessary re-renders
-  const memoizedFinanceSection = useMemo(() => (
-    <FinanceSection
-      loadingFinance={loadingFinance}
-      financeSummary={financeSummary}
-      paginatedFinanceData={paginatedFinanceData}
-      financeFilter={financeFilter}
-      onPeriodChange={handlePeriodChange}
-      onPageChange={handlePageChange}
-      onSort={handleSort}
-      onRefresh={handleRefreshFinance}
-      getSortIcon={getSortIcon}
-    />
-  ), [
-    loadingFinance,
-    financeSummary,
-    paginatedFinanceData,
-    financeFilter,
-    handlePeriodChange,
-    handlePageChange,
-    handleSort,
-    handleRefreshFinance,
-    getSortIcon
-  ]);
+  const memoizedFinanceSection = useMemo(
+    () => (
+      <FinanceSection
+        loadingFinance={loadingFinance}
+        financeSummary={financeSummary}
+        paginatedFinanceData={paginatedFinanceData}
+        financeFilter={financeFilter}
+        onPeriodChange={handlePeriodChange}
+        onPageChange={handlePageChange}
+        onSort={handleSort}
+        onRefresh={handleRefreshFinance}
+        getSortIcon={getSortIcon}
+      />
+    ),
+    [
+      loadingFinance,
+      financeSummary,
+      paginatedFinanceData,
+      financeFilter,
+      handlePeriodChange,
+      handlePageChange,
+      handleSort,
+      handleRefreshFinance,
+      getSortIcon,
+    ],
+  );
 
   return (
     <main className="min-h-screen">

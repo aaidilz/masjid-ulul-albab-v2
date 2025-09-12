@@ -5,7 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, User, Clock, Share2, BookOpen, Tag, Loader } from "lucide-react";
+import {
+  ArrowLeft,
+  User,
+  Clock,
+  Share2,
+  BookOpen,
+  Tag,
+  Loader,
+} from "lucide-react";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ArticleData } from "@/app/api/sheet/type";
 import Image from "next/image";
@@ -17,8 +25,9 @@ export default function ArticleDetailPage() {
   const [article, setArticle] = useState<ArticleData | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedArticles, setRelatedArticles] = useState<ArticleData[]>([]);
-  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
-
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
+    null,
+  );
 
   // Reset loading state when activities change
   useEffect(() => {
@@ -46,7 +55,7 @@ export default function ArticleDetailPage() {
         if (articleData) {
           const allArticles = await googleSheetsService.getArticles();
           const related = allArticles
-            .filter(a => a.id !== id && a.category === articleData.category)
+            .filter((a) => a.id !== id && a.category === articleData.category)
             .slice(0, 3);
           setRelatedArticles(related);
         }
@@ -95,7 +104,7 @@ export default function ArticleDetailPage() {
   };
 
   const formatContent = (content: string) => {
-    return content.split('\n').map((paragraph, index) => (
+    return content.split("\n").map((paragraph, index) => (
       <p key={index} className="mb-4 leading-relaxed">
         {paragraph}
       </p>
@@ -105,7 +114,7 @@ export default function ArticleDetailPage() {
   const handleActivityClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
     // Add a small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   };
 
   if (loading) {
@@ -114,7 +123,9 @@ export default function ArticleDetailPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Memuat artikel...</p>
+            <p className="text-gray-600 dark:text-gray-300">
+              Memuat artikel...
+            </p>
           </div>
         </div>
       </section>
@@ -127,9 +138,12 @@ export default function ArticleDetailPage() {
         <div className="container mx-auto px-4">
           <div className="text-center">
             <BookOpen className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Artikel Tidak Ditemukan</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+              Artikel Tidak Ditemukan
+            </h1>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Artikel yang Anda cari tidak dapat ditemukan atau mungkin telah dihapus.
+              Artikel yang Anda cari tidak dapat ditemukan atau mungkin telah
+              dihapus.
             </p>
             <Link href="/artikel">
               <Button>
@@ -223,8 +237,12 @@ export default function ArticleDetailPage() {
             <CardContent className="pt-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">Tentang Penulis</h4>
-                  <p className="text-gray-600 dark:text-gray-300">{article.author}</p>
+                  <h4 className="font-semibold text-gray-800 dark:text-gray-100 mb-2">
+                    Tentang Penulis
+                  </h4>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    {article.author}
+                  </p>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleShare}>
@@ -245,10 +263,15 @@ export default function ArticleDetailPage() {
           {/* Related Articles */}
           {relatedArticles.length > 0 && (
             <div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">Artikel Terkait</h3>
+              <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+                Artikel Terkait
+              </h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {relatedArticles.map((relatedArticle) => (
-                  <Card key={relatedArticle.id} className="hover:shadow-lg transition-shadow">
+                  <Card
+                    key={relatedArticle.id}
+                    className="hover:shadow-lg transition-shadow"
+                  >
                     <CardHeader className="pb-3">
                       {relatedArticle.imageUrl && (
                         <div className="relative h-32 mb-3 rounded-lg overflow-hidden">
@@ -271,15 +294,19 @@ export default function ArticleDetailPage() {
                     </CardHeader>
                     <CardContent>
                       <Link href={`/artikel/${relatedArticle.id}`}>
-                        <Button size="sm" className="w-full" disabled={loadingActivityId === relatedArticle.id} onClick={() => handleActivityClick(relatedArticle.id)}>
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          disabled={loadingActivityId === relatedArticle.id}
+                          onClick={() => handleActivityClick(relatedArticle.id)}
+                        >
                           {loadingActivityId === relatedArticle.id ? (
                             <>
-                              Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                              Memuat{" "}
+                              <Loader className="inline h-4 w-4 animate-spin" />
                             </>
                           ) : (
-                            <>
-                              Baca Selengkapnya
-                            </>
+                            <>Baca Selengkapnya</>
                           )}
                         </Button>
                       </Link>

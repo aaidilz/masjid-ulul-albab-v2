@@ -37,7 +37,8 @@ const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
 const ERROR_MESSAGES = {
   MISSING_TYPE: "Missing type parameter",
   INVALID_TYPE: "Invalid submission type",
-  MISSING_ENV_VARS: "Missing required environment variables: API_KEY or SPREADSHEET_ID",
+  MISSING_ENV_VARS:
+    "Missing required environment variables: API_KEY or SPREADSHEET_ID",
   SHEET_FETCH_FAILED: "Failed to fetch sheet data",
   INTERNAL_ERROR: "Internal server error occurred while processing request",
   SUBMISSION_FAILED: "Failed to process submission",
@@ -62,7 +63,7 @@ function validateEnvironment(): { isValid: boolean; error?: string } {
   if (!API_KEY || !SPREADSHEET_ID) {
     return {
       isValid: false,
-      error: ERROR_MESSAGES.MISSING_ENV_VARS
+      error: ERROR_MESSAGES.MISSING_ENV_VARS,
     };
   }
   return { isValid: true };
@@ -80,13 +81,14 @@ function getSheetUrl(type: string): string {
     throw new Error(`Unknown sheet type: ${type}`);
   }
 
-  const spreadsheetId = type === "finance" ? FINANCE_SPREADSHEET_ID : SPREADSHEET_ID;
+  const spreadsheetId =
+    type === "finance" ? FINANCE_SPREADSHEET_ID : SPREADSHEET_ID;
   if (!spreadsheetId) {
     throw new Error(`Missing spreadsheet ID for type: ${type}`);
   }
 
   return `${BASE_URL}/${spreadsheetId}/values/${encodeURIComponent(
-    config.name
+    config.name,
   )}!${config.range}?key=${API_KEY}`;
 }
 
@@ -210,21 +212,25 @@ class SheetDataProcessor {
   }
 
   static filterActiveItems<T extends { isActive: boolean }>(items: T[]): T[] {
-    return items.filter(item => item.isActive);
+    return items.filter((item) => item.isActive);
   }
 
-  static filterActiveAnnouncements(announcements: AnnouncementData[]): AnnouncementData[] {
+  static filterActiveAnnouncements(
+    announcements: AnnouncementData[],
+  ): AnnouncementData[] {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    return announcements.filter(announcement =>
-      announcement.isActive &&
-      (!announcement.endDate || parseDate(announcement.endDate).getTime() >= today.getTime())
+    return announcements.filter(
+      (announcement) =>
+        announcement.isActive &&
+        (!announcement.endDate ||
+          parseDate(announcement.endDate).getTime() >= today.getTime()),
     );
   }
 
   static filterUmmatFinance(financeData: FinanceData[]): FinanceData[] {
-    return financeData.filter(item => item.fund === "Ummat");
+    return financeData.filter((item) => item.fund === "Ummat");
   }
 }
 
@@ -234,7 +240,10 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get("type");
 
   if (!type) {
-    return NextResponse.json({ error: ERROR_MESSAGES.MISSING_TYPE }, { status: 400 });
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.MISSING_TYPE },
+      { status: 400 },
+    );
   }
 
   const envValidation = validateEnvironment();
@@ -248,8 +257,10 @@ export async function GET(req: NextRequest) {
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: `${ERROR_MESSAGES.SHEET_FETCH_FAILED}: ${response.statusText}` },
-        { status: response.status }
+        {
+          error: `${ERROR_MESSAGES.SHEET_FETCH_FAILED}: ${response.statusText}`,
+        },
+        { status: response.status },
       );
     }
 
@@ -258,12 +269,11 @@ export async function GET(req: NextRequest) {
 
     const result = processSheetData(type, rows);
     return NextResponse.json(result);
-
   } catch (error) {
     console.error("Error fetching sheet data:", error);
     return NextResponse.json(
       { error: ERROR_MESSAGES.INTERNAL_ERROR },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -273,7 +283,8 @@ function processSheetData(type: string, rows: string[][]) {
   switch (type) {
     case "announcement":
       const announcements = rows.map(SheetDataProcessor.parseAnnouncement);
-      const filteredAnnouncements = SheetDataProcessor.filterActiveAnnouncements(announcements);
+      const filteredAnnouncements =
+        SheetDataProcessor.filterActiveAnnouncements(announcements);
       return { values: filteredAnnouncements };
 
     case "gallery":
@@ -283,7 +294,8 @@ function processSheetData(type: string, rows: string[][]) {
 
     case "activity":
       const activities = rows.map(SheetDataProcessor.parseActivity);
-      const filteredActivities = SheetDataProcessor.filterActiveItems(activities);
+      const filteredActivities =
+        SheetDataProcessor.filterActiveItems(activities);
       return { values: filteredActivities };
 
     case "article":
@@ -293,7 +305,8 @@ function processSheetData(type: string, rows: string[][]) {
 
     case "volunteer":
       const volunteers = rows.map(SheetDataProcessor.parseVolunteer);
-      const filteredVolunteers = SheetDataProcessor.filterActiveItems(volunteers);
+      const filteredVolunteers =
+        SheetDataProcessor.filterActiveItems(volunteers);
       return { values: filteredVolunteers };
 
     case "mading":
@@ -302,11 +315,15 @@ function processSheetData(type: string, rows: string[][]) {
       return { values: filteredMadings };
 
     case "announcement-detail":
-      const announcementDetails = rows.map(SheetDataProcessor.parseAnnouncementDetail);
+      const announcementDetails = rows.map(
+        SheetDataProcessor.parseAnnouncementDetail,
+      );
       return { values: announcementDetails };
 
     case "finance":
-      const finances = rows.map((row, idx) => SheetDataProcessor.parseFinance(row, idx));
+      const finances = rows.map((row, idx) =>
+        SheetDataProcessor.parseFinance(row, idx),
+      );
       const filteredFinances = SheetDataProcessor.filterUmmatFinance(finances);
       return { values: filteredFinances };
 
@@ -347,7 +364,7 @@ class FormSubmissionHandler {
 
   private static async submitToGoogleSheets<T>(
     sheetType: string,
-    data: T
+    data: T,
   ): Promise<{ success: boolean; message: string; data: T }> {
     if (!APPS_SCRIPT_URL) {
       // Demo mode fallback
@@ -393,7 +410,7 @@ export async function POST(req: NextRequest) {
     if (!type) {
       return NextResponse.json(
         { error: ERROR_MESSAGES.MISSING_TYPE },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -404,10 +421,11 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Error processing form submission:", error);
 
-    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
       { error: `${ERROR_MESSAGES.SUBMISSION_FAILED}: ${errorMessage}` },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

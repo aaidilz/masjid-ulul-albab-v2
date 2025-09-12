@@ -1,11 +1,20 @@
 "use client";
 
 import { RefObject, useEffect, useState } from "react";
-import { MapPin, Mail, Send, Info, CircleCheck, Ban, Loader, Phone, Clock } from 'lucide-react';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-
+import {
+  MapPin,
+  Mail,
+  Send,
+  Info,
+  CircleCheck,
+  Ban,
+  Loader,
+  Phone,
+  Clock,
+} from "lucide-react";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 
 interface ContactSectionProps {
   contactLoading: boolean;
@@ -41,11 +50,14 @@ export default function ContactSection({
         new Date().toLocaleTimeString("id-ID", {
           hour: "2-digit",
           minute: "2-digit",
-        })
+        }),
     );
   }, []);
   return (
-    <section id="contact" className="py-16 bg-white dark:bg-gray-900 transition-colors">
+    <section
+      id="contact"
+      className="py-16 bg-white dark:bg-gray-900 transition-colors"
+    >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold mb-12 text-center section-title text-gray-900 dark:text-white">
           Hubungi Kami
@@ -64,7 +76,9 @@ export default function ContactSection({
                   <MapPin />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Alamat</h4>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                    Alamat
+                  </h4>
                   <p className="text-gray-700 dark:text-gray-300">
                     Jl. Dr. Setiabudhi No. 193 Bandung.
                   </p>
@@ -76,8 +90,12 @@ export default function ContactSection({
                   <Phone />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Telepon</h4>
-                  <p className="text-gray-700 dark:text-gray-300">(0812)24764338</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                    Telepon
+                  </h4>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    (0812)24764338
+                  </p>
                 </div>
               </div>
 
@@ -86,8 +104,12 @@ export default function ContactSection({
                   <Mail />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Email</h4>
-                  <p className="text-gray-700 dark:text-gray-300">sekretariat.albaab@gmail.com</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                    Email
+                  </h4>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    sekretariat.albaab@gmail.com
+                  </p>
                 </div>
               </div>
 
@@ -96,14 +118,20 @@ export default function ContactSection({
                   <Clock />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Jam Operasional</h4>
-                  <p className="text-gray-700 dark:text-gray-300">Setiap hari 07.00 - 21.00 WIB</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                    Jam Operasional
+                  </h4>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    Setiap hari 07.00 - 21.00 WIB
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="mt-8">
-              <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">Media Sosial</h4>
+              <h4 className="font-bold mb-3 text-gray-900 dark:text-gray-100">
+                Media Sosial
+              </h4>
               <div className="flex space-x-4">
                 <a
                   href="https://www.instagram.com/ululalbaab_unpas/"
@@ -269,9 +297,11 @@ export default function ContactSection({
                 <Info className="text-blue-600 dark:text-blue-400 mr-2 mt-0.5" />
                 <div>
                   <p className="text-sm text-blue-700 dark:text-blue-300">
-                    <strong className="text-blue-800 dark:text-blue-200">Info:</strong> Pesan Anda akan langsung tersimpan di
-                    sistem kami. Tim akan merespons dalam 1x24 jam via email
-                    atau WhatsApp.
+                    <strong className="text-blue-800 dark:text-blue-200">
+                      Info:
+                    </strong>{" "}
+                    Pesan Anda akan langsung tersimpan di sistem kami. Tim akan
+                    merespons dalam 1x24 jam via email atau WhatsApp.
                   </p>
                   <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
                     Tanggal pengiriman akan otomatis tercatat: {clientDate} WIB

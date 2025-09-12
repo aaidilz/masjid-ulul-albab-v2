@@ -65,7 +65,9 @@ export default function AnnouncementBanner() {
   };
 
   return (
-    <div className={`${getBgColor(currentAnnouncement.category)} text-white relative overflow-hidden`}>
+    <div
+      className={`${getBgColor(currentAnnouncement.category)} text-white relative overflow-hidden`}
+    >
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -84,13 +86,12 @@ export default function AnnouncementBanner() {
 
           <div className="flex items-center gap-2 flex-shrink-0">
             <Link
-                href={`/pengumuman/${currentAnnouncement.id}`}
-                className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
-              >
-                Info Lengkap
-                <ExternalLink className="h-3 w-3" />
-              </Link>
-
+              href={`/pengumuman/${currentAnnouncement.id}`}
+              className="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1"
+            >
+              Info Lengkap
+              <ExternalLink className="h-3 w-3" />
+            </Link>
 
             {announcements.length > 1 && (
               <div className="flex gap-1">
@@ -118,8 +119,8 @@ export default function AnnouncementBanner() {
 
       {/* Animated background pattern */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
-  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
-</div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
+      </div>
     </div>
   );
 }

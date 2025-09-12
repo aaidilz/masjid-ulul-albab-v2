@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -45,9 +45,9 @@ export default function HeaderSection() {
     if (!mounted) return <Monitor className="h-4 w-4" />;
 
     switch (theme) {
-      case 'light':
+      case "light":
         return <Sun className="h-4 w-4" />;
-      case 'dark':
+      case "dark":
         return <Moon className="h-4 w-4" />;
       default:
         return <Monitor className="h-4 w-4" />;
@@ -55,12 +55,12 @@ export default function HeaderSection() {
   };
 
   const cycleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("system");
     } else {
-      setTheme('light');
+      setTheme("light");
     }
   };
 
@@ -79,9 +79,15 @@ export default function HeaderSection() {
               priority={true}
               style={{ width: "auto", height: "30px" }}
             />
-            <Link href="/" className="text-gray-900 hover:text-green-600 dark:text-white dark:hover:text-green-400 transition">
+            <Link
+              href="/"
+              className="text-gray-900 hover:text-green-600 dark:text-white dark:hover:text-green-400 transition"
+            >
               <h1 className="text-xl font-bold text-gray-900 dark:text-white font-poppins">
-                Masjid <span className="text-green-600 dark:text-green-400">Ulul Albaab</span>
+                Masjid{" "}
+                <span className="text-green-600 dark:text-green-400">
+                  Ulul Albaab
+                </span>
               </h1>
             </Link>
           </div>
@@ -101,19 +107,44 @@ export default function HeaderSection() {
               <NavigationMenu>
                 <NavigationMenuList className="flex gap-x-6">
                   <NavigationMenuItem>
-                    <Link href="/#about" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
+                    <Link
+                      href="/#about"
+                      className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                    >
+                      Tentang
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
+                    <Link
+                      href="/#organization"
+                      className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                    >
+                      Struktur
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
+                    <Link
+                      href="/#finance"
+                      className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                    >
+                      Keuangan
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/kegiatan" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
+                    <Link
+                      href="/kegiatan"
+                      className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                    >
+                      Kegiatan
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/artikel" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
+                    <Link
+                      href="/artikel"
+                      className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                    >
+                      Artikel
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">
@@ -126,9 +157,12 @@ export default function HeaderSection() {
                             href="/gallery"
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">Gallery</div>
+                            <div className="text-sm font-medium leading-none">
+                              Gallery
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Dokumentasi foto kegiatan dan momen bersejarah masjid
+                              Dokumentasi foto kegiatan dan momen bersejarah
+                              masjid
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -137,9 +171,12 @@ export default function HeaderSection() {
                             href="/mading"
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">Mading</div>
+                            <div className="text-sm font-medium leading-none">
+                              Mading
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Majalah dinding digital dengan informasi dan konten edukatif
+                              Majalah dinding digital dengan informasi dan
+                              konten edukatif
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -148,9 +185,12 @@ export default function HeaderSection() {
                             href="/#announcements"
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">Pengumuman</div>
+                            <div className="text-sm font-medium leading-none">
+                              Pengumuman
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Pengumuman terbaru dan informasi penting dari masjid
+                              Pengumuman terbaru dan informasi penting dari
+                              masjid
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -159,9 +199,12 @@ export default function HeaderSection() {
                             href="/volunteer"
                             className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                           >
-                            <div className="text-sm font-medium leading-none">Volunteer</div>
+                            <div className="text-sm font-medium leading-none">
+                              Volunteer
+                            </div>
                             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                              Program relawan dan kesempatan berkontribusi untuk masjid
+                              Program relawan dan kesempatan berkontribusi untuk
+                              masjid
                             </p>
                           </Link>
                         </NavigationMenuLink>
@@ -191,31 +234,76 @@ export default function HeaderSection() {
             <NavigationMenu orientation="vertical">
               <NavigationMenuList className="flex flex-col space-y-3 text-center">
                 <NavigationMenuItem>
-                  <Link href="#about" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
+                  <Link
+                    href="#about"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Tentang
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="#organization" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
+                  <Link
+                    href="#organization"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Struktur
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="#finance" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
+                  <Link
+                    href="#finance"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Keuangan
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/kegiatan" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
+                  <Link
+                    href="/kegiatan"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Kegiatan
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/artikel" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
+                  <Link
+                    href="/artikel"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Artikel
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/gallery" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Gallery</Link>
+                  <Link
+                    href="/gallery"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Gallery
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/mading" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Mading</Link>
+                  <Link
+                    href="/mading"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Mading
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/#announcements" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Pengumuman</Link>
+                  <Link
+                    href="/#announcements"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Pengumuman
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/volunteer" className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Volunteer</Link>
+                  <Link
+                    href="/volunteer"
+                    className="block text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Volunteer
+                  </Link>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -238,7 +326,6 @@ export default function HeaderSection() {
 
   return (
     <header className="sticky top-0 w-full bg-gray-100/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-md z-50 transition-colors">
-
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center">
           <Image
@@ -250,9 +337,15 @@ export default function HeaderSection() {
             priority={true}
             style={{ width: "auto", height: "30px" }}
           />
-          <Link href="/" className="text-gray-900 hover:text-green-600 dark:text-white dark:hover:text-green-400 transition">
+          <Link
+            href="/"
+            className="text-gray-900 hover:text-green-600 dark:text-white dark:hover:text-green-400 transition"
+          >
             <h1 className="text-xl font-bold text-gray-900 dark:text-white font-poppins">
-              Masjid <span className="text-green-600 dark:text-green-400">Ulul Albaab</span>
+              Masjid{" "}
+              <span className="text-green-600 dark:text-green-400">
+                Ulul Albaab
+              </span>
             </h1>
           </Link>
         </div>
@@ -271,21 +364,45 @@ export default function HeaderSection() {
           <nav>
             <NavigationMenu>
               <NavigationMenuList className="flex gap-x-6">
-
                 <NavigationMenuItem>
-                  <Link href="/#about" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Tentang</Link>
+                  <Link
+                    href="/#about"
+                    className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Tentang
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/#organization" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Struktur</Link>
+                  <Link
+                    href="/#organization"
+                    className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Struktur
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/#finance" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Keuangan</Link>
+                  <Link
+                    href="/#finance"
+                    className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Keuangan
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/kegiatan" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Kegiatan</Link>
+                  <Link
+                    href="/kegiatan"
+                    className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Kegiatan
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/artikel" className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">Artikel</Link>
+                  <Link
+                    href="/artikel"
+                    className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium"
+                  >
+                    Artikel
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="text-gray-900 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition font-medium">
@@ -298,9 +415,12 @@ export default function HeaderSection() {
                           href="/gallery"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">Gallery</div>
+                          <div className="text-sm font-medium leading-none">
+                            Gallery
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Dokumentasi foto kegiatan dan momen bersejarah masjid
+                            Dokumentasi foto kegiatan dan momen bersejarah
+                            masjid
                           </p>
                         </Link>
                       </NavigationMenuLink>
@@ -309,9 +429,12 @@ export default function HeaderSection() {
                           href="/mading"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">Mading</div>
+                          <div className="text-sm font-medium leading-none">
+                            Mading
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Majalah dinding digital dengan informasi dan konten edukatif
+                            Majalah dinding digital dengan informasi dan konten
+                            edukatif
                           </p>
                         </Link>
                       </NavigationMenuLink>
@@ -320,7 +443,9 @@ export default function HeaderSection() {
                           href="/#announcements"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">Pengumuman</div>
+                          <div className="text-sm font-medium leading-none">
+                            Pengumuman
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Pengumuman terbaru dan informasi penting dari masjid
                           </p>
@@ -331,9 +456,12 @@ export default function HeaderSection() {
                           href="/volunteer"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">Volunteer</div>
+                          <div className="text-sm font-medium leading-none">
+                            Volunteer
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Program relawan dan kesempatan berkontribusi untuk masjid
+                            Program relawan dan kesempatan berkontribusi untuk
+                            masjid
                           </p>
                         </Link>
                       </NavigationMenuLink>
@@ -342,7 +470,9 @@ export default function HeaderSection() {
                           href="/dkm/daftar"
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
-                          <div className="text-sm font-medium leading-none">Daftar DKM</div>
+                          <div className="text-sm font-medium leading-none">
+                            Daftar DKM
+                          </div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Pendaftaran anggota Dewan Kemakmuran Masjid
                           </p>
@@ -362,116 +492,160 @@ export default function HeaderSection() {
             onClick={cycleTheme}
             className="h-9 w-9 rounded-full"
             title={`Current theme: ${theme}. Click to cycle through themes.`}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'} theme`}
+            aria-label={`Switch to ${theme === "light" ? "dark" : theme === "dark" ? "system" : "light"} theme`}
           >
             {getThemeIcon()}
           </Button>
         </div>
-
       </div>
 
       {/* Mobile NavigationMenu */}
       {/* Mobile Sidebar */}
       <div
-  className={`fixed top-0 left-0 h-screen w-64 bg-gray-100 dark:bg-gray-800 shadow-lg z-50 transform transition-transform duration-300 ${
-    isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-  }`}
->
-  {/* Header */}
-  <div className="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
-    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Menu</h2>
-    <button
-      onClick={toggleMobileMenu}
-      className="text-gray-800 dark:text-gray-200 hover:text-red-500"
-      aria-label="Close menu"
-    >
-      ✕
-    </button>
-  </div>
-
-  {/* Menu */}
-  <nav className="p-2 divide-y divide-gray-300 dark:divide-gray-700">
-    {/* Bagian Utama */}
-    <div className="space-y-1 py-2">
-      <Link href="/#about" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <Home className="h-5 w-5 text-gray-500" />
-        <span>Tentang</span>
-      </Link>
-      <Link href="/#organization" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <Users className="h-5 w-5 text-gray-500" />
-        <span>Struktur</span>
-      </Link>
-      <Link href="/#finance" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <DollarSign className="h-5 w-5 text-gray-500" />
-        <span>Keuangan</span>
-      </Link>
-      <Link href="/kegiatan" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <Calendar className="h-5 w-5 text-gray-500" />
-        <span>Kegiatan</span>
-      </Link>
-      <Link href="/artikel" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <FileText className="h-5 w-5 text-gray-500" />
-        <span>Artikel</span>
-      </Link>
-    </div>
-
-    {/* Bagian Dropdown */}
-    <div className="py-2">
-      <details className="group">
-        <summary className="flex items-center gap-3 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition list-none">
-          <ChevronDown className="h-4 w-4 text-gray-500 group-open:rotate-180 transition-transform" />
-          <span>Lainnya</span>
-        </summary>
-        <div className="pl-8 mt-2 space-y-1">
-          <Link href="/gallery" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <ImageIcon className="h-5 w-5 text-gray-500" />
-            <span>Gallery</span>
-          </Link>
-          <Link href="/mading" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <Newspaper className="h-5 w-5 text-gray-500" />
-            <span>Mading</span>
-          </Link>
-          <Link href="/#announcements" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <Megaphone className="h-5 w-5 text-gray-500" />
-            <span>Pengumuman</span>
-          </Link>
-          <Link href="/volunteer" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <HandHeart className="h-5 w-5 text-gray-500" />
-            <span>Volunteer</span>
-          </Link>
-          <Link href="/dkm/daftar" onClick={toggleMobileMenu} className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <ClipboardList className="h-5 w-5 text-gray-500" />
-            <span>Daftar DKM</span>
-          </Link>
+        className={`fixed top-0 left-0 h-screen w-64 bg-gray-100 dark:bg-gray-800 shadow-lg z-50 transform transition-transform duration-300 ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="p-4 flex justify-between items-center border-b border-gray-300 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Menu
+          </h2>
+          <button
+            onClick={toggleMobileMenu}
+            className="text-gray-800 dark:text-gray-200 hover:text-red-500"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
         </div>
-      </details>
-    </div>
-  </nav>
 
-  {/* Theme Toggle */}
-  <div className="p-4 border-t border-gray-300 dark:border-gray-700">
-    <Button
-      variant="ghost"
-      size="sm"
-      onClick={cycleTheme}
-      className="flex items-center gap-2 w-full justify-start"
-    >
-      {getThemeIcon()}
-      <span className="text-sm">
-        {theme === "light" ? "Light" : theme === "dark" ? "Dark" : "System"}
-      </span>
-    </Button>
-  </div>
-</div>
+        {/* Menu */}
+        <nav className="p-2 divide-y divide-gray-300 dark:divide-gray-700">
+          {/* Bagian Utama */}
+          <div className="space-y-1 py-2">
+            <Link
+              href="/#about"
+              onClick={toggleMobileMenu}
+              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              <Home className="h-5 w-5 text-gray-500" />
+              <span>Tentang</span>
+            </Link>
+            <Link
+              href="/#organization"
+              onClick={toggleMobileMenu}
+              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              <Users className="h-5 w-5 text-gray-500" />
+              <span>Struktur</span>
+            </Link>
+            <Link
+              href="/#finance"
+              onClick={toggleMobileMenu}
+              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              <DollarSign className="h-5 w-5 text-gray-500" />
+              <span>Keuangan</span>
+            </Link>
+            <Link
+              href="/kegiatan"
+              onClick={toggleMobileMenu}
+              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              <Calendar className="h-5 w-5 text-gray-500" />
+              <span>Kegiatan</span>
+            </Link>
+            <Link
+              href="/artikel"
+              onClick={toggleMobileMenu}
+              className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
+              <FileText className="h-5 w-5 text-gray-500" />
+              <span>Artikel</span>
+            </Link>
+          </div>
 
-{/* Backdrop */}
-{isMobileMenuOpen && (
-  <div
-    className="fixed inset-0 bg-black/40 z-40 md:hidden"
-    onClick={toggleMobileMenu}
-  ></div>
-)}
+          {/* Bagian Dropdown */}
+          <div className="py-2">
+            <details className="group">
+              <summary className="flex items-center gap-3 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition list-none">
+                <ChevronDown className="h-4 w-4 text-gray-500 group-open:rotate-180 transition-transform" />
+                <span>Lainnya</span>
+              </summary>
+              <div className="pl-8 mt-2 space-y-1">
+                <Link
+                  href="/gallery"
+                  onClick={toggleMobileMenu}
+                  className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <ImageIcon className="h-5 w-5 text-gray-500" />
+                  <span>Gallery</span>
+                </Link>
+                <Link
+                  href="/mading"
+                  onClick={toggleMobileMenu}
+                  className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <Newspaper className="h-5 w-5 text-gray-500" />
+                  <span>Mading</span>
+                </Link>
+                <Link
+                  href="/#announcements"
+                  onClick={toggleMobileMenu}
+                  className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <Megaphone className="h-5 w-5 text-gray-500" />
+                  <span>Pengumuman</span>
+                </Link>
+                <Link
+                  href="/volunteer"
+                  onClick={toggleMobileMenu}
+                  className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <HandHeart className="h-5 w-5 text-gray-500" />
+                  <span>Volunteer</span>
+                </Link>
+                <Link
+                  href="/dkm/daftar"
+                  onClick={toggleMobileMenu}
+                  className="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <ClipboardList className="h-5 w-5 text-gray-500" />
+                  <span>Daftar DKM</span>
+                </Link>
+              </div>
+            </details>
+          </div>
+        </nav>
 
+        {/* Theme Toggle */}
+        <div className="p-4 border-t border-gray-300 dark:border-gray-700">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={cycleTheme}
+            className="flex items-center gap-2 w-full justify-start"
+          >
+            {getThemeIcon()}
+            <span className="text-sm">
+              {theme === "light"
+                ? "Light"
+                : theme === "dark"
+                  ? "Dark"
+                  : "System"}
+            </span>
+          </Button>
+        </div>
+      </div>
+
+      {/* Backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={toggleMobileMenu}
+        ></div>
+      )}
     </header>
   );
 }
