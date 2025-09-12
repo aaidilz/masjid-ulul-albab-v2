@@ -169,5 +169,6 @@ export interface DkmMemberData {
   alamat: string;
   motivasi: string;
   pengalaman: string;
+  dkm: string;
   tanggal: string;
 }
