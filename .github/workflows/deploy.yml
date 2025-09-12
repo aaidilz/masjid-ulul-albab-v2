@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Prettier code
-        run: npm prettier
+        run: npm run prettier
 
       - name: Verify code quality
         run: npm run verify
