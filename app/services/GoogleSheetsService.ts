@@ -15,7 +15,7 @@ import type {
   DkmMemberData,
   DkmSubmissionResponse,
   VolunteerRegistrationData,
-  VolunteerSubmissionResponse
+  VolunteerSubmissionResponse,
 } from "@/app/api/sheet/type";
 
 class GoogleSheetsService {
@@ -194,7 +194,9 @@ class GoogleSheetsService {
   }
 
   async getAnnouncements(): Promise<AnnouncementData[]> {
-    const announcements = await this.fetchFromApi<AnnouncementData>("announcement");
+    const announcements = await this.fetchFromApi<AnnouncementData>(
+      "announcement"
+    );
     return announcements.filter((announcement) => {
       if (!announcement.isActive) return false;
       if (!announcement.endDate) return true;
@@ -247,7 +249,9 @@ class GoogleSheetsService {
   async getAnnouncementDetailById(
     id: string
   ): Promise<AnnouncementDetailData | null> {
-    const rows = await this.fetchFromApi<AnnouncementDetailData>("announcement-detail");
+    const rows = await this.fetchFromApi<AnnouncementDetailData>(
+      "announcement-detail"
+    );
     const announcement = rows.find((row) => row.id === id) || null;
     return announcement;
   }
@@ -429,8 +433,8 @@ class GoogleSheetsService {
     direction: "asc" | "desc"
   ): FinanceData[] {
     return [...data].sort((a, b) => {
-  let aValue: string | number;
-  let bValue: string | number;
+      let aValue: string | number;
+      let bValue: string | number;
       switch (field) {
         case "date":
           aValue = this.parseDate(a.date).getTime();
@@ -562,31 +566,19 @@ class GoogleSheetsService {
       if (!emailRegex.test(contactData.email)) {
         throw new Error("Format email tidak valid");
       }
-      const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
-      if (!APPS_SCRIPT_URL) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        return {
-          success: true,
-          message: "Pesan Anda telah diterima! (Mode demo)",
-          data: { ...contactData, tanggal: this.getCurrentDateTimeString() },
-        };
-      }
-      const response = await fetch(APPS_SCRIPT_URL, {
+
+      const response = await fetch("/api/sheet?type=contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contactData),
-        mode: "no-cors",
       });
-      if (response.type === "opaque") {
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        return {
-          success: true,
-          message:
-            "Pesan Anda telah terkirim! Tim kami akan segera menghubungi Anda.",
-          data: { ...contactData, tanggal: this.getCurrentDateTimeString() },
-        };
+
+      if (!response.ok) {
+        throw new Error("Failed to submit contact form");
       }
-      throw new Error("Gagal mengirim pesan. Silakan coba lagi.");
+
+      const result = await response.json();
+      return result;
     } catch (error) {
       let errorMessage = "Terjadi kesalahan saat mengirim pesan.";
       if (error instanceof Error) {
@@ -625,12 +617,23 @@ class GoogleSheetsService {
         throw new Error("Format email tidak valid");
       }
 
-      // Simulate API call for now
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/sheet?type=dkm-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(memberData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit DKM registration");
+      }
+
+      const result = await response.json();
+      return result;
 
       return {
         success: true,
-        message: "Pendaftaran DKM berhasil dikirim! Tim akan menghubungi Anda segera.",
+        message:
+          "Pendaftaran DKM berhasil dikirim! Tim akan menghubungi Anda segera.",
         data: { ...memberData, tanggal: this.getCurrentDateTimeString() },
       };
     } catch (error) {
@@ -668,12 +671,23 @@ class GoogleSheetsService {
         throw new Error("Format email tidak valid");
       }
 
-      // Simulate API call for now
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/sheet?type=volunteer-registration", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(volunteerData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit volunteer registration");
+      }
+
+      const result = await response.json();
+      return result;
 
       return {
         success: true,
-        message: "Pendaftaran volunteer berhasil dikirim! Tim akan menghubungi Anda segera.",
+        message:
+          "Pendaftaran volunteer berhasil dikirim! Tim akan menghubungi Anda segera.",
         data: { ...volunteerData, tanggal: this.getCurrentDateTimeString() },
       };
     } catch (error) {

@@ -66,15 +66,15 @@ export default function DkmRegistrationPage() {
       } else {
         setMessage({
           type: "error",
-          text: response.message
+          text: response.message || "Terjadi kesalahan saat mengirim pendaftaran."
         });
       }
     } catch (error) {
+      console.error("Registration error:", error);
       setMessage({
         type: "error",
-        text: "Terjadi kesalahan sistem. Silakan coba lagi."
+        text: "Terjadi kesalahan sistem. Silakan coba lagi atau hubungi admin."
       });
-      console.error("Registration error:", error);
     } finally {
       setLoading(false);
     }
