@@ -25,6 +25,17 @@ export default function DkmRegistrationPage() {
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [selectedDkm, setSelectedDkm] = useState("");
+
+  // Mapping link group
+  const groupLinks: Record<string, string> = {
+    ulul_albaab:
+      "https://chat.whatsapp.com/FBpY8yJzG9xGP4L6P0etHI?mode=ems_copy_t",
+    ulul_ilmi:
+      "https://chat.whatsapp.com/HBHbgOkIh84ASX9BRZ3YYK?mode=ems_copy_t",
+    ulul_abshor:
+      "https://chat.whatsapp.com/IiOoL5uy5MSFJx60PRF2qn?mode=ems_copy_t",
+  };
 
   // Form refs
   const namaRef = useRef<HTMLInputElement>(null);
@@ -55,6 +66,7 @@ export default function DkmRegistrationPage() {
         alamat: alamatRef.current?.value || "",
         motivasi: motivasiRef.current?.value || "",
         pengalaman: pengalamanRef.current?.value || "",
+        dkm: selectedDkm,
       };
 
       const response =
@@ -65,6 +77,11 @@ export default function DkmRegistrationPage() {
           type: "success",
           text: response.message,
         });
+
+        // redirect ke grup sesuai pilihan
+        if (selectedDkm && groupLinks[selectedDkm]) {
+          window.location.href = groupLinks[selectedDkm];
+        }
 
         // Clear form
         if (namaRef.current) namaRef.current.value = "";
@@ -77,6 +94,7 @@ export default function DkmRegistrationPage() {
         if (alamatRef.current) alamatRef.current.value = "";
         if (motivasiRef.current) motivasiRef.current.value = "";
         if (pengalamanRef.current) pengalamanRef.current.value = "";
+      setSelectedDkm("");
       } else {
         setMessage({
           type: "error",
@@ -118,7 +136,7 @@ export default function DkmRegistrationPage() {
             Pendaftaran Anggota DKM
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Bergabunglah dengan Dewan Kemakmuran Masjid Ulul Albaab dan
+            Bergabunglah dengan Dewan Kemakmuran Masjid dan
             berkontribusi dalam dakwah kampus
           </p>
         </div>
@@ -131,7 +149,7 @@ export default function DkmRegistrationPage() {
                 <Users className="h-8 w-8" />
                 <div>
                   <h2 className="text-xl font-bold">
-                    Dewan Kemakmuran Masjid Ulul Albaab
+                    Dewan Kemakmuran Masjid
                   </h2>
                   <p className="text-green-100">Lembaga Dakwah Kampus UNPAS</p>
                 </div>
@@ -192,6 +210,28 @@ export default function DkmRegistrationPage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Tambah Select DKM */}
+                <div>
+                  <label
+                    htmlFor="dkm"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Pilih DKM <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="dkm"
+                    value={selectedDkm}
+                    onChange={(e) => setSelectedDkm(e.target.value)}
+                    required
+                    className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                  >
+                    <option value="">-- Pilih DKM --</option>
+                    <option value="ulul_albaab">DKM Ulul Albaab</option>
+                    <option value="ulul_ilmi">DKM Ulul Ilmi</option>
+                    <option value="ulul_abshor">DKM Ulul Abshor</option>
+                  </select>
+                </div>
+
                 {/* Personal Information */}
                 <div>
                   <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
@@ -392,7 +432,7 @@ export default function DkmRegistrationPage() {
                         rows={4}
                         required
                         disabled={loading}
-                        placeholder="Ceritakan motivasi Anda bergabung dengan DKM Ulul Albaab..."
+                        placeholder="Ceritakan motivasi Anda bergabung dengan DKM..."
                         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-green-600 focus:border-green-600 disabled:bg-gray-100 dark:disabled:bg-gray-700 disabled:cursor-not-allowed resize-none bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                       ></textarea>
                     </div>
@@ -431,7 +471,7 @@ export default function DkmRegistrationPage() {
                     ) : (
                       <>
                         <Users className="mr-2 h-5 w-5" />
-                        Daftar Sebagai Anggota DKM
+                        Daftar & Gabung ke Grup
                       </>
                     )}
                   </Button>
