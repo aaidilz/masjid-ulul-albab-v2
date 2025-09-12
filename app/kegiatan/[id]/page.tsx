@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, MapPin, Clock, Users, User, Share2, Calendar } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Users, User, Share2, Calendar, Loader } from "lucide-react";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ActivityData } from "@/app/api/sheet/type";
 import Image from "next/image";
@@ -17,13 +17,15 @@ export default function ActivityDetailPage() {
   const [activity, setActivity] = useState<ActivityData | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedActivities, setRelatedActivities] = useState<ActivityData[]>([]);
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
+
 
   useEffect(() => {
     const fetchActivity = async () => {
       try {
         setLoading(true);
         const id = params.id as string;
-        
+
         // Fetch activity detail
         const activityData = await googleSheetsService.getActivityById(id);
         setActivity(activityData);
@@ -47,6 +49,19 @@ export default function ActivityDetailPage() {
       fetchActivity();
     }
   }, [params.id]);
+
+  // Reset loading state when activities change
+  useEffect(() => {
+    setLoadingActivityId(null);
+  }, [relatedActivities]);
+
+  // Cleanup loading state on unmount
+  useEffect(() => {
+    return () => {
+      setLoadingActivityId(null);
+    };
+  }, []);
+
 
   const getCategoryColor = (category: string) => {
     switch (category.toLowerCase()) {
@@ -90,6 +105,12 @@ export default function ActivityDetailPage() {
       navigator.clipboard.writeText(window.location.href);
       alert("Link kegiatan telah disalin ke clipboard!");
     }
+  };
+
+  const handleRelatedClick = async (activityId: string) => {
+    setLoadingActivityId(activityId);
+    // Add a small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 300));
   };
 
   const formatDescription = (description: string) => {
@@ -166,7 +187,7 @@ export default function ActivityDetailPage() {
                   Bagikan
                 </Button>
               </div>
-              
+
               <CardTitle className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
                 {activity.title}
               </CardTitle>
@@ -223,7 +244,7 @@ export default function ActivityDetailPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {activity.location && (
                     <div className="flex items-start gap-3">
                       <MapPin className="h-5 w-5 text-red-600 dark:text-red-400 mt-0.5" />
@@ -233,7 +254,7 @@ export default function ActivityDetailPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {activity.participants && (
                     <div className="flex items-start gap-3">
                       <Users className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5" />
@@ -243,7 +264,7 @@ export default function ActivityDetailPage() {
                       </div>
                     </div>
                   )}
-                  
+
                   {activity.instructor && (
                     <div className="flex items-start gap-3">
                       <User className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5" />
@@ -318,8 +339,16 @@ export default function ActivityDetailPage() {
                         {relatedActivity.description}
                       </p>
                       <Link href={`/kegiatan/${relatedActivity.id}`}>
-                        <Button size="sm" className="w-full">
-                          Lihat Detail
+                        <Button size="sm" className="w-full" disabled={loadingActivityId === relatedActivity.id} onClick={() => handleRelatedClick(relatedActivity.id)}>
+                          {loadingActivityId === relatedActivity.id ? (
+                            <>
+                            Memuat <Loader className="h-4 w-4 animate-spin" />
+                            </>
+                          ) : (
+                            <>
+                            Lihat Detail
+                            </>
+                          )}
                         </Button>
                       </Link>
                     </CardContent>

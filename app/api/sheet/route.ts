@@ -10,44 +10,43 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 import { parseCurrency, formatCurrency, parseDate } from "@/app/utils/currency";
 
-// Add interfaces for form submissions
-// interface DkmRegistrationData {
-//   nama: string;
-//   nim: string;
-//   fakultas: string;
-//   prodi: string;
-//   angkatan: string;
-//   email: string;
-//   whatsapp: string;
-//   alamat: string;
-//   motivasi: string;
-//   pengalaman: string;
-// }
-
-// interface VolunteerRegistrationData {
-//   nama: string;
-//   email: string;
-//   whatsapp: string;
-//   alamat: string;
-//   pekerjaan: string;
-//   keahlian: string;
-//   programDipilih: string;
-//   motivasi: string;
-//   waktuTersedia: string;
-// }
-
-// interface ContactFormData {
-//   nama: string;
-//   email: string;
-//   subjek: string;
-//   pesan: string;
-// }
-
+// Constants
 const BASE_URL = "https://sheets.googleapis.com/v4/spreadsheets";
+const DEFAULT_RANGE = "A:Z";
+const FINANCE_RANGE = "A:E";
+
+// Sheet configuration mapping
+const SHEET_CONFIGS = {
+  announcement: { name: "Pengumuman", range: DEFAULT_RANGE },
+  gallery: { name: "Galeri", range: DEFAULT_RANGE },
+  activity: { name: "Kegiatan", range: DEFAULT_RANGE },
+  article: { name: "Artikel", range: DEFAULT_RANGE },
+  volunteer: { name: "Volunteer", range: DEFAULT_RANGE },
+  mading: { name: "Mading", range: DEFAULT_RANGE },
+  "announcement-detail": { name: "Pengumuman", range: DEFAULT_RANGE },
+  finance: { name: "Dashboard", range: FINANCE_RANGE },
+} as const;
+
+// Environment variables validation
+const API_KEY = process.env.GOOGLE_SHEETS_API_KEY;
 const SPREADSHEET_ID = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
 const FINANCE_SPREADSHEET_ID = process.env.GOOGLE_SHEETS_FINANCE_SPREADSHEET_ID;
-const API_KEY = process.env.GOOGLE_SHEETS_API_KEY;
+const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
 
+// Error messages constants
+const ERROR_MESSAGES = {
+  MISSING_TYPE: "Missing type parameter",
+  INVALID_TYPE: "Invalid submission type",
+  MISSING_ENV_VARS: "Missing required environment variables: API_KEY or SPREADSHEET_ID",
+  SHEET_FETCH_FAILED: "Failed to fetch sheet data",
+  INTERNAL_ERROR: "Internal server error occurred while processing request",
+  SUBMISSION_FAILED: "Failed to process submission",
+} as const;
+
+// Type definitions for better type safety
+type SheetType = keyof typeof SHEET_CONFIGS;
+
+// Utility functions
 function formatDateToIndonesian(date: Date): string {
   const day = date.getDate().toString().padStart(2, "0");
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -55,260 +54,271 @@ function formatDateToIndonesian(date: Date): string {
   return `${day}/${month}/${year}`;
 }
 
-// --- Parsing functions ---
-function parseRowToAnnouncement(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    content: row[8] || "",
-    category: (row[9] as "urgent" | "info" | "event") || "info",
-    startDate: row[5] || "",
-    endDate: row[10] || "",
-    isActive: row[11]?.toLowerCase() === "true",
-    // buttonText: row[7] || "",
-    // buttonLink: row[8] || "",
-  };
-}
-
-function parseRowToGallery(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    imageUrl: row[2] || "",
-    description: row[3] || "",
-    category: row[4] || "",
-    date: row[5] || "",
-    isActive: row[6]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToActivity(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    description: row[2] || "",
-    category: (row[3] as "rutin" | "khusus" | "jadwal") || "rutin",
-    imageUrl: row[4] || "",
-    schedule: row[5] || "",
-    location: row[6] || "",
-    participants: row[7] || "",
-    instructor: row[8] || "",
-    isActive: row[9]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToArticle(row: string[]) {
-  const originalDate = row[3] || "";
-  const parsedDate = parseDate(originalDate);
-  const formattedDate = formatDateToIndonesian(parsedDate);
-
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    author: row[2] || "",
-    date: formattedDate,
-    category: row[4] || "",
-    content: row[5] || "",
-    imageUrl: row[6] || "",
-    isActive: row[7]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToVolunteer(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    description: row[2] || "",
-    category: row[3] || "",
-    requirements: row[4] || "",
-    commitment: row[5] || "",
-    spots: parseInt(row[6]) || 0,
-    time: row[7] || "",
-    location: row[8] || "",
-    isActive: row[9]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToMading(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    content: row[2] || "",
-    author: row[3] || "",
-    date: row[4] || "",
-    category: row[5] || "",
-    imageUrl: row[6] || "",
-    isActive: row[7]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToAnnouncementDetail(row: string[]) {
-  return {
-    id: row[0] || "",
-    title: row[1] || "",
-    description: row[2] || "",
-    speaker: row[3] || "",
-    staff: row[4] || "",
-    datetime: row[5] || "",
-    // startDate: row[5] || "",
-    location: row[6] || "",
-    participants: row[7] || "",
-    isActive: row[11]?.toLowerCase() === "true",
-  };
-}
-
-function parseRowToFinance(row: string[], index: number) {
-  const income = parseCurrency(row[2] || "0");
-  const expense = parseCurrency(row[3] || "0");
-  const originalDate = row[0] || "";
-  const parsedDate = parseDate(originalDate);
-  const formattedDate = formatDateToIndonesian(parsedDate);
-
-  return {
-    id: (index + 1).toString(),
-    date: formattedDate,
-    description: row[1] || "",
-    income,
-    expense,
-    fund: (row[4] as "Ummat" | "Kas") || "Ummat",
-    formattedIncome: formatCurrency(income),
-    formattedExpense: formatCurrency(expense),
-  };
-}
-
-// --- Sheet URL builder ---
-function getSheetUrl(type: string) {
-  let sheetName = "";
-  let spreadsheetId = SPREADSHEET_ID;
-  let range = "A:Z";
-  if (type === "announcement") sheetName = "Pengumuman";
-  else if (type === "gallery") sheetName = "Galeri";
-  else if (type === "activity") sheetName = "Kegiatan";
-  else if (type === "article") sheetName = "Artikel";
-  else if (type === "volunteer") sheetName = "Volunteer";
-  else if (type === "mading") sheetName = "Mading";
-  else if (type === "announcement-detail") sheetName = "Pengumuman";
-  else if (type === "finance") {
-    sheetName = "Dashboard";
-    spreadsheetId = FINANCE_SPREADSHEET_ID;
-    range = "A:E";
+/**
+ * Validates required environment variables
+ * @returns Object containing validation result and error message if any
+ */
+function validateEnvironment(): { isValid: boolean; error?: string } {
+  if (!API_KEY || !SPREADSHEET_ID) {
+    return {
+      isValid: false,
+      error: ERROR_MESSAGES.MISSING_ENV_VARS
+    };
   }
+  return { isValid: true };
+}
+
+/**
+ * Generates Google Sheets API URL for the specified type
+ * @param type - The type of sheet to fetch
+ * @returns Complete API URL string
+ * @throws Error if type is unknown or spreadsheet ID is missing
+ */
+function getSheetUrl(type: string): string {
+  const config = SHEET_CONFIGS[type as SheetType];
+  if (!config) {
+    throw new Error(`Unknown sheet type: ${type}`);
+  }
+
+  const spreadsheetId = type === "finance" ? FINANCE_SPREADSHEET_ID : SPREADSHEET_ID;
+  if (!spreadsheetId) {
+    throw new Error(`Missing spreadsheet ID for type: ${type}`);
+  }
+
   return `${BASE_URL}/${spreadsheetId}/values/${encodeURIComponent(
-    sheetName
-  )}!${range}?key=${API_KEY}`;
+    config.name
+  )}!${config.range}?key=${API_KEY}`;
+}
+
+// Data Processor Class
+class SheetDataProcessor {
+  static parseAnnouncement(row: string[]): AnnouncementData {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      content: row[8] || "",
+      category: (row[9] as "urgent" | "info" | "event") || "info",
+      startDate: row[5] || "",
+      endDate: row[10] || "",
+      isActive: row[11]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseGallery(row: string[]): GalleryData {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      imageUrl: row[2] || "",
+      description: row[3] || "",
+      category: row[4] || "",
+      date: row[5] || "",
+      isActive: row[6]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseActivity(row: string[]): ActivityData {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      description: row[2] || "",
+      category: (row[3] as "rutin" | "khusus" | "jadwal") || "rutin",
+      imageUrl: row[4] || "",
+      schedule: row[5] || "",
+      location: row[6] || "",
+      participants: row[7] || "",
+      instructor: row[8] || "",
+      isActive: row[9]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseArticle(row: string[]): ArticleData {
+    const originalDate = row[3] || "";
+    const parsedDate = parseDate(originalDate);
+    const formattedDate = formatDateToIndonesian(parsedDate);
+
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      author: row[2] || "",
+      date: formattedDate,
+      category: row[4] || "",
+      content: row[5] || "",
+      imageUrl: row[6] || "",
+      isActive: row[7]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseVolunteer(row: string[]): VolunteerData {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      description: row[2] || "",
+      category: row[3] || "",
+      requirements: row[4] || "",
+      commitment: row[5] || "",
+      spots: parseInt(row[6]) || 0,
+      time: row[7] || "",
+      location: row[8] || "",
+      isActive: row[9]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseMading(row: string[]): MadingData {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      content: row[2] || "",
+      author: row[3] || "",
+      date: row[4] || "",
+      category: row[5] || "",
+      imageUrl: row[6] || "",
+      isActive: row[7]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseAnnouncementDetail(row: string[]) {
+    return {
+      id: row[0] || "",
+      title: row[1] || "",
+      description: row[2] || "",
+      speaker: row[3] || "",
+      staff: row[4] || "",
+      datetime: row[5] || "",
+      location: row[6] || "",
+      participants: row[7] || "",
+      isActive: row[11]?.toLowerCase() === "true",
+    };
+  }
+
+  static parseFinance(row: string[], index: number): FinanceData {
+    const income = parseCurrency(row[2] || "0");
+    const expense = parseCurrency(row[3] || "0");
+    const originalDate = row[0] || "";
+    const parsedDate = parseDate(originalDate);
+    const formattedDate = formatDateToIndonesian(parsedDate);
+
+    return {
+      id: (index + 1).toString(),
+      date: formattedDate,
+      description: row[1] || "",
+      income,
+      expense,
+      fund: (row[4] as "Ummat" | "Kas") || "Ummat",
+      formattedIncome: formatCurrency(income),
+      formattedExpense: formatCurrency(expense),
+    };
+  }
+
+  static filterActiveItems<T extends { isActive: boolean }>(items: T[]): T[] {
+    return items.filter(item => item.isActive);
+  }
+
+  static filterActiveAnnouncements(announcements: AnnouncementData[]): AnnouncementData[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return announcements.filter(announcement =>
+      announcement.isActive &&
+      (!announcement.endDate || parseDate(announcement.endDate).getTime() >= today.getTime())
+    );
+  }
+
+  static filterUmmatFinance(financeData: FinanceData[]): FinanceData[] {
+    return financeData.filter(item => item.fund === "Ummat");
+  }
 }
 
 // --- Main API handler ---
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const type = searchParams.get("type");
-  if (!type)
-    return NextResponse.json({ error: "Missing type" }, { status: 400 });
 
-  if (!API_KEY || !SPREADSHEET_ID) {
-    return NextResponse.json(
-      { error: "Missing API key or spreadsheet ID" },
-      { status: 500 }
-    );
+  if (!type) {
+    return NextResponse.json({ error: ERROR_MESSAGES.MISSING_TYPE }, { status: 400 });
+  }
+
+  const envValidation = validateEnvironment();
+  if (!envValidation.isValid) {
+    return NextResponse.json({ error: envValidation.error }, { status: 500 });
   }
 
   try {
     const url = getSheetUrl(type);
-    const res = await fetch(url);
-    if (!res.ok) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
       return NextResponse.json(
-        { error: "Failed to fetch sheet" },
-        { status: res.status }
+        { error: `${ERROR_MESSAGES.SHEET_FETCH_FAILED}: ${response.statusText}` },
+        { status: response.status }
       );
     }
-    const data = await res.json();
+
+    const data = await response.json();
     const rows = Array.isArray(data.values) ? data.values.slice(1) : [];
 
-    // Filtering & parsing
-    if (type === "announcement") {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const parsed = rows
-        .map(parseRowToAnnouncement)
-        .filter(
-          (a: AnnouncementData) =>
-            a.isActive &&
-            (!a.endDate || parseDate(a.endDate).getTime() >= today.getTime())
-        );
-      return NextResponse.json({ values: parsed });
-    }
+    const result = processSheetData(type, rows);
+    return NextResponse.json(result);
 
-    if (type === "gallery") {
-      const parsed = rows
-        .map(parseRowToGallery)
-        .filter((g: GalleryData) => g.isActive);
-      return NextResponse.json({ values: parsed });
-    }
-    if (type === "activity") {
-      const parsed = rows
-        .map(parseRowToActivity)
-        .filter((act: ActivityData) => act.isActive);
-      return NextResponse.json({ values: parsed });
-    }
-    if (type === "article") {
-      const parsed = rows
-        .map(parseRowToArticle)
-        .filter((article: ArticleData) => article.isActive);
-      return NextResponse.json({ values: parsed });
-    }
-
-    if (type === "volunteer") {
-      const parsed = rows
-        .map(parseRowToVolunteer)
-        .filter((volunteer: VolunteerData) => volunteer.isActive);
-      return NextResponse.json({ values: parsed });
-    }
-
-    if (type === "mading") {
-      const parsed = rows
-        .map(parseRowToMading)
-        .filter((mading: MadingData) => mading.isActive);
-      return NextResponse.json({ values: parsed });
-    }
-
-    if (type === "announcement-detail") {
-      const parsed = rows.map(parseRowToAnnouncementDetail);
-      return NextResponse.json({ values: parsed });
-    }
-
-    if (type === "finance") {
-      const parsed = rows
-        .map((row: string[], idx: number) => parseRowToFinance(row, idx))
-        .filter((f: FinanceData) => f.fund === "Ummat");
-      return NextResponse.json({ values: parsed });
-    }
-
-    // Default: return raw values
-    return NextResponse.json({ values: rows });
-  } catch (e) {
-    return NextResponse.json({ error: "Internal error " }, { status: 500 });
-    // Log the error for debugging
-    console.error("Error fetching sheet data:", e);
+  } catch (error) {
+    console.error("Error fetching sheet data:", error);
+    return NextResponse.json(
+      { error: ERROR_MESSAGES.INTERNAL_ERROR },
+      { status: 500 }
+    );
   }
 }
 
-// POST handler for form submissions
-export async function POST(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const type = searchParams.get("type");
+// Data processing function
+function processSheetData(type: string, rows: string[][]) {
+  switch (type) {
+    case "announcement":
+      const announcements = rows.map(SheetDataProcessor.parseAnnouncement);
+      const filteredAnnouncements = SheetDataProcessor.filterActiveAnnouncements(announcements);
+      return { values: filteredAnnouncements };
 
-  if (!type) {
-    return NextResponse.json(
-      { error: "Missing type parameter" },
-      { status: 400 }
-    );
+    case "gallery":
+      const galleries = rows.map(SheetDataProcessor.parseGallery);
+      const filteredGalleries = SheetDataProcessor.filterActiveItems(galleries);
+      return { values: filteredGalleries };
+
+    case "activity":
+      const activities = rows.map(SheetDataProcessor.parseActivity);
+      const filteredActivities = SheetDataProcessor.filterActiveItems(activities);
+      return { values: filteredActivities };
+
+    case "article":
+      const articles = rows.map(SheetDataProcessor.parseArticle);
+      const filteredArticles = SheetDataProcessor.filterActiveItems(articles);
+      return { values: filteredArticles };
+
+    case "volunteer":
+      const volunteers = rows.map(SheetDataProcessor.parseVolunteer);
+      const filteredVolunteers = SheetDataProcessor.filterActiveItems(volunteers);
+      return { values: filteredVolunteers };
+
+    case "mading":
+      const madings = rows.map(SheetDataProcessor.parseMading);
+      const filteredMadings = SheetDataProcessor.filterActiveItems(madings);
+      return { values: filteredMadings };
+
+    case "announcement-detail":
+      const announcementDetails = rows.map(SheetDataProcessor.parseAnnouncementDetail);
+      return { values: announcementDetails };
+
+    case "finance":
+      const finances = rows.map((row, idx) => SheetDataProcessor.parseFinance(row, idx));
+      const filteredFinances = SheetDataProcessor.filterUmmatFinance(finances);
+      return { values: filteredFinances };
+
+    default:
+      return { values: rows };
   }
+}
 
-  try {
-    const body = await req.json();
-
-    // Add timestamp
-    const timestamp = new Date().toLocaleString("id-ID", {
+// Form Submission Handler Class
+class FormSubmissionHandler {
+  private static generateTimestamp(): string {
+    return new Date().toLocaleString("id-ID", {
       timeZone: "Asia/Jakarta",
       year: "numeric",
       month: "2-digit",
@@ -317,81 +327,87 @@ export async function POST(req: NextRequest) {
       minute: "2-digit",
       second: "2-digit",
     });
+  }
 
-    let response;
+  static async handleSubmission(type: string, body: Record<string, unknown>) {
+    const timestamp = this.generateTimestamp();
+    const dataWithTimestamp = { ...body, tanggal: timestamp };
 
     switch (type) {
       case "dkm-registration":
-        response = await submitToGoogleSheets("dkm", {
-          ...body,
-          tanggal: timestamp,
-        });
-        break;
+        return await this.submitToGoogleSheets("dkm", dataWithTimestamp);
       case "volunteer-registration":
-        response = await submitToGoogleSheets("volunteer", {
-          ...body,
-          tanggal: timestamp,
-        });
-        break;
+        return await this.submitToGoogleSheets("volunteer", dataWithTimestamp);
       case "contact":
-        response = await submitToGoogleSheets("contact", {
-          ...body,
-          tanggal: timestamp,
-        });
-        break;
+        return await this.submitToGoogleSheets("contact", dataWithTimestamp);
       default:
-        return NextResponse.json(
-          { error: "Invalid submission type" },
-          { status: 400 }
-        );
+        throw new Error(ERROR_MESSAGES.INVALID_TYPE);
     }
+  }
+
+  private static async submitToGoogleSheets<T>(
+    sheetType: string,
+    data: T
+  ): Promise<{ success: boolean; message: string; data: T }> {
+    if (!APPS_SCRIPT_URL) {
+      // Demo mode fallback
+      console.log(`[DEMO] ${sheetType} submission:`, data);
+      return {
+        success: true,
+        message: `Pendaftaran ${sheetType} berhasil dikirim! (Mode demo - data tidak tersimpan)`,
+        data,
+      };
+    }
+
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: sheetType,
+          data: data,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error(`Error submitting to Google Sheets (${sheetType}):`, error);
+      throw error;
+    }
+  }
+}
+
+// POST handler for form submissions
+export async function POST(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const type = searchParams.get("type");
+
+    if (!type) {
+      return NextResponse.json(
+        { error: ERROR_MESSAGES.MISSING_TYPE },
+        { status: 400 }
+      );
+    }
+
+    const body = await req.json();
+    const response = await FormSubmissionHandler.handleSubmission(type, body);
 
     return NextResponse.json(response);
   } catch (error) {
     console.error("Error processing form submission:", error);
+
+    const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
-      { error: "Failed to process submission" },
+      { error: `${ERROR_MESSAGES.SUBMISSION_FAILED}: ${errorMessage}` },
       { status: 500 }
     );
-  }
-}
-
-async function submitToGoogleSheets<T>(
-  sheetType: string,
-  data: T
-): Promise<{ success: boolean; message: string; data: T }> {
-  const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL;
-
-  if (!APPS_SCRIPT_URL) {
-    // Fallback for development/demo
-    console.log(`[DEMO] ${sheetType} submission:`, data);
-    return {
-      success: true,
-      message: `Pendaftaran ${sheetType} berhasil dikirim! (Mode demo - data tidak tersimpan)`,
-      data,
-    };
-  }
-
-  try {
-    const response = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: sheetType,
-        data: data,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error(`Error submitting to Google Sheets (${sheetType}):`, error);
-    throw error;
   }
 }

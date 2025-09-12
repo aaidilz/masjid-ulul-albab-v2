@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, User, Clock, Search, Filter, ArrowRight } from "lucide-react";
+import { BookOpen, User, Clock, Search, Filter, ArrowRight, Loader } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
@@ -12,17 +12,25 @@ import type { ArticleData } from "@/app/api/sheet/type";
 import Link from "next/link";
 import Image from "next/image";
 
-// export const metadata = {
-//   title: "Artikel | Masjid Ulul Albab",
-//   description: "Artikel dan tulisan tentang Islam, kehidupan, dan kegiatan masjid",
-// };
-
 export default function ArtikelPage() {
   const [articles, setArticles] = useState<ArticleData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredArticles, setFilteredArticles] = useState<ArticleData[]>([]);
+  const [loadingActivityId, setLoadingActivityId] = useState<string | null>(null);
+
+  // Reset loading state when activities change
+  useEffect(() => {
+    setLoadingActivityId(null);
+  }, [filteredArticles]);
+
+  // Cleanup loading state on unmount
+  useEffect(() => {
+    return () => {
+      setLoadingActivityId(null);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -90,6 +98,13 @@ export default function ArtikelPage() {
     return content.substring(0, maxLength) + "...";
   };
 
+  const handleActivityClick = async (activityId: string) => {
+    setLoadingActivityId(activityId);
+    // Add a small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 300));
+  };
+
+
   if (loading) {
     return (
       <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
@@ -147,8 +162,8 @@ export default function ArtikelPage() {
         {/* Articles Grid */}
         {filteredArticles.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {filteredArticles.map((article) => (
-              <Card key={article.id} className="hover:shadow-lg transition-shadow duration-300">
+            {filteredArticles.map((article, index) => (
+              <Card key={`${article.id}-${index}`} className="hover:shadow-lg transition-shadow duration-300">
                 <CardHeader className="pb-3">
                   {article.imageUrl && (
                     <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
@@ -181,9 +196,17 @@ export default function ArtikelPage() {
                     {truncateContent(article.content)}
                   </p>
                   <Link href={`/artikel/${article.id}`}>
-                    <Button className="w-full group">
-                      Baca Selengkapnya
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    <Button className="w-full group" disabled={loadingActivityId === article.id} onClick={() => handleActivityClick(article.id)}>
+                      {loadingActivityId === article.id ? (
+                        <>
+                          Memuat <Loader className="inline h-4 w-4 animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Baca Selengkapnya
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
                     </Button>
                   </Link>
                 </CardContent>
@@ -194,8 +217,8 @@ export default function ArtikelPage() {
           <div className="text-center py-12">
             <BookOpen className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
-              {searchTerm || selectedCategory !== "all" 
-                ? "Tidak ada artikel yang ditemukan" 
+              {searchTerm || selectedCategory !== "all"
+                ? "Tidak ada artikel yang ditemukan"
                 : "Belum ada artikel tersedia"}
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
