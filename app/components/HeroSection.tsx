@@ -13,8 +13,8 @@ export default function HeroSection() {
       title: "Masjid Ulul Albaab",
       subtitle: "Pusat Ibadah dan Dakwah di Kampus UNPAS",
       // description: "Masjid yang hangat untuk seluruh keluarga besar Universitas Pasundan",
-      image: "/img/hero.jpg"
-    }
+      image: "/img/hero.jpg",
+    },
   ];
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function HeroSection() {
           sizes="100vw" // Add sizes for better performance
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/60"></div>
-        
+
         {/* Animated overlay pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-pulse"></div>
@@ -52,21 +52,25 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className={`relative z-10 text-center text-white px-8 max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div
+        className={`relative z-10 text-center text-white px-8 max-w-4xl mx-auto transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      >
         {/* Welcome badge */}
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6 animate-bounce">
           <Heart className="h-4 w-4 text-red-400" />
-          <span className="text-sm font-medium">Selamat Datang di Rumah Allah</span>
+          <span className="text-sm font-medium">
+            Selamat Datang di Rumah Allah
+          </span>
         </div>
 
         <h1 className="text-4xl md:text-7xl font-bold mb-4 font-poppins leading-tight">
           {slides[currentSlide].title}
         </h1>
-        
+
         <h2 className="text-xl md:text-2xl font-medium mb-4 text-green-300 font-inter">
           {slides[currentSlide].subtitle}
         </h2>
-        
+
         {/* <p className="text-lg md:text-xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90 font-inter">
           {slides[currentSlide].description}
         </p> */}

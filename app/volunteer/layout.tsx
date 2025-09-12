@@ -2,7 +2,8 @@ import type { Viewport } from "next";
 
 export const metadata = {
   title: "Volunteer | Masjid Ulul Albab",
-  description: "Program relawan dan kesempatan berkontribusi di Masjid Ulul Albab",
+  description:
+    "Program relawan dan kesempatan berkontribusi di Masjid Ulul Albab",
 };
 
 export const viewport: Viewport = {
@@ -14,6 +15,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function VolunteerLayout({ children }: { children: React.ReactNode }) {
+export default function VolunteerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

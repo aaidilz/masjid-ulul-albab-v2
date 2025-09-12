@@ -14,6 +14,10 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function KegiatanLayout({ children }: { children: React.ReactNode }) {
+export default function KegiatanLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

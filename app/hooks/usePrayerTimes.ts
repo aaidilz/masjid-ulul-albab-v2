@@ -18,8 +18,8 @@ export function usePrayerTimes() {
         .getDate()
         .toString()
         .padStart(2, "0")}-${(currentDate.getMonth() + 1)
-          .toString()
-          .padStart(2, "0")}-${currentDate.getFullYear()}`;
+        .toString()
+        .padStart(2, "0")}-${currentDate.getFullYear()}`;
 
       // Parameter Bandung, Indonesia
       const params = new URLSearchParams({
@@ -110,7 +110,9 @@ export function usePrayerTimes() {
           // Get previous month
           const prevMonthIndex = date.hijri.month.number - 2; // 0-based
           if (prevMonthIndex >= 0) {
-            const monthKeys = Object.keys(hijriMonthNames) as (keyof typeof hijriMonthNames)[];
+            const monthKeys = Object.keys(
+              hijriMonthNames,
+            ) as (keyof typeof hijriMonthNames)[];
             hijriMonth = hijriMonthNames[monthKeys[prevMonthIndex]];
             // Assume 30 days for previous month
             hijriDay = 30 + hijriDay;
@@ -121,7 +123,9 @@ export function usePrayerTimes() {
             hijriDay = 30 + hijriDay;
           }
         } else {
-          hijriMonth = hijriMonthNames[hijriMonth as keyof typeof hijriMonthNames] || hijriMonth;
+          hijriMonth =
+            hijriMonthNames[hijriMonth as keyof typeof hijriMonthNames] ||
+            hijriMonth;
         }
 
         const formattedHijriDate = `${hijriDay} ${hijriMonth} ${hijriYear} H`;
@@ -147,7 +151,9 @@ export function usePrayerTimes() {
       }
     } catch (err) {
       console.error("Error fetching prayer times:", err);
-      setError(err instanceof Error ? err.message : "Failed to fetch prayer times");
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch prayer times",
+      );
     } finally {
       setLoading(false);
     }

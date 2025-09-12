@@ -5,13 +5,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Users, School, Mail, Phone, MapPin, Heart, CheckCircle, AlertCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Users,
+  School,
+  Mail,
+  Phone,
+  MapPin,
+  Heart,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import Link from "next/link";
 
 export default function DkmRegistrationPage() {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
   // Form refs
   const namaRef = useRef<HTMLInputElement>(null);
@@ -44,12 +57,13 @@ export default function DkmRegistrationPage() {
         pengalaman: pengalamanRef.current?.value || "",
       };
 
-      const response = await googleSheetsService.submitDkmRegistration(formData);
+      const response =
+        await googleSheetsService.submitDkmRegistration(formData);
 
       if (response.success) {
         setMessage({
           type: "success",
-          text: response.message
+          text: response.message,
         });
 
         // Clear form
@@ -66,14 +80,15 @@ export default function DkmRegistrationPage() {
       } else {
         setMessage({
           type: "error",
-          text: response.message || "Terjadi kesalahan saat mengirim pendaftaran."
+          text:
+            response.message || "Terjadi kesalahan saat mengirim pendaftaran.",
         });
       }
     } catch (error) {
       console.error("Registration error:", error);
       setMessage({
         type: "error",
-        text: "Terjadi kesalahan sistem. Silakan coba lagi atau hubungi admin."
+        text: "Terjadi kesalahan sistem. Silakan coba lagi atau hubungi admin.",
       });
     } finally {
       setLoading(false);
@@ -99,9 +114,12 @@ export default function DkmRegistrationPage() {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Pendaftaran Anggota DKM</h1>
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">
+            Pendaftaran Anggota DKM
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Bergabunglah dengan Dewan Kemakmuran Masjid Ulul Albaab dan berkontribusi dalam dakwah kampus
+            Bergabunglah dengan Dewan Kemakmuran Masjid Ulul Albaab dan
+            berkontribusi dalam dakwah kampus
           </p>
         </div>
 
@@ -112,7 +130,9 @@ export default function DkmRegistrationPage() {
               <div className="flex items-center gap-4 mb-4">
                 <Users className="h-8 w-8" />
                 <div>
-                  <h2 className="text-xl font-bold">Dewan Kemakmuran Masjid Ulul Albaab</h2>
+                  <h2 className="text-xl font-bold">
+                    Dewan Kemakmuran Masjid Ulul Albaab
+                  </h2>
                   <p className="text-green-100">Lembaga Dakwah Kampus UNPAS</p>
                 </div>
               </div>
@@ -162,19 +182,27 @@ export default function DkmRegistrationPage() {
           {/* Registration Form */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl text-green-700 dark:text-green-400">Form Pendaftaran</CardTitle>
+              <CardTitle className="text-2xl text-green-700 dark:text-green-400">
+                Form Pendaftaran
+              </CardTitle>
               <p className="text-gray-600 dark:text-gray-300">
-                Lengkapi data diri Anda dengan benar. Semua field yang bertanda (*) wajib diisi.
+                Lengkapi data diri Anda dengan benar. Semua field yang bertanda
+                (*) wajib diisi.
               </p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Personal Information */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Data Pribadi</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                    Data Pribadi
+                  </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="nama" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="nama"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Nama Lengkap <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -189,7 +217,10 @@ export default function DkmRegistrationPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="nim" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="nim"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         NIM <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -208,10 +239,15 @@ export default function DkmRegistrationPage() {
 
                 {/* Academic Information */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Data Akademik</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                    Data Akademik
+                  </h3>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <label htmlFor="fakultas" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="fakultas"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Fakultas <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -226,7 +262,10 @@ export default function DkmRegistrationPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="prodi" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="prodi"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Program Studi <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -241,7 +280,10 @@ export default function DkmRegistrationPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="angkatan" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="angkatan"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Angkatan <span className="text-red-500">*</span>
                       </label>
                       <Input
@@ -260,10 +302,15 @@ export default function DkmRegistrationPage() {
 
                 {/* Contact Information */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Kontak</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                    Kontak
+                  </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Email <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -281,7 +328,10 @@ export default function DkmRegistrationPage() {
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="whatsapp" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="whatsapp"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         WhatsApp <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
@@ -300,7 +350,10 @@ export default function DkmRegistrationPage() {
                     </div>
                   </div>
                   <div className="mt-4">
-                    <label htmlFor="alamat" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label
+                      htmlFor="alamat"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                    >
                       Alamat Lengkap
                     </label>
                     <div className="relative">
@@ -320,11 +373,17 @@ export default function DkmRegistrationPage() {
 
                 {/* Motivation & Experience */}
                 <div>
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">Motivasi & Pengalaman</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">
+                    Motivasi & Pengalaman
+                  </h3>
                   <div className="space-y-4">
                     <div>
-                      <label htmlFor="motivasi" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Motivasi Bergabung <span className="text-red-500">*</span>
+                      <label
+                        htmlFor="motivasi"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
+                        Motivasi Bergabung{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         ref={motivasiRef}
@@ -338,7 +397,10 @@ export default function DkmRegistrationPage() {
                       ></textarea>
                     </div>
                     <div>
-                      <label htmlFor="pengalaman" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label
+                        htmlFor="pengalaman"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                      >
                         Pengalaman Organisasi
                       </label>
                       <textarea
@@ -386,19 +448,33 @@ export default function DkmRegistrationPage() {
             <CardContent>
               <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
                 <div className="flex items-start gap-2">
-                  <Badge variant="secondary" className="mt-0.5">1</Badge>
-                  <p>Pendaftaran ini khusus untuk mahasiswa aktif Universitas Pasundan</p>
+                  <Badge variant="secondary" className="mt-0.5">
+                    1
+                  </Badge>
+                  <p>
+                    Pendaftaran ini khusus untuk mahasiswa aktif Universitas
+                    Pasundan
+                  </p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Badge variant="secondary" className="mt-0.5">2</Badge>
-                  <p>Setelah mendaftar, Anda akan dihubungi untuk proses seleksi dan wawancara</p>
+                  <Badge variant="secondary" className="mt-0.5">
+                    2
+                  </Badge>
+                  <p>
+                    Setelah mendaftar, Anda akan dihubungi untuk proses seleksi
+                    dan wawancara
+                  </p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Badge variant="secondary" className="mt-0.5">3</Badge>
+                  <Badge variant="secondary" className="mt-0.5">
+                    3
+                  </Badge>
                   <p>Komitmen waktu minimal 1 tahun untuk kegiatan DKM</p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <Badge variant="secondary" className="mt-0.5">4</Badge>
+                  <Badge variant="secondary" className="mt-0.5">
+                    4
+                  </Badge>
                   <p>Untuk informasi lebih lanjut, hubungi: 0812-2476-4338</p>
                 </div>
               </div>

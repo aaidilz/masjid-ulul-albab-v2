@@ -16,7 +16,7 @@ export default function AboutSection() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -72,13 +72,21 @@ export default function AboutSection() {
   const shortContent = fullContent.slice(0, 4); // Hanya 4 item pertama untuk preview
 
   return (
-    <section ref={sectionRef} id="about" className="py-12 md:py-16 bg-gray-50 dark:bg-gray-900 transition-colors">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="py-12 md:py-16 bg-gray-50 dark:bg-gray-900 transition-colors"
+    >
       <div className="container mx-auto px-4">
-        <h2 className={`text-2xl md:text-3xl font-bold mb-8 md:mb-12 text-center text-gray-900 dark:text-white font-poppins transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <h2
+          className={`text-2xl md:text-3xl font-bold mb-8 md:mb-12 text-center text-gray-900 dark:text-white font-poppins transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        >
           Tentang Masjid Ulul Albaab
         </h2>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+        >
           {/* Text Content */}
           <div className="order-2 lg:order-1">
             <h3 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-green-700 dark:text-green-400 font-poppins">
@@ -100,7 +108,7 @@ export default function AboutSection() {
                     <p key={index} className="leading-relaxed font-inter">
                       {content.text}
                     </p>
-                  )
+                  ),
                 )}
               </div>
             </div>
@@ -122,7 +130,7 @@ export default function AboutSection() {
                         <p key={index} className="leading-relaxed font-inter">
                           {content.text}
                         </p>
-                      )
+                      ),
                   )}
 
                   {!showFullHistory && (
@@ -155,27 +163,35 @@ export default function AboutSection() {
                 <div className="text-2xl md:text-3xl font-bold text-green-600 dark:text-green-400 font-poppins">
                   20+
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">Tahun Berdiri</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">
+                  Tahun Berdiri
+                </div>
               </div>
               <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:shadow-md hover:scale-105 group">
                 <Users className="h-6 w-6 mx-auto mb-2 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform" />
                 <div className="text-2xl md:text-3xl font-bold text-green-600 dark:text-green-400 font-poppins">
                   500+
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">Jamaah Aktif</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">
+                  Jamaah Aktif
+                </div>
               </div>
               <div className="text-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 col-span-2 md:col-span-1 transition-all duration-300 hover:shadow-md hover:scale-105 group">
                 <Award className="h-6 w-6 mx-auto mb-2 text-green-600 dark:text-green-400 group-hover:scale-110 transition-transform" />
                 <div className="text-2xl md:text-3xl font-bold text-green-600 dark:text-green-400 font-poppins">
                   50+
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">Kegiatan/Tahun</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400 font-inter">
+                  Kegiatan/Tahun
+                </div>
               </div>
             </div>
           </div>
 
           {/* Image */}
-          <div className={`order-1 lg:order-2 transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
+          <div
+            className={`order-1 lg:order-2 transition-all duration-700 delay-400 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+          >
             <div className="relative">
               <Image
                 src="/img/about.jpg"
@@ -191,7 +207,7 @@ export default function AboutSection() {
               <div className="absolute top-4 left-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium animate-pulse font-poppins">
                 Est. 2002
               </div>
-              
+
               {/* Floating decoration */}
               <div className="absolute -top-4 -right-4 w-8 h-8 bg-green-500/20 rounded-full blur-xl animate-float"></div>
               <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-blue-500/20 rounded-full blur-xl animate-float delay-1000"></div>

@@ -22,10 +22,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://masjidululalbab.unpas.ac.id'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://masjidululalbab.unpas.ac.id",
+  ),
   title: "Masjid Ulul Albab UNPAS - Pusat Ibadah dan Dakwah Kampus",
-  description: "Masjid Ulul Albab Universitas Pasundan - Pusat kegiatan keislaman yang membina umat menuju masyarakat yang berakhlak mulia dan berilmu. Lokasi: Jl. Dr. Setiabudhi No. 193, Bandung.",
-  keywords: "masjid, ulul albab, unpas, universitas pasundan, bandung, islam, dakwah, kajian, sholat, jadwal sholat",
+  description:
+    "Masjid Ulul Albab Universitas Pasundan - Pusat kegiatan keislaman yang membina umat menuju masyarakat yang berakhlak mulia dan berilmu. Lokasi: Jl. Dr. Setiabudhi No. 193, Bandung.",
+  keywords:
+    "masjid, ulul albab, unpas, universitas pasundan, bandung, islam, dakwah, kajian, sholat, jadwal sholat",
   authors: [{ name: "DKM Ulul Albab UNPAS" }],
   creator: "DKM Ulul Albab UNPAS",
   publisher: "Masjid Ulul Albab UNPAS",
@@ -36,7 +40,8 @@ export const metadata: Metadata = {
     url: "https://masjidululalbab.unpas.ac.id",
     siteName: "Masjid Ulul Albab UNPAS",
     title: "Masjid Ulul Albab UNPAS - Pusat Ibadah dan Dakwah Kampus",
-    description: "Pusat kegiatan keislaman di Universitas Pasundan yang membina umat menuju masyarakat yang berakhlak mulia dan berilmu.",
+    description:
+      "Pusat kegiatan keislaman di Universitas Pasundan yang membina umat menuju masyarakat yang berakhlak mulia dan berilmu.",
     images: [
       {
         url: "/img/hero.jpg",
@@ -69,9 +74,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${inter.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} ${inter.variable} antialiased`}>
         <ThemeProvider>
           <AnnouncementBanner />
           <HeaderSection />

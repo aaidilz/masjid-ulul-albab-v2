@@ -1,7 +1,6 @@
 "use client";
 
-import {MapPinned, Clock, Expand, Info } from 'lucide-react';
-
+import { MapPinned, Clock, Expand, Info } from "lucide-react";
 
 export default function MapSection() {
   return (
@@ -57,15 +56,21 @@ export default function MapSection() {
             <div className="grid md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center">
                 <MapPinned className="text-green-600 dark:text-green-400 mr-2" />
-                <span className="text-gray-900 dark:text-gray-100">Kampus IV Universitas Pasundan</span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  Kampus IV Universitas Pasundan
+                </span>
               </div>
               <div className="flex items-center">
                 <Clock className="text-green-600 dark:text-green-400 mr-2" />
-                <span className="text-gray-900 dark:text-gray-100">Buka 24 jam untuk jamaah</span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  Buka 24 jam untuk jamaah
+                </span>
               </div>
               <div className="flex items-center">
                 <Expand className="text-green-600 dark:text-green-400 mr-2" />
-                <span className="text-gray-900 dark:text-gray-100">Parkir tersedia</span>
+                <span className="text-gray-900 dark:text-gray-100">
+                  Parkir tersedia
+                </span>
               </div>
             </div>
           </div>

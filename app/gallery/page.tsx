@@ -4,9 +4,21 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, Image as ImageIcon, Calendar, Eye } from "lucide-react";
+import {
+  Search,
+  Filter,
+  Image as ImageIcon,
+  Calendar,
+  Eye,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { GalleryData } from "@/app/api/sheet/type";
 import Image from "next/image";
@@ -50,21 +62,24 @@ export default function GalleryPage() {
         (item) =>
           item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.category.toLowerCase().includes(searchTerm.toLowerCase())
+          item.category.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
     // Filter by category
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (item) => item.category.toLowerCase() === selectedCategory.toLowerCase()
+        (item) =>
+          item.category.toLowerCase() === selectedCategory.toLowerCase(),
       );
     }
 
     setFilteredItems(filtered);
   }, [galleryItems, searchTerm, selectedCategory]);
 
-  const categories = Array.from(new Set(galleryItems.map(item => item.category)));
+  const categories = Array.from(
+    new Set(galleryItems.map((item) => item.category)),
+  );
 
   const formatDate = (dateStr: string) => {
     try {
@@ -81,12 +96,12 @@ export default function GalleryPage() {
 
   const openImageModal = (item: GalleryData) => {
     setSelectedImage(item);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeImageModal = () => {
     setSelectedImage(null);
-    document.body.style.overflow = 'unset';
+    document.body.style.overflow = "unset";
   };
 
   if (loading) {
@@ -107,7 +122,9 @@ export default function GalleryPage() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">Galeri Foto</h1>
+          <h1 className="text-4xl font-bold mb-4 text-green-700 dark:text-green-300">
+            Galeri Foto
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Dokumentasi kegiatan dan momen bersejarah di Masjid Ulul Albab
           </p>
@@ -127,7 +144,10 @@ export default function GalleryPage() {
           </div>
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pilih kategori" />
               </SelectTrigger>
@@ -147,8 +167,8 @@ export default function GalleryPage() {
         {filteredItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {filteredItems.map((item) => (
-              <Card 
-                key={item.id} 
+              <Card
+                key={item.id}
                 className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
                 onClick={() => openImageModal(item)}
               >
@@ -165,7 +185,10 @@ export default function GalleryPage() {
                       <Eye className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
                     <div className="absolute top-2 left-2">
-                      <Badge variant="secondary" className="bg-white/90 text-gray-800 dark:bg-gray-800/90 dark:text-gray-100">
+                      <Badge
+                        variant="secondary"
+                        className="bg-white/90 text-gray-800 dark:bg-gray-800/90 dark:text-gray-100"
+                      >
                         {item.category}
                       </Badge>
                     </div>
@@ -190,8 +213,8 @@ export default function GalleryPage() {
           <div className="text-center py-12">
             <ImageIcon className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">
-              {searchTerm || selectedCategory !== "all" 
-                ? "Tidak ada foto yang ditemukan" 
+              {searchTerm || selectedCategory !== "all"
+                ? "Tidak ada foto yang ditemukan"
                 : "Belum ada foto tersedia"}
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
@@ -218,18 +241,30 @@ export default function GalleryPage() {
         <div className="mt-12 text-center">
           <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">{galleryItems.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Foto</div>
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {galleryItems.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Total Foto
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{categories.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Kategori</div>
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {categories.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Kategori
+              </div>
             </div>
             <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{filteredItems.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Ditampilkan</div>
+              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                {filteredItems.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Ditampilkan
+              </div>
             </div>
           </div>
         </div>
