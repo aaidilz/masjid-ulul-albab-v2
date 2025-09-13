@@ -355,10 +355,12 @@ function FinanceSection({
 
           {loadingFinance ? (
             <div className="text-center py-8">
-              <Loader className="animate-spin text-3xl mb-4 text-gray-400 dark:text-gray-500" />
-              <p className="text-gray-600 dark:text-gray-400">
-                Memuat data keuangan...
-              </p>
+              <div className="flex flex-col items-center justify-center space-y-4">
+                <p className="text-gray-600 dark:text-gray-400">
+                  Memuat data keuangan...
+                </p>
+                <Loader className="animate-spin text-3xl text-gray-400 dark:text-gray-500" />
+              </div>
             </div>
           ) : financeSummary ? (
             <>
@@ -410,7 +412,7 @@ function FinanceSection({
                       ) : (
                         <Loader className="text-sm" />
                       )}
-                      <span className="hidden sm:inline">Refresh</span>
+                      <span className="sm:inline">Refresh</span>
                     </Button>
                   </div>
                 </div>
@@ -521,7 +523,7 @@ function FinanceSection({
                     </TableHeader>
                     <TableBody>
                       {paginatedFinanceData &&
-                      paginatedFinanceData.data.length > 0 ? (
+                        paginatedFinanceData.data.length > 0 ? (
                         paginatedFinanceData.data.map(
                           (transaction: FinanceData) => (
                             <TableRow
@@ -704,11 +706,10 @@ function FinanceSection({
                                 size="sm"
                                 onClick={() => handlePageChange(pageNum)}
                                 disabled={loadingFinance}
-                                className={`w-10 ${
-                                  pageNum === paginationInfo?.currentPage
+                                className={`w-10 ${pageNum === paginationInfo?.currentPage
                                     ? "dark:bg-green-600 dark:text-white"
                                     : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
-                                }`}
+                                  }`}
                               >
                                 {pageNum}
                               </Button>
