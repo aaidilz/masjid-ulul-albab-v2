@@ -35,7 +35,7 @@ import {
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { VolunteerData } from "@/app/api/sheet/type";
 import Link from "next/link";
-import Skeleton from "@mui/material/Skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function VolunteerPage() {
   const [volunteers, setVolunteers] = useState<VolunteerData[]>([]);
