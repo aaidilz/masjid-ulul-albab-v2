@@ -186,6 +186,7 @@ export default function VolunteerPage() {
               </Button>
               <Button
                 size="lg"
+                variant="outline"
                 className="border-white text-white hover:bg-white hover:text-green-700 dark:text-black"
               >
                 Pelajari Lebih Lanjut
