@@ -133,7 +133,7 @@ export default function GalleryPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="flex flex-col space-y-4">
-                <Skeleton className="h-75 w-full rounded-lg" />
+                <Skeleton className="h-80 w-full rounded-lg" />
                 <div className="flex items-center justify-between">
                   <Skeleton className="h-6 w-24 rounded-full" />
                 </div>
