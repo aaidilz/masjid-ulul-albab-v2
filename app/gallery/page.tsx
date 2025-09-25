@@ -11,6 +11,14 @@ import {
   Calendar,
   Eye,
 } from "lucide-react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -19,14 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { GalleryData } from "@/app/api/sheet/type";
 import Image from "next/image";
-
-// export const metadata = {
-//   title: "Gallery | Masjid Ulul Albab",
-//   description: "Galeri foto kegiatan dan momen bersejarah di Masjid Ulul Albab",
-// };
 
 export default function GalleryPage() {
   const [galleryItems, setGalleryItems] = useState<GalleryData[]>([]);
@@ -35,7 +39,8 @@ export default function GalleryPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredItems, setFilteredItems] = useState<GalleryData[]>([]);
   const [selectedImage, setSelectedImage] = useState<GalleryData | null>(null);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   useEffect(() => {
     const fetchGalleryItems = async () => {
       try {
@@ -75,6 +80,7 @@ export default function GalleryPage() {
     }
 
     setFilteredItems(filtered);
+    setCurrentPage(1); // Reset to first page when filters change
   }, [galleryItems, searchTerm, selectedCategory]);
 
   const categories = Array.from(
@@ -104,13 +110,35 @@ export default function GalleryPage() {
     document.body.style.overflow = "unset";
   };
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredItems.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of articles section
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (loading) {
     return (
       <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">Memuat galeri...</p>
+          <div className="text-center mb-12">
+            <Skeleton className="h-10 w-64 mx-auto mb-4 rounded" />
+            <Skeleton className="h-6 w-96 mx-auto mb-5 rounded" />
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="flex flex-col space-y-4">
+                <Skeleton className="h-80 w-full rounded-lg" />
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-6 w-24 rounded-full" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -166,7 +194,7 @@ export default function GalleryPage() {
         {/* Gallery Grid */}
         {filteredItems.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {filteredItems.map((item) => (
+            {currentItems.map((item) => (
               <Card
                 key={item.id}
                 className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
@@ -237,37 +265,102 @@ export default function GalleryPage() {
           </div>
         )}
 
-        {/* Stats */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {galleryItems.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Total Foto
-              </div>
-            </div>
-            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                {categories.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Kategori
-              </div>
-            </div>
-            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {filteredItems.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Ditampilkan
-              </div>
-            </div>
+        {/* Pagination Info */}
+        {filteredItems.length > itemsPerPage && (
+          <div className="text-center mt-6 mb-4">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Menampilkan {startIndex + 1} -{" "}
+              {Math.min(endIndex, filteredItems.length)} dari{" "}
+              {filteredItems.length} foto
+            </p>
           </div>
-        </div>
+        )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-4">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage > 1) handlePageChange(currentPage - 1);
+                    }}
+                    className={
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+
+                {/* Page numbers */}
+                {[...Array(totalPages)].map((_, index) => {
+                  const pageNumber = index + 1;
+                  const isActive = pageNumber === currentPage;
+
+                  // Show first page, last page, current page, and pages around current
+                  const showPage =
+                    pageNumber === 1 ||
+                    pageNumber === totalPages ||
+                    Math.abs(pageNumber - currentPage) <= 1;
+
+                  if (!showPage) {
+                    // Show ellipsis for gaps
+                    if (
+                      (pageNumber === 2 && currentPage > 4) ||
+                      (pageNumber === totalPages - 1 &&
+                        currentPage < totalPages - 3)
+                    ) {
+                      return (
+                        <PaginationItem key={`ellipsis-${pageNumber}`}>
+                          <span className="flex h-9 w-9 items-center justify-center text-sm">
+                            ...
+                          </span>
+                        </PaginationItem>
+                      );
+                    }
+                    return null;
+                  }
+
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handlePageChange(pageNumber);
+                        }}
+                        isActive={isActive}
+                        className="cursor-pointer"
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                })}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (currentPage < totalPages)
+                        handlePageChange(currentPage + 1);
+                    }}
+                    className={
+                      currentPage === totalPages
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        )}
 
         {/* Image Modal */}
         {selectedImage && (
