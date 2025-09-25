@@ -41,6 +41,7 @@ import {
   FinanceData,
 } from "@/app/services/GoogleSheetsService";
 import { ReactElement } from "react"; // Add this import
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FinanceSectionProps {
   loadingFinance: boolean;
@@ -354,14 +355,29 @@ function FinanceSection({
           </p>
 
           {loadingFinance ? (
-            <div className="text-center py-8">
-              <div className="flex flex-col items-center justify-center space-y-4">
-                <p className="text-gray-600 dark:text-gray-400">
-                  Memuat data keuangan...
-                </p>
-                <Loader className="animate-spin text-3xl text-gray-400 dark:text-gray-500" />
+            <>
+              <div className="p-6 space-y-6">
+                {/* Top Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Skeleton className="h-45 w-full rounded-lg" />
+                  <Skeleton className="h-45 w-full rounded-lg" />
+                  <Skeleton className="h-45 w-full rounded-lg" />
+                </div>
+
+                <div className="grid grid-cols-12 gap-4 mt-6">
+                  <div className="col-span-12">
+                    <Skeleton className="h-[500px] w-full rounded-lg" />
+                  </div>
+                </div>
+
+                {/* Pagination */}
+                <div className="flex justify-center gap-4 pt-6">
+                  <Skeleton className="h-10 w-24 rounded" />
+                  <Skeleton className="h-10 w-10 rounded" />
+                  <Skeleton className="h-10 w-24 rounded" />
+                </div>
               </div>
-            </div>
+            </>
           ) : financeSummary ? (
             <>
               {/* Summary Cards */}
@@ -523,7 +539,7 @@ function FinanceSection({
                     </TableHeader>
                     <TableBody>
                       {paginatedFinanceData &&
-                        paginatedFinanceData.data.length > 0 ? (
+                      paginatedFinanceData.data.length > 0 ? (
                         paginatedFinanceData.data.map(
                           (transaction: FinanceData) => (
                             <TableRow
@@ -706,10 +722,11 @@ function FinanceSection({
                                 size="sm"
                                 onClick={() => handlePageChange(pageNum)}
                                 disabled={loadingFinance}
-                                className={`w-10 ${pageNum === paginationInfo?.currentPage
+                                className={`w-10 ${
+                                  pageNum === paginationInfo?.currentPage
                                     ? "dark:bg-green-600 dark:text-white"
                                     : "dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-600"
-                                  }`}
+                                }`}
                               >
                                 {pageNum}
                               </Button>

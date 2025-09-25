@@ -5,6 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import {
   Calendar,
   Users,
   MapPin,
@@ -22,15 +30,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ActivityData } from "@/app/api/sheet/type";
 import Link from "next/link";
 import Image from "next/image";
-
-// export const metadata = {
-//   title: "Kegiatan | Masjid Ulul Albab",
-//   description: "Informasi kegiatan dan acara di Masjid Ulul Albab",
-// };
 
 export default function KegiatanPage() {
   const [activities, setActivities] = useState<ActivityData[]>([]);
@@ -43,6 +47,8 @@ export default function KegiatanPage() {
   const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
     null,
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const activitiesPerPage = 6;
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -97,6 +103,7 @@ export default function KegiatanPage() {
     }
 
     setFilteredActivities(filtered);
+    setCurrentPage(1); // Reset to first page on filter change
   }, [activities, searchTerm, selectedCategory]);
 
   const getCategoryColor = (category: string) => {
@@ -131,6 +138,18 @@ export default function KegiatanPage() {
     await new Promise((resolve) => setTimeout(resolve, 300));
   };
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredActivities.length / activitiesPerPage);
+  const startIndex = (currentPage - 1) * activitiesPerPage;
+  const endIndex = startIndex + activitiesPerPage;
+  const currentActivities = filteredActivities.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of articles section
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const truncateDescription = (
     description: string,
     maxLength: number = 120,
@@ -143,11 +162,22 @@ export default function KegiatanPage() {
     return (
       <section className="py-16 bg-gray-50 dark:bg-gray-900 min-h-screen">
         <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-gray-600 dark:text-gray-300">
-              Memuat kegiatan...
-            </p>
+          <div className="text-center mb-12">
+            <Skeleton className="h-10 w-64 mx-auto mb-4 rounded" />
+            <Skeleton className="h-6 w-96 mx-auto rounded" />
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="flex flex-col space-y-4">
+                <Skeleton className="h-48 w-full rounded-lg" />
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-6 w-24 rounded-full" />
+                </div>
+                <Skeleton className="h-6 w-40 rounded" />
+                <Skeleton className="h-5 w-32 rounded" />
+                <Skeleton className="h-10 w-full rounded" />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -199,87 +229,182 @@ export default function KegiatanPage() {
           </div>
         </div>
 
-        {/* Activities Grid */}
+        {/* Activities Grid with Pagination */}
         {filteredActivities.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {filteredActivities.map((activity, index) => (
-              <Card
-                key={`${activity.id}-${index}`}
-                className="hover:shadow-lg transition-shadow duration-300"
-              >
-                <CardHeader className="pb-3">
-                  {activity.imageUrl && (
-                    <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
-                      <Image
-                        src={activity.imageUrl}
-                        alt={activity.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {currentActivities.map((activity, index) => (
+                <Card
+                  key={`${activity.id}-${index}`}
+                  className="hover:shadow-lg transition-shadow duration-300"
+                >
+                  <CardHeader className="pb-3">
+                    {activity.imageUrl && (
+                      <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
+                        <Image
+                          src={activity.imageUrl}
+                          alt={activity.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between mb-2">
+                      <Badge className={getCategoryColor(activity.category)}>
+                        <div className="flex items-center gap-1">
+                          {getCategoryIcon(activity.category)}
+                          {activity.category}
+                        </div>
+                      </Badge>
                     </div>
-                  )}
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge className={getCategoryColor(activity.category)}>
-                      <div className="flex items-center gap-1">
-                        {getCategoryIcon(activity.category)}
-                        {activity.category}
-                      </div>
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-xl mb-2 line-clamp-2">
-                    {activity.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
-                    {truncateDescription(activity.description)}
-                  </p>
+                    <CardTitle className="text-xl mb-2 line-clamp-2">
+                      {activity.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">
+                      {truncateDescription(activity.description)}
+                    </p>
 
-                  <div className="space-y-2 mb-4">
-                    {activity.schedule && (
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <Clock className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
-                        {activity.schedule}
-                      </div>
-                    )}
-                    {activity.location && (
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <MapPin className="mr-2 h-4 w-4 text-red-600 dark:text-red-400" />
-                        {activity.location}
-                      </div>
-                    )}
-                    {activity.participants && (
-                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                        <Users className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
-                        {activity.participants}
-                      </div>
-                    )}
-                  </div>
-
-                  <Link href={`/kegiatan/${activity.id}`}>
-                    <Button
-                      className="w-full group"
-                      disabled={loadingActivityId === activity.id}
-                      onClick={() => handleActivityClick(activity.id)}
-                    >
-                      {loadingActivityId === activity.id ? (
-                        <>
-                          Memuat{" "}
-                          <Loader className="inline h-4 w-4 animate-spin" />
-                        </>
-                      ) : (
-                        <>
-                          Lihat Detail
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </>
+                    <div className="space-y-2 mb-4">
+                      {activity.schedule && (
+                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                          <Clock className="mr-2 h-4 w-4 text-green-600 dark:text-green-400" />
+                          {activity.schedule}
+                        </div>
                       )}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      {activity.location && (
+                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                          <MapPin className="mr-2 h-4 w-4 text-red-600 dark:text-red-400" />
+                          {activity.location}
+                        </div>
+                      )}
+                      {activity.participants && (
+                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                          <Users className="mr-2 h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          {activity.participants}
+                        </div>
+                      )}
+                    </div>
+
+                    <Link href={`/kegiatan/${activity.id}`}>
+                      <Button
+                        className="w-full group"
+                        disabled={loadingActivityId === activity.id}
+                        onClick={() => handleActivityClick(activity.id)}
+                      >
+                        {loadingActivityId === activity.id ? (
+                          <>
+                            Memuat{" "}
+                            <Loader className="inline h-4 w-4 animate-spin" />
+                          </>
+                        ) : (
+                          <>
+                            Lihat Detail
+                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Pagination Info */}
+            {filteredActivities.length > activitiesPerPage && (
+              <div className="text-center mt-6 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Menampilkan {startIndex + 1} -{" "}
+                  {Math.min(endIndex, filteredActivities.length)} dari{" "}
+                  {filteredActivities.length} kegiatan
+                </p>
+              </div>
+            )}
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-4">
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage > 1)
+                            handlePageChange(currentPage - 1);
+                        }}
+                        className={
+                          currentPage === 1
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
+                      />
+                    </PaginationItem>
+                    {/* Page numbers with ellipsis */}
+                    {[...Array(totalPages)].map((_, index) => {
+                      const pageNumber = index + 1;
+                      const isActive = pageNumber === currentPage;
+                      // Show first page, last page, current page, and pages around current
+                      const showPage =
+                        pageNumber === 1 ||
+                        pageNumber === totalPages ||
+                        Math.abs(pageNumber - currentPage) <= 1;
+                      if (!showPage) {
+                        // Show ellipsis for gaps
+                        if (
+                          (pageNumber === 2 && currentPage > 4) ||
+                          (pageNumber === totalPages - 1 &&
+                            currentPage < totalPages - 3)
+                        ) {
+                          return (
+                            <PaginationItem key={`ellipsis-${pageNumber}`}>
+                              <span className="flex h-9 w-9 items-center justify-center text-sm">
+                                ...
+                              </span>
+                            </PaginationItem>
+                          );
+                        }
+                        return null;
+                      }
+                      return (
+                        <PaginationItem key={pageNumber}>
+                          <PaginationLink
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handlePageChange(pageNumber);
+                            }}
+                            isActive={isActive}
+                            className="cursor-pointer"
+                          >
+                            {pageNumber}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    })}
+                    <PaginationItem>
+                      <PaginationNext
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage < totalPages)
+                            handlePageChange(currentPage + 1);
+                        }}
+                        className={
+                          currentPage === totalPages
+                            ? "pointer-events-none opacity-50"
+                            : "cursor-pointer"
+                        }
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
+          </>
         ) : (
           <div className="text-center py-12">
             <Calendar className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
@@ -307,112 +432,6 @@ export default function KegiatanPage() {
             )}
           </div>
         )}
-
-        {/* Category Overview */}
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <Card className="text-center">
-            <CardHeader>
-              <div className="text-green-600 dark:text-green-400 text-3xl mb-2">
-                <Calendar className="h-8 w-8 mx-auto" />
-              </div>
-              <CardTitle>Kegiatan Rutin</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Kajian mingguan, bulanan, dan kegiatan rutin lainnya
-              </p>
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {
-                  activities.filter((a) => a.category.toLowerCase() === "rutin")
-                    .length
-                }
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Kegiatan
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <div className="text-blue-600 dark:text-blue-400 text-3xl mb-2">
-                <Users className="h-8 w-8 mx-auto" />
-              </div>
-              <CardTitle>Kegiatan Khusus</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Event spesial, perayaan hari besar, dan acara khusus
-              </p>
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                {
-                  activities.filter(
-                    (a) => a.category.toLowerCase() === "khusus",
-                  ).length
-                }
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Kegiatan
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <div className="text-purple-600 dark:text-purple-400 text-3xl mb-2">
-                <Clock className="h-8 w-8 mx-auto" />
-              </div>
-              <CardTitle>Jadwal Kegiatan</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                Jadwal sholat, kajian, dan kegiatan terjadwal
-              </p>
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {
-                  activities.filter(
-                    (a) => a.category.toLowerCase() === "jadwal",
-                  ).length
-                }
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Kegiatan
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Stats */}
-        <div className="mt-8 text-center">
-          <div className="inline-flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {activities.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Total Kegiatan
-              </div>
-            </div>
-            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                3
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Kategori
-              </div>
-            </div>
-            <div className="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                {filteredActivities.length}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Ditampilkan
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
