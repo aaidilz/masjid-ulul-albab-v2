@@ -428,7 +428,7 @@ function FinanceSection({
                       ) : (
                         <Loader className="text-sm" />
                       )}
-                      <span className="sm:inline">Refresh</span>
+                      <span className="hidden sm:inline">Refresh</span>
                     </Button>
                   </div>
                 </div>
