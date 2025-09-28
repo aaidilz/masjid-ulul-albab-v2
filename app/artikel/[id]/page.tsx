@@ -18,6 +18,9 @@ import { googleSheetsService } from "@/app/services/GoogleSheetsService";
 import type { ArticleData } from "@/app/api/sheet/type";
 import Image from "next/image";
 import Link from "next/link";
+import rehypeSanitize from "rehype-sanitize";
+import MarkdownPreview from "@uiw/react-markdown-preview";
+import "@uiw/react-markdown-preview/markdown.css";
 
 export default function ArticleDetailPage() {
   const params = useParams();
@@ -72,8 +75,39 @@ export default function ArticleDetailPage() {
   }, [params.id]);
 
   const formatDate = (dateStr: string) => {
+    if (!dateStr || dateStr.trim() === "") {
+      return "Tanggal tidak tersedia";
+    }
+
     try {
-      const date = new Date(dateStr);
+      // Try different date formats
+      let date: Date;
+
+      // First try direct parsing
+      date = new Date(dateStr);
+
+      // If invalid, try common formats
+      if (isNaN(date.getTime())) {
+        // Try DD/MM/YYYY format
+        const ddmmyyyy = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (ddmmyyyy) {
+          date = new Date(
+            `${ddmmyyyy[3]}-${ddmmyyyy[2].padStart(2, "0")}-${ddmmyyyy[1].padStart(2, "0")}`,
+          );
+        } else {
+          // Try YYYY-MM-DD format
+          const yyyymmdd = dateStr.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+          if (yyyymmdd) {
+            date = new Date(dateStr);
+          }
+        }
+      }
+
+      // Check if date is still invalid
+      if (isNaN(date.getTime())) {
+        return "Format tanggal tidak valid";
+      }
+
       return date.toLocaleDateString("id-ID", {
         weekday: "long",
         day: "numeric",
@@ -81,7 +115,7 @@ export default function ArticleDetailPage() {
         year: "numeric",
       });
     } catch {
-      return dateStr;
+      return "Tanggal tidak dapat diproses";
     }
   };
 
@@ -103,13 +137,13 @@ export default function ArticleDetailPage() {
     }
   };
 
-  const formatContent = (content: string) => {
-    return content.split("\n").map((paragraph, index) => (
-      <p key={index} className="mb-4 leading-relaxed">
-        {paragraph}
-      </p>
-    ));
-  };
+  // const formatContent = (content: string) => {
+  //   return content.split("\n").map((paragraph, index) => (
+  //     <p key={index} className="mb-4 leading-relaxed">
+  //       {paragraph}
+  //     </p>
+  //   ));
+  // };
 
   const handleActivityClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
@@ -224,10 +258,16 @@ export default function ArticleDetailPage() {
           {/* Article Content */}
           <Card className="mb-8">
             <CardContent className="pt-6">
-              <div className="prose prose-lg max-w-none">
-                <div className="text-gray-800 dark:text-gray-100 leading-relaxed">
-                  {formatContent(article.content)}
-                </div>
+              <div className="prose prose-lg max-w-none dark:prose-invert">
+                <MarkdownPreview
+                  source={article.content}
+                  rehypePlugins={[[rehypeSanitize]]}
+                  className="bg-transparent text-gray-800 dark:text-gray-100 leading-relaxed"
+                  style={{
+                    backgroundColor: "transparent",
+                    color: "inherit",
+                  }}
+                />
               </div>
             </CardContent>
           </Card>
