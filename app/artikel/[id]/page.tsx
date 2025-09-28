@@ -98,7 +98,11 @@ export default function ArticleDetailPage() {
           // Try YYYY-MM-DD format
           const yyyymmdd = dateStr.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
           if (yyyymmdd) {
-            date = new Date(dateStr);
+            date = new Date(
+              parseInt(yyyymmdd[1], 10),
+              parseInt(yyyymmdd[2], 10) - 1,
+              parseInt(yyyymmdd[3], 10)
+            );
           }
         }
       }
