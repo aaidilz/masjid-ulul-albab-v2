@@ -141,13 +141,6 @@ export default function ArticleDetailPage() {
     }
   };
 
-  // const formatContent = (content: string) => {
-  //   return content.split("\n").map((paragraph, index) => (
-  //     <p key={index} className="mb-4 leading-relaxed">
-  //       {paragraph}
-  //     </p>
-  //   ));
-  // };
 
   const handleActivityClick = async (activityId: string) => {
     setLoadingActivityId(activityId);
