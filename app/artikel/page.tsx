@@ -20,6 +20,7 @@ import {
   Filter,
   ArrowRight,
   Loader,
+  ArrowUpDown,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -40,6 +41,7 @@ export default function ArtikelPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest");
   const [filteredArticles, setFilteredArticles] = useState<ArticleData[]>([]);
   const [loadingActivityId, setLoadingActivityId] = useState<string | null>(
     null,
@@ -97,9 +99,31 @@ export default function ArtikelPage() {
       );
     }
 
+    // Sort articles by date
+    const parseArticleDate = (dateStr: string): number => {
+      try {
+        const [day, month, year] = dateStr.split("/");
+        if (day && month && year) {
+          const date = new Date(
+            parseInt(year),
+            parseInt(month) - 1,
+            parseInt(day),
+          );
+          if (!isNaN(date.getTime())) return date.getTime();
+        }
+      } catch {}
+      return 0;
+    };
+
+    filtered = [...filtered].sort((a, b) => {
+      const dateA = parseArticleDate(a.date);
+      const dateB = parseArticleDate(b.date);
+      return sortBy === "newest" ? dateB - dateA : dateA - dateB;
+    });
+
     setFilteredArticles(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [articles, searchTerm, selectedCategory]);
+    setCurrentPage(1); // Reset to first page when filters or sort change
+  }, [articles, searchTerm, selectedCategory, sortBy]);
 
   const categories = Array.from(
     new Set(articles.map((article) => article.category)),
@@ -203,24 +227,42 @@ export default function ArtikelPage() {
               className="pl-10"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Pilih kategori" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Semua Kategori</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category.toLowerCase()}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Pilih kategori" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Semua Kategori</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category.toLowerCase()}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <ArrowUpDown className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Select
+                value={sortBy}
+                onValueChange={(value) => setSortBy(value as "newest" | "oldest")}
+              >
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Urutkan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Terbaru</SelectItem>
+                  <SelectItem value="oldest">Terlama</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
 
@@ -399,12 +441,13 @@ export default function ArtikelPage() {
                 ? "Coba ubah kata kunci pencarian atau filter kategori"
                 : "Artikel akan segera ditambahkan"}
             </p>
-            {(searchTerm || selectedCategory !== "all") && (
+            {(searchTerm || selectedCategory !== "all" || sortBy !== "newest") && (
               <Button
                 variant="outline"
                 onClick={() => {
                   setSearchTerm("");
                   setSelectedCategory("all");
+                  setSortBy("newest");
                 }}
                 className="mt-4"
               >
