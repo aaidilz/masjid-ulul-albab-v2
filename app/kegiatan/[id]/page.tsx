@@ -38,13 +38,13 @@ export default function ActivityDetailPage() {
         setLoading(true);
         const id = params.id as string;
 
-        // Fetch activity detail
-        const activityData = await googleSheetsService.getActivityById(id);
+        // Fetch all activities once
+        const allActivities = await googleSheetsService.getActivities();
+        const activityData = allActivities.find((a) => a.id === id) || null;
         setActivity(activityData);
 
-        // Fetch related activities (same category, excluding current activity)
+        // Filter related activities from same dataset (no extra network call)
         if (activityData) {
-          const allActivities = await googleSheetsService.getActivities();
           const related = allActivities
             .filter((a) => a.id !== id && a.category === activityData.category)
             .slice(0, 3);

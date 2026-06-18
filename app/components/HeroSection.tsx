@@ -4,18 +4,18 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ChevronDown, Heart, Users, BookOpen, Calendar } from "lucide-react";
 
+const slides = [
+  {
+    title: "Masjid Ulul Albaab",
+    subtitle: "Pusat Ibadah dan Dakwah di Kampus UNPAS",
+    // description: "Masjid yang hangat untuk seluruh keluarga besar Universitas Pasundan",
+    image: "/img/hero.jpg",
+  },
+];
+
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-
-  const slides = [
-    {
-      title: "Masjid Ulul Albaab",
-      subtitle: "Pusat Ibadah dan Dakwah di Kampus UNPAS",
-      // description: "Masjid yang hangat untuk seluruh keluarga besar Universitas Pasundan",
-      image: "/img/hero.jpg",
-    },
-  ];
 
   useEffect(() => {
     setIsVisible(true);
@@ -23,7 +23,7 @@ export default function HeroSection() {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, []);
 
   return (
     <section

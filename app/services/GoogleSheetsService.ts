@@ -281,35 +281,66 @@ class DataParser {
   }
 }
 
-/**
- * Handles API communication
- */
 class ApiClient {
   private logger: Logger;
+  private cache: Map<string, { data: unknown; timestamp: number }>;
+  private pendingRequests: Map<string, Promise<unknown>>;
+  private CACHE_DURATION = 10000; // 10 seconds client-side cache
 
   constructor(logger: Logger) {
     this.logger = logger;
+    this.cache = new Map();
+    this.pendingRequests = new Map();
   }
 
   async fetchFromApi<T>(type: string): Promise<T[]> {
-    try {
-      const res = await fetch(`/api/sheet?type=${type}`);
-      if (!res.ok) {
-        this.logger.error(`Failed to fetch ${type} from API`, await res.text());
-        return [];
-      }
-      const data = await res.json();
-      return (data.values as T[]) || [];
-    } catch (error) {
-      this.logger.error(`Error fetching ${type} from API`, error);
-      return [];
+    // 1. Deduplicate concurrent requests
+    if (this.pendingRequests.has(type)) {
+      this.logger.log(`Reusing pending request for type: ${type}`);
+      return this.pendingRequests.get(type) as Promise<T[]>;
     }
+
+    // 2. Check cache
+    const cached = this.cache.get(type);
+    const now = Date.now();
+    if (cached && now - cached.timestamp < this.CACHE_DURATION) {
+      this.logger.log(`Using cached data for type: ${type}`);
+      return cached.data as T[];
+    }
+
+    const fetchPromise = (async () => {
+      try {
+        const res = await fetch(`/api/sheet?type=${type}`);
+        if (!res.ok) {
+          this.logger.error(`Failed to fetch ${type} from API`, await res.text());
+          return [];
+        }
+        const data = await res.json();
+        const values = (data.values as T[]) || [];
+
+        // Save to cache
+        this.cache.set(type, { data: values, timestamp: Date.now() });
+        return values;
+      } catch (error) {
+        this.logger.error(`Error fetching ${type} from API`, error);
+        return [];
+      } finally {
+        // Remove from pending list when done
+        this.pendingRequests.delete(type);
+      }
+    })();
+
+    this.pendingRequests.set(type, fetchPromise);
+    return fetchPromise;
   }
 
   async submitForm<T = unknown>(
     type: string,
     data: Record<string, unknown>,
   ): Promise<{ success: boolean; message: string; data?: T }> {
+    // Form submissions modify data, so clear the cache for safety
+    this.cache.clear();
+
     const response = await fetch(`/api/sheet?type=${type}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

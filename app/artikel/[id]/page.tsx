@@ -19,8 +19,13 @@ import type { ArticleData } from "@/app/api/sheet/type";
 import Image from "next/image";
 import Link from "next/link";
 import rehypeSanitize from "rehype-sanitize";
-import MarkdownPreview from "@uiw/react-markdown-preview";
+import dynamic from "next/dynamic";
 import "@uiw/react-markdown-preview/markdown.css";
+
+const MarkdownPreview = dynamic(() => import("@uiw/react-markdown-preview"), {
+  ssr: false,
+  loading: () => <div className="h-40 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-lg" />
+});
 
 export default function ArticleDetailPage() {
   const params = useParams();
@@ -50,13 +55,13 @@ export default function ArticleDetailPage() {
         setLoading(true);
         const id = params.id as string;
 
-        // Fetch article detail
-        const articleData = await googleSheetsService.getArticleById(id);
+        // Fetch all articles once
+        const allArticles = await googleSheetsService.getArticles();
+        const articleData = allArticles.find((a) => a.id === id) || null;
         setArticle(articleData);
 
-        // Fetch related articles (same category, excluding current article)
+        // Filter related articles from same dataset (no extra network call)
         if (articleData) {
-          const allArticles = await googleSheetsService.getArticles();
           const related = allArticles
             .filter((a) => a.id !== id && a.category === articleData.category)
             .slice(0, 3);

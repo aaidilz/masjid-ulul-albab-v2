@@ -253,7 +253,9 @@ export async function GET(req: NextRequest) {
 
   try {
     const url = getSheetUrl(type);
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      next: { revalidate: 300 },
+    });
 
     if (!response.ok) {
       return NextResponse.json(
